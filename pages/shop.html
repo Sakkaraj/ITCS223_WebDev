@@ -1,298 +1,257 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shop Our Collection</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop | Furniture Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../assets/css/shop.css" />
+  <link rel="stylesheet" href="../assets/css/footer.css" />
+  <link rel="stylesheet" href="../assets/css/header.css" />
+</head>
+<body>
+  <div id="header-placeholder"></div>
 
-    <link rel="stylesheet" href="../assets/css/style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-
-    <script src="scripts.js" defer></script>
-  </head>
-
-  <body>
-    <header>
-      <nav class="navbar">
-        <div class="nav-logo">
-          <a href="../index.html" style="text-decoration: none; color: inherit">BoonSonClon</a>
+  <!-- Category Strip -->
+<section class="shop-category-strip">
+  <div class="page-container">
+    <div class="shop-category-strip__grid">
+      <article class="shop-category-pill">
+        <div class="shop-category-pill__icon-box">
+          <i data-lucide="armchair" class="shop-category-pill__icon"></i>
         </div>
+        <div class="shop-category-pill__content">
+          <h4 class="shop-category-pill__title">Armchairs</h4>
+          <p class="shop-category-pill__meta">124 products</p>
+        </div>
+      </article>
 
-        <ul class="nav-links">
-          <li>
-            <a href="../index.html" style="text-decoration: none; color: inherit">Home</a>
-          </li>
-          <li><a href="shop.html" class="active">Shop</a></li>
-          <li>
-            <a href="../pages/about.html" style="text-decoration: none; color: inherit">About Us</a>
-          </li>
-          <li>
-            <a href="/pages/contact.html" style="text-decoration: none; color: inherit">Contact Us</a>
-          </li>
-        </ul>
+      <article class="shop-category-pill">
+        <div class="shop-category-pill__icon-box">
+          <i data-lucide="door-closed" class="shop-category-pill__icon"></i>
+        </div>
+        <div class="shop-category-pill__content">
+          <h4 class="shop-category-pill__title">Cabinets</h4>
+          <p class="shop-category-pill__meta">20 products</p>
+        </div>
+      </article>
 
-        <div class="nav-icons">
-          <div class="search-box">
-            <input type="text" placeholder="Search..." />
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.35-4.35" />
-            </svg>
+      <article class="shop-category-pill">
+        <div class="shop-category-pill__icon-box">
+          <i data-lucide="sofa" class="shop-category-pill__icon"></i>
+        </div>
+        <div class="shop-category-pill__content">
+          <h4 class="shop-category-pill__title">Sofas</h4>
+          <p class="shop-category-pill__meta">42 products</p>
+        </div>
+      </article>
+
+      <article class="shop-category-pill">
+        <div class="shop-category-pill__icon-box">
+          <i data-lucide="proportions" class="shop-category-pill__icon shop-category-pill__icon--rotated"></i>
+        </div>
+        <div class="shop-category-pill__content">
+          <h4 class="shop-category-pill__title">Chairs</h4>
+          <p class="shop-category-pill__meta">120 products</p>
+        </div>
+      </article>
+
+      <article class="shop-category-pill">
+        <div class="shop-category-pill__icon-box">
+          <i data-lucide="lamp" class="shop-category-pill__icon"></i>
+        </div>
+        <div class="shop-category-pill__content">
+          <h4 class="shop-category-pill__title">Decor</h4>
+          <p class="shop-category-pill__meta">299 products</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+  <main class="shop-page">
+    <div class="page-container">
+      <div class="shop-page__layout">
+        <!-- Sidebar -->
+        <aside class="shop-sidebar">
+          <section class="shop-filter-group">
+            <h4 class="shop-filter-group__title">Filter by Price</h4>
+            <input type="range" min="99" max="9999" class="shop-filter-group__range" />
+            <div class="shop-filter-group__range-values">
+              <span>$99</span>
+              <span>$9,999</span>
+            </div>
+          </section>
+
+          <section class="shop-filter-group">
+            <h4 class="shop-filter-group__title">Categories</h4>
+            <ul class="shop-filter-list">
+              <li class="shop-filter-list__item">
+                <label class="shop-filter-list__label">
+                  <input type="checkbox" class="shop-filter-list__checkbox" />
+                  <span>Chairs</span>
+                </label>
+                <span class="shop-filter-list__count">12</span>
+              </li>
+
+              <li class="shop-filter-list__item">
+                <label class="shop-filter-list__label">
+                  <input type="checkbox" checked class="shop-filter-list__checkbox" />
+                  <span class="shop-filter-list__label-text--active">Armchairs</span>
+                </label>
+                <span class="shop-filter-list__count">18</span>
+              </li>
+
+              <li class="shop-filter-list__item">
+                <label class="shop-filter-list__label">
+                  <input type="checkbox" class="shop-filter-list__checkbox" />
+                  <span>Sofas</span>
+                </label>
+                <span class="shop-filter-list__count">42</span>
+              </li>
+            </ul>
+          </section>
+
+          <section class="shop-filter-group">
+            <h4 class="shop-filter-group__title">Best Sellers</h4>
+            <div class="shop-best-seller-list">
+              <article class="shop-best-seller-card">
+                <img src="https://placehold.co/60x60/f3f4f6/555" alt="Classic Chair" class="shop-best-seller-card__image" />
+                <div class="shop-best-seller-card__content">
+                  <p class="shop-best-seller-card__title">Classic Chair</p>
+                  <p class="shop-best-seller-card__price">$99</p>
+                </div>
+              </article>
+            </div>
+          </section>
+        </aside>
+
+        <!-- Product area -->
+        <section class="shop-products">
+          <div class="shop-products__toolbar">
+            <p class="shop-products__result-text">Showing 1-12 of 144 results</p>
+
+            <select class="shop-products__sort">
+              <option>Sort by latest</option>
+              <option>Price: Low to High</option>
+              <option>Price: High to Low</option>
+            </select>
           </div>
 
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="12" cy="8" r="4" />
-            <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
-          </svg>
-
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-          </svg>
-
-          <div class="cart-badge">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-              <line x1="3" y1="6" x2="21" y2="6" />
-              <path d="M16 10a4 4 0 0 1-8 0" />
-            </svg>
-          </div>
-        </div>
-      </nav>
-    </header>
-
-    <main>
-      <section class="categories">
-        <div class="shop-container">
-          <aside class="filter-sidebar">
-            <div class="filter-group">
-              <label>Category</label>
-              <select>
-                <option>All Categories</option>
-                <option>Chairs</option>
-                <option>Sofas</option>
-                <option>Beds</option>
-              </select>
-            </div>
-
-            <div class="filter-group">
-              <label>Price</label>
-              <input type="text" placeholder="250 $" />
-            </div>
-
-            <div class="filter-group">
-              <label>Material</label>
-              <select>
-                <option>ALL</option>
-                <option>Wood</option>
-                <option>Velvet</option>
-                <option>Leather</option>
-              </select>
-            </div>
-
-            <div class="dimension-grid">
-              <div class="filter-group">
-                <label>Width</label>
-                <div class="input-with-unit">
-                  <input type="text" placeholder="0" />
-                  <select class="unit-dropdown">
-                    <option>cm</option>
-                    <option>in</option>
-                    <option>mm</option>
-                    <option>ft</option>
-                  </select>
+          <div class="shop-products__grid">
+            <article class="shop-product-card">
+              <div class="shop-product-card__image-wrap">
+                <img
+                  src="https://images.unsplash.com/photo-1592078615290-033ee584e267?auto=format&fit=crop&q=80&w=600"
+                  alt="Coffee Table"
+                  class="shop-product-card__image"
+                />
+                <div class="shop-product-card__action-wrap">
+                  <button class="shop-product-card__action">Add to Cart</button>
                 </div>
               </div>
+              <h3 class="shop-product-card__title">Coffee Table</h3>
+              <p class="shop-product-card__price">$150</p>
+            </article>
 
-              <div class="filter-group">
-                <label>Length</label>
-                <div class="input-with-unit">
-                  <input type="text" placeholder="0" />
-                  <select class="unit-dropdown">
-                    <option>cm</option>
-                    <option>in</option>
-                    <option>mm</option>
-                    <option>ft</option>
-                  </select>
-                </div>
+            <article class="shop-product-card">
+              <div class="shop-product-card__image-wrap">
+                <img
+                  src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&q=80&w=600"
+                  alt="Modern Armchair"
+                  class="shop-product-card__image"
+                />
               </div>
+              <h3 class="shop-product-card__title">Modern Armchair</h3>
+              <p class="shop-product-card__price">$250</p>
+            </article>
 
-              <div class="filter-group">
-                <label>Height</label>
-                <div class="input-with-unit">
-                  <input type="text" placeholder="0" />
-                  <select class="unit-dropdown">
-                    <option>cm</option>
-                    <option>in</option>
-                    <option>mm</option>
-                    <option>ft</option>
-                  </select>
-                </div>
+            <article class="shop-product-card">
+              <div class="shop-product-card__image-wrap">
+                <span class="shop-product-card__badge">New</span>
+                <img
+                  src="https://images.unsplash.com/photo-1550226122-211de445956a?auto=format&fit=crop&q=80&w=600"
+                  alt="Chaise Lounge"
+                  class="shop-product-card__image"
+                />
               </div>
-
-              <div class="filter-group">
-                <label>Weight</label>
-                <input type="text" placeholder="Kg" />
-              </div>
-            </div>
-
-            <button class="login-btn" style="margin-top: 20px; width: 100%">
-              Apply Filter
-            </button>
-          </aside>
-
-          <div class="image-list">
-            <div class="category-card">
-              <a href="product-details.html?id=chair" style="text-decoration: none; color: inherit">
-                <img src="../assets/images/chair.avif" alt="Minimalist Chair" />
-                <p>Minimalist Wooden Chair</p>
-                <p style="color: var(--brown)">$120.00</p>
-              </a>
-            </div>
-
-            <div class="category-card">
-              <a href="product-details.html?id=chair" style="text-decoration: none; color: inherit">
-                <img src="../assets/images/chair.avif" alt="Minimalist Chair" />
-                <p>Minimalist Wooden Chair</p>
-                <p style="color: var(--brown)">$120.00</p>
-              </a>
-            </div>
-
-            <div class="category-card">
-              <a href="product-details.html?id=chair" style="text-decoration: none; color: inherit">
-                <img src="../assets/images/chair.avif" alt="Minimalist Chair" />
-                <p>Minimalist Wooden Chair</p>
-                <p style="color: var(--brown)">$120.00</p>
-              </a>
-            </div>
-
-            <div class="category-card">
-              <a href="product-details.html?id=chair" style="text-decoration: none; color: inherit">
-                <img src="../assets/images/chair.avif" alt="Minimalist Chair" />
-                <p>Minimalist Wooden Chair</p>
-                <p style="color: var(--brown)">$120.00</p>
-              </a>
-            </div>
-
-            <div class="category-card">
-              <a href="product-details.html?id=sofa" style="text-decoration: none; color: inherit">
-                <img src="../assets/images/table.jpg" alt="Minimalist Chair" />
-                <p>Minimalist Wooden Chair</p>
-                <p style="color: var(--brown)">$120.00</p>
-              </a>
-            </div>
-
-            <div class="category-card">
-              <a href="product-details.html?id=sofa" style="text-decoration: none; color: inherit">
-                <img src="../assets/images/table.jpg" alt="Minimalist Chair" />
-                <p>Minimalist Wooden Chair</p>
-                <p style="color: var(--brown)">$120.00</p>
-              </a>
-            </div>
-
-            <div class="category-card">
-              <a href="product-details.html?id=sofa" style="text-decoration: none; color: inherit">
-                <img src="../assets/images/table.jpg" alt="Minimalist Chair" />
-                <p>Minimalist Wooden Chair</p>
-                <p style="color: var(--brown)">$120.00</p>
-              </a>
-            </div>
-
-            <div class="category-card">
-              <a href="product-details.html?id=sofa" style="text-decoration: none; color: inherit">
-                <img src="../assets/images/table.jpg" alt="Minimalist Chair" />
-                <p>Minimalist Wooden Chair</p>
-                <p style="color: var(--brown)">$120.00</p>
-              </a>
-            </div>
-
-            <div class="category-card">
-              <a href="product-details.html?id=table" style="text-decoration: none; color: inherit">
-                <img src="../assets/images/chair1.avif" alt="Minimalist Chair" />
-                <p>Minimalist Wooden Chair</p>
-                <p style="color: var(--brown)">$120.00</p>
-              </a>
-            </div>
-
-            <div class="category-card">
-              <a href="product-details.html?id=table" style="text-decoration: none; color: inherit">
-                <img src="../assets/images/chair1.avif" alt="Minimalist Chair" />
-                <p>Minimalist Wooden Chair</p>
-                <p style="color: var(--brown)">$120.00</p>
-              </a>
-            </div>
-
-            <div class="category-card">
-              <a href="product-details.html?id=table" style="text-decoration: none; color: inherit">
-                <img src="../assets/images/chair1.avif" alt="Minimalist Chair" />
-                <p>Minimalist Wooden Chair</p>
-                <p style="color: var(--brown)">$120.00</p>
-              </a>
-            </div>
-
-            <div class="category-card">
-              <a href="product-details.html?id=table" style="text-decoration: none; color: inherit">
-                <img src="../assets/images/chair1.avif" alt="Minimalist Chair" />
-                <p>Minimalist Wooden Chair</p>
-                <p style="color: var(--brown)">$120.00</p>
-              </a>
-            </div>
+              <h3 class="shop-product-card__title">Chaise Lounge</h3>
+              <p class="shop-product-card__price">$450</p>
+            </article>
           </div>
-        </div>
-      </section>
-    </main>
 
-    <footer>
-      <div class="footer-grid">
-        <div class="footer-col">
-          <h4>BoonSonClon Furniture</h4>
-          <p>
-            999 Phutthamonthon 4 Road, Salaya, Phutthamonthon,<br />
-            Nakhon Pathom 73170, Thailand
-          </p>
-          <p><strong>Email:</strong> bscfurniture@email.com</p>
-          <p><strong>Phone:</strong> (669) 630-4272</p>
-          <div class="social-icons">
-            <a href="https://www.facebook.com" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-            <a href="https://www.instagram.com" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://x.com" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
-            <a href="https://www.line.me/th/" aria-label="Line"><i class="fa-brands fa-line"></i></a>
+          <div class="shop-pagination">
+            <button class="shop-pagination__button shop-pagination__button--active">1</button>
+            <button class="shop-pagination__button">2</button>
+            <button class="shop-pagination__button shop-pagination__button--next">Next →</button>
           </div>
-        </div>
-
-        <div class="footer-col">
-          <h4>Shop</h4>
-          <ul>
-            <li>Chairs</li>
-            <li>Beds</li>
-            <li>Sofas</li>
-            <li>Cabinets</li>
-            <li>Armchairs</li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>Customer service</h4>
-          <ul>
-            <li>Orders</li>
-            <li>Addresses</li>
-            <li>Returns</li>
-            <li>Account details</li>
-            <li>FAQ</li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>Delivery</h4>
-          <ul>
-            <li>Orders</li>
-            <li>Return</li>
-            <li>Free Delivery</li>
-            <li style="margin-top: 10px; color: #000; font-weight: 700">
-              <a href="admin.html" style="text-decoration: none; color: #000">Admin Login</a>
-            </li>
-          </ul>
-        </div>
+        </section>
       </div>
-    </footer>
-  </body>
+    </div>
+  </main>
+
+  <!-- Featured Products -->
+  <section class="shop-featured">
+    <div class="page-container">
+      <div class="shop-featured__header">
+        <h2 class="shop-featured__title">Featured Products</h2>
+        <a href="#" class="shop-featured__button">View all</a>
+      </div>
+
+      <div class="shop-featured__grid">
+        <article class="shop-featured-card">
+          <div class="shop-featured-card__image-wrap">
+            <img src="your-image-1.jpg" alt="Modern Armchair" class="shop-featured-card__image" />
+            <button class="shop-featured-card__wishlist">♡</button>
+          </div>
+          <div class="shop-featured-card__info">
+            <h3 class="shop-featured-card__title">Modern Armchair</h3>
+            <div class="shop-featured-card__swatches">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        </article>
+
+        <article class="shop-featured-card">
+          <div class="shop-featured-card__image-wrap">
+            <img src="your-image-2.jpg" alt="Folding Table" class="shop-featured-card__image" />
+            <button class="shop-featured-card__wishlist">♡</button>
+          </div>
+          <div class="shop-featured-card__info">
+            <h3 class="shop-featured-card__title">Folding Table</h3>
+            <div class="shop-featured-card__swatches">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        </article>
+
+        <article class="shop-featured-card">
+          <div class="shop-featured-card__image-wrap">
+            <img src="your-image-3.jpg" alt="Classic Chair" class="shop-featured-card__image" />
+            <button class="shop-featured-card__wishlist">♡</button>
+          </div>
+          <div class="shop-featured-card__info">
+            <h3 class="shop-featured-card__title">Classic Chair</h3>
+            <div class="shop-featured-card__swatches">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="../assets/js/layout.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
 </html>
