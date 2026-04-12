@@ -1,53 +1,51 @@
-<div class="bg-brand-brown text-white text-[10px] py-1 text-center uppercase tracking-widest font-medium">
+<div class="site-sale-bar">
   This weekend sale 20% off on all products
 </div>
 
-<header class="border-b border-gray-100 bg-white sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between gap-10">
-    <div class="text-[10px] text-gray-500 uppercase leading-tight shrink-0">
+<header class="admin-header">
+  <div class="admin-header__top">
+    <div class="admin-header__location">
       Phutthamonthon,<br>Nakhon Pathom 73170, Thailand
     </div>
 
-    <div class="flex flex-1 items-center gap-3">
-      <div class="flex flex-1 border border-gray-200 rounded overflow-hidden shadow-sm">
-        <select class="bg-gray-50 border-r border-gray-200 px-3 py-2 text-xs text-gray-600 focus:outline-none">
+    <div class="admin-header__search-group">
+      <div class="admin-header__search-box">
+        <select class="admin-header__category-select">
           <option>All Categories</option>
         </select>
 
-        <div class="relative flex-1">
-          <input type="text" class="w-full px-4 py-2 text-sm focus:outline-none">
-          <i data-lucide="search" class="absolute right-3 top-2.5 w-4 h-4 text-gray-400"></i>
+        <div class="admin-header__search-input-wrap">
+          <input type="text" class="admin-header__search-input" />
+          <i data-lucide="search" class="admin-header__search-icon"></i>
         </div>
       </div>
 
-      <button class="bg-[#C4B2A3] hover:bg-[#b5a191] text-gray-800 px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider rounded-sm transition-colors shadow-sm">
+      <button class="admin-header__search-button">
         Advanced Search
       </button>
     </div>
 
-    <div class="flex items-center gap-6 shrink-0">
-      <div class="flex items-center gap-2">
-        <i data-lucide="phone" class="w-4 h-4 text-gray-700"></i>
-        <span class="text-sm font-bold tracking-tight text-gray-800">(928) 630-9272</span>
-      </div>
+    <div class="admin-header__contact">
+      <i data-lucide="phone" class="admin-header__contact-icon"></i>
+      <span class="admin-header__contact-number">(928) 630-9272</span>
     </div>
   </div>
 
-  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-    <div class="flex items-center gap-2 font-bold text-lg">
-      <div class="w-8 h-8 border-2 border-black flex items-center justify-center rounded-sm">F</div>
-      <span>Furniture Store</span>
+  <div class="admin-header__bottom">
+    <div class="admin-header__brand">
+      <div class="admin-header__brand-mark">F</div>
+      <span class="admin-header__brand-name">Furniture Store</span>
     </div>
 
-    <nav class="hidden md:flex gap-10 text-sm font-medium">
-      <a href="home.html" data-page="home" class="nav-link text-gray-500 hover:text-brand-brown transition">Home</a>
-      <a href="admin_panel.html" data-page="admin-panel" class="nav-link text-gray-500 hover:text-brand-brown transition">Admin Panel</a>
-      <a href="add_product.html" data-page="add-product" class="nav-link text-gray-500 hover:text-brand-brown transition">Add Product</a>
-      <a href="contact-us.html" data-page="contact" class="nav-link text-gray-500 hover:text-brand-brown transition">Contact Us</a>
+    <nav class="admin-header__nav">
+      <a href="../pages/home.html" data-page="home" class="nav-link admin-header__nav-link">Home</a>
+      <a href="../pages/admin-panel.html" data-page="admin-panel" class="nav-link admin-header__nav-link">Admin Panel</a>
+      <a href="../pages/add-product.html" data-page="add-product" class="nav-link admin-header__nav-link">Add Product</a>
+      <a href="../pages/contact-us.html" data-page="contact" class="nav-link admin-header__nav-link">Contact Us</a>
     </nav>
 
-    <div class="flex gap-4">
-      <i data-lucide="user" class="w-5 h-5 cursor-pointer"></i>
+    <div class="admin-header__actions">
+      <i data-lucide="user" class="admin-header__action-icon"></i>
     </div>
   </div>
 </header>
