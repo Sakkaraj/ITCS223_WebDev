@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login | Furniture Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../assets/css/admin-login.css" />
+  <link rel="stylesheet" href="../assets/css/footer.css" />
+
+</head>
+<body>
+  <div class="site-sale-bar">
+    This weekend sale 20% off on all products
+  </div>
+
+  <header class="admin-login-header">
+    <div class="admin-login-header__container">
+      <div class="admin-login-header__brand">
+        <div class="admin-login-header__brand-mark">F</div>
+        <span class="admin-login-header__brand-name">Furniture Store</span>
+      </div>
+
+      <nav class="admin-login-header__nav">
+        <a href="index.html" class="admin-login-header__nav-link">Home</a>
+        <a href="#" class="admin-login-header__nav-link admin-login-header__nav-link--active">Admin Panel</a>
+        <a href="#" class="admin-login-header__nav-link">Add product</a>
+        <a href="contact.html" class="admin-login-header__nav-link">Contact Us</a>
+      </nav>
+
+      <div class="admin-login-header__actions">
+        <i data-lucide="user" class="admin-login-header__action-icon"></i>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-login-page">
+    <section class="admin-login-page__visual">
+      <img
+        src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&q=80&w=1200"
+        alt="Furniture visual"
+        class="admin-login-page__visual-image"
+      />
+      <div class="admin-login-page__visual-overlay"></div>
+      <div class="admin-login-page__visual-content">
+        <h1 class="admin-login-page__visual-title">Furniture</h1>
+        <p class="admin-login-page__visual-text">
+          For the adminstrater for mange the product or the cathegory of the product
+        </p>
+      </div>
+    </section>
+
+    <section class="admin-login-page__form-section">
+      <div class="admin-login-form-card">
+        <div class="admin-login-form-card__header">
+          <h2 class="admin-login-form-card__title">Log in as Admin</h2>
+          <p class="admin-login-form-card__subtitle">Sign in to your account</p>
+        </div>
+
+        <form class="admin-login-form">
+          <div class="admin-login-form__group">
+            <label class="admin-login-form__label">Email</label>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              class="admin-login-form__input"
+            />
+          </div>
+
+          <div class="admin-login-form__group">
+            <label class="admin-login-form__label">Password</label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              class="admin-login-form__input"
+            />
+          </div>
+
+          <button type="submit" class="admin-login-form__button">
+            Log In
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="../assets/js/layout.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
