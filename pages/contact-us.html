@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us | Furniture Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../assets/css/contact-us.css" />
+  <link rel="stylesheet" href="../assets/css/footer.css" />
+  <link rel="stylesheet" href="../assets/css/header.css" />
+</head>
+<body>
+  <div id="header-placeholder"></div>
+
+  <main class="contact-page">
+    <div class="page-container">
+      <div class="contact-page__layout">
+        <section class="contact-page__info">
+          <div class="contact-page__intro">
+            <h1 class="contact-page__title">Contact Us</h1>
+            <p class="contact-page__description">
+              Suspendisse leo et cursus pharetra tellus tincidunt. Risus nulla penatibus donec elementum nulla.
+            </p>
+          </div>
+
+              <div class="contact-details">
+        <article class="contact-details__item">
+          <div class="contact-details__icon-wrap">
+            <i data-lucide="map-pin" class="contact-details__icon"></i>
+          </div>
+          <div class="contact-details__content">
+            <h4 class="contact-details__label">Physical address</h4>
+            <p class="contact-details__text">
+              999 Phutthamonthon 4 Road,<br />
+              Salaya, Phutthamonthon,<br />
+              Nakhon Pathom 73170, Thailand
+            </p>
+          </div>
+        </article>
+
+        <article class="contact-details__item">
+          <div class="contact-details__icon-wrap">
+            <i data-lucide="phone" class="contact-details__icon"></i>
+          </div>
+          <div class="contact-details__content">
+            <h4 class="contact-details__label">Phone number</h4>
+            <p class="contact-details__text">+437 402-2459</p>
+          </div>
+        </article>
+
+        <article class="contact-details__item">
+          <div class="contact-details__icon-wrap">
+            <i data-lucide="mail" class="contact-details__icon"></i>
+          </div>
+          <div class="contact-details__content">
+            <h4 class="contact-details__label">Email address</h4>
+            <p class="contact-details__text contact-details__text--lowercase">fStore@email.com</p>
+          </div>
+        </article>
+      </div>
+        </section>
+
+        <section class="contact-form-card">
+          <h2 class="contact-form-card__title">Get in touch</h2>
+
+          <form class="contact-form">
+            <div class="contact-form__row">
+              <div class="contact-form__group">
+                <label class="contact-form__label">Name</label>
+                <input type="text" placeholder="Your name..." class="contact-form__input" />
+              </div>
+
+              <div class="contact-form__group">
+                <label class="contact-form__label">Phone</label>
+                <input type="text" placeholder="Your phone number..." class="contact-form__input" />
+              </div>
+            </div>
+
+            <div class="contact-form__group">
+              <label class="contact-form__label">Email</label>
+              <input type="email" placeholder="Your email address..." class="contact-form__input" />
+            </div>
+
+            <div class="contact-form__group">
+              <label class="contact-form__label">Message</label>
+              <textarea rows="4" placeholder="Your message..." class="contact-form__textarea"></textarea>
+            </div>
+
+            <button type="submit" class="contact-form__button">
+              Send message
+            </button>
+          </form>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <section class="contact-map">
+    <div class="contact-map__frame">
+      <img
+        src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&q=80&w=1400"
+        alt="Map Placeholder"
+        class="contact-map__image"
+      />
+
+      <div class="contact-map__overlay">
+        <div class="contact-map__location-card">
+          <div class="contact-map__pin"></div>
+          <span class="contact-map__location-text">Nakhon Pathom, Thailand</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="../assets/js/layout.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>
