@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Cart | Furniture Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../assets/css/cart.css" />
+  <link rel="stylesheet" href="../assets/css/footer.css" />
+  <link rel="stylesheet" href="../assets/css/header.css" />
+</head>
+<body>
+  <div id="header-placeholder"></div>
+
+  <section class="cart-hero">
+    <img
+      src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&q=80&w=2000"
+      alt="Cart banner"
+      class="cart-hero__image"
+    />
+    <div class="cart-hero__overlay">
+      <h1 class="cart-hero__title">Your Cart</h1>
+    </div>
+  </section>
+
+  <main class="cart-page">
+    <div class="page-container">
+      <section class="cart-content">
+        <div class="cart-progress">
+          <div class="cart-progress__track">
+            <div id="top-slider-thumb" class="cart-progress__thumb"></div>
+          </div>
+        </div>
+
+        <div class="cart-table-wrapper no-scrollbar" id="cart-table-container">
+          <table class="cart-table">
+            <thead class="cart-table__head">
+              <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>CMF</th>
+                <th>Dimension</th>
+                <th>Description</th>
+                <th class="cart-table__actions-column">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody class="cart-table__body">
+              <tr class="cart-table__row">
+                <td class="cart-table__product-cell">
+                  <img
+                    src="https://images.unsplash.com/photo-1592078615290-033ee584e267?w=150"
+                    alt="Classic Chair"
+                    class="cart-table__product-image"
+                  />
+                  <div class="cart-table__product-info">
+                    Classic Chair
+                    <span class="cart-table__quantity">X 1</span>
+                  </div>
+                </td>
+
+                <td class="cart-table__category">Chairs</td>
+                <td class="cart-table__price">119$</td>
+
+                <td class="cart-table__spec">
+                  <span><b>Color:</b> Blue</span>
+                  <span><b>Material:</b> Wood</span>
+                </td>
+
+                <td class="cart-table__spec">
+                  <span><b>Width:</b> 125 Inch</span>
+                  <span><b>Length:</b> 50 Inch</span>
+                  <span><b>Weight:</b> 150kg</span>
+                </td>
+
+                <td class="cart-table__description">
+                  <b>Detail:</b> Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit, Sed Do Eiusmod Tempor...
+                </td>
+
+                <td class="cart-table__actions">
+                  <button class="cart-table__delete-button" onclick="openDeleteModal()">
+                    <i data-lucide="trash-2" class="cart-table__delete-icon"></i>
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="cart-table__row">
+                <td class="cart-table__product-cell">
+                  <img
+                    src="https://images.unsplash.com/photo-1544457070-4cd773b4d71e?w=150"
+                    alt="Modern Table"
+                    class="cart-table__product-image"
+                  />
+                  <div class="cart-table__product-info">
+                    Modern Table
+                    <span class="cart-table__quantity">X 1</span>
+                  </div>
+                </td>
+
+                <td class="cart-table__category">Tables</td>
+                <td class="cart-table__price">255$</td>
+
+                <td class="cart-table__spec">
+                  <span><b>Color:</b> Black</span>
+                  <span><b>Material:</b> Steel</span>
+                </td>
+
+                <td class="cart-table__spec">
+                  <span><b>Width:</b> 200 Inch</span>
+                  <span><b>Length:</b> 90 Inch</span>
+                  <span><b>Weight:</b> 45kg</span>
+                </td>
+
+                <td class="cart-table__description">
+                  <b>Detail:</b> Ullamcorper sit lacus sed risus congue integer amet est risus...
+                </td>
+
+                <td class="cart-table__actions">
+                  <button class="cart-table__delete-button" onclick="openDeleteModal()">
+                    <i data-lucide="trash-2" class="cart-table__delete-icon"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <section class="cart-summary">
+          <p class="cart-summary__line">Item Total: <span>673$</span></p>
+          <p class="cart-summary__line">Vat + Tax: <span>7%</span></p>
+          <p class="cart-summary__line">logistic cost: <span>500$</span></p>
+
+          <div class="cart-summary__total">
+            <p>Total: <span>1,200$</span></p>
+          </div>
+
+          <button class="cart-summary__checkout-button">Check Out</button>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <div id="deleteModal" class="cart-modal is-hidden">
+    <div class="cart-modal__backdrop" onclick="closeDeleteModal()"></div>
+
+    <div class="cart-modal__dialog">
+      <div class="cart-modal__icon-wrap">
+        <i data-lucide="trash-2" class="cart-modal__icon"></i>
+      </div>
+
+      <h2 class="cart-modal__title">Confirm Service Deletion?</h2>
+      <p class="cart-modal__text">
+        Are you sure you want to delete this service?<br />
+        This action cannot be undone.
+      </p>
+
+      <div class="cart-modal__actions">
+        <button onclick="closeDeleteModal()" class="cart-modal__button cart-modal__button--cancel">
+          Cancel
+        </button>
+        <button class="cart-modal__button cart-modal__button--delete">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="../assets/js/layout.js"></script>
+  <script>
+    lucide.createIcons();
+
+    const tableContainer = document.getElementById("cart-table-container");
+    const sliderThumb = document.getElementById("top-slider-thumb");
+
+    if (tableContainer && sliderThumb) {
+      tableContainer.addEventListener("scroll", () => {
+        const maxScroll = tableContainer.scrollWidth - tableContainer.clientWidth;
+        const scrollFraction = maxScroll > 0 ? tableContainer.scrollLeft / maxScroll : 0;
+        const moveRange = 75;
+        sliderThumb.style.left = (scrollFraction * moveRange) + "%";
+      });
+    }
+
+    function openDeleteModal() {
+      document.getElementById("deleteModal").classList.remove("is-hidden");
+    }
+
+    function closeDeleteModal() {
+      document.getElementById("deleteModal").classList.add("is-hidden");
+    }
+  </script>
+</body>
+</html>

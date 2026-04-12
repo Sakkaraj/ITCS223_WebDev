@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In | Furniture Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../assets/css/sign-in.css" />
+  <link rel="stylesheet" href="../assets/css/footer.css" />
+</head>
+<body>
+  <div class="sale-bar">
+    This weekend sale 20% off on all products
+  </div>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <div class="site-brand">
+        <div class="site-brand__mark">F</div>
+        <span class="site-brand__name">Furniture Store</span>
+      </div>
+
+      <nav class="site-nav">
+        <a href="home.html" class="site-nav__link">Home</a>
+        <a href="shop.html" class="site-nav__link">Shop</a>
+        <a href="about-us.html" class="site-nav__link">About Us</a>
+        <a href="contact-us.html" class="site-nav__link">Contact Us</a>
+      </nav>
+
+      <div class="site-actions">
+        <button class="site-actions__button" type="button" aria-label="Account">
+          <i data-lucide="user" class="site-actions__icon"></i>
+        </button>
+
+        <button class="site-actions__button" type="button" aria-label="Wishlist">
+          <i data-lucide="heart" class="site-actions__icon"></i>
+        </button>
+
+        <button class="site-actions__button" type="button" aria-label="Cart">
+          <i data-lucide="shopping-bag" class="site-actions__icon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="signin-page">
+    <section class="signin-card">
+      <div class="signin-card__media">
+        <img
+          src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&q=80&w=1000"
+          alt="Furniture background"
+          class="signin-card__image"
+        />
+        <div class="signin-card__overlay">
+          <h2 class="signin-card__overlay-title">Furniture</h2>
+          <p class="signin-card__overlay-text">
+            For the administrator for manage the product or the category of the product.
+          </p>
+        </div>
+      </div>
+
+      <div class="signin-card__content">
+        <div class="signin-card__header">
+          <p class="signin-card__eyebrow">Welcome back</p>
+          <h1 class="signin-card__title">Sign in to your account</h1>
+        </div>
+
+        <form class="signin-form">
+          <div class="signin-form__group">
+            <label for="email" class="signin-form__label">Email</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="Enter your email"
+              class="signin-form__input"
+            />
+          </div>
+
+          <div class="signin-form__group">
+            <label for="password" class="signin-form__label">Password</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              class="signin-form__input"
+            />
+          </div>
+
+          <button type="submit" class="signin-form__button">
+            Log In
+          </button>
+        </form>
+
+        <p class="signin-card__signup-text">
+          <a href="#" class="signin-card__signup-link">Sign Up</a>
+          here if you do not have an account
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="../assets/js/layout.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
