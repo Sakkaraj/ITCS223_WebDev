@@ -10,7 +10,9 @@
 
 require('dotenv').config();
 const bcrypt = require('bcrypt');
-const db = require('./db');
+
+  console.log('\n🌱 Starting database seed...\n');
+  const db = require('./db');
 
 const SALT_ROUNDS = 10;
 

@@ -1,5 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const fs = require('fs');
 const { open } = require('sqlite');
 require('dotenv').config();
 
@@ -10,6 +11,11 @@ let dbInstance = null;
 // Initialize the database connection
 const initDb = async () => {
   if (!dbInstance) {
+    const dir = path.dirname(dbPath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+
     dbInstance = await open({
       filename: dbPath,
       driver: sqlite3.Database

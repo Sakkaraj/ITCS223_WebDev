@@ -47,6 +47,38 @@ Default Entry: **`http://localhost:3000`**
 
 ---
 
+## 🆘 Troubleshooting & Common Fixes
+
+### 1. Port 3000 Already in Use (`EADDRINUSE`)
+If you see this error, another process is already using port 3000. 
+
+**On Windows (PowerShell):**
+```powershell
+# Identify the process (PID) using port 3000
+netstat -ano | findstr :3000
+
+# Stop the process (Replace <PID> with the actual number from the command above)
+taskkill /F /PID <PID>
+```
+
+**On Mac/Linux:**
+```bash
+# Find and stop the process
+lsof -ti:3000 | xargs kill -9
+```
+
+### 2. SQLite Connection Errors (`SQLITE_CANTOPEN`)
+This usually occurs if the data directory is missing or locked.
+- **Auto-Fix**: The latest code in `db.js` now automatically creates the `/server/data` folder for you.
+- **Manual Fix**: Simply run `npm run seed` again to initialize the database and folders correctly.
+
+### 3. Windows Execution Policy
+If `npm` or `nodemon` fails to run scripts:
+- Open PowerShell as **Administrator**.
+- Run: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
+
+---
+
 ## 📂 Project Architecture
 
 The project follows a modular "Clean Clean" structure, ensuring separation of concerns between backend logic and frontend presentation.
