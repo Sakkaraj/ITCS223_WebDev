@@ -17,48 +17,6 @@ const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
 
 async function seed() {
-      // ── 3.1. Colors ──────────────────────────────────────
-      console.log('\n🎨 Seeding colors...');
-      const colorDefs = [
-        { name: 'Blue', hex: '#3b82f6' },
-        { name: 'Brown', hex: '#a6866a' },
-        { name: 'Green', hex: '#4ade80' },
-        { name: 'Grey', hex: '#6b7280' },
-        { name: 'White', hex: '#f3f4f6' },
-        { name: 'Black', hex: '#222' },
-      ];
-      const colorIds = {};
-      for (const c of colorDefs) {
-        const [existing] = await db.execute('SELECT ColorId FROM Color WHERE ColorName = ?', [c.name]);
-        if (existing.length > 0) {
-          colorIds[c.name] = existing[0].ColorId;
-        } else {
-          const [result] = await db.execute('INSERT INTO Color (ColorName, HexCode) VALUES (?, ?)', [c.name, c.hex]);
-          colorIds[c.name] = result.insertId;
-        }
-      }
-
-      // ── 3.2. Materials ──────────────────────────────────
-      console.log('\n🪵 Seeding materials...');
-      const materials = [
-        { name: 'Solid Wood', type: 'Natural' },
-        { name: 'Metal', type: 'Industrial' },
-        { name: 'Fabric', type: 'Soft' },
-        { name: 'Glass', type: 'Hard' },
-        { name: 'MDF', type: 'Engineered' },
-      ];
-      const materialIds = {};
-      for (const m of materials) {
-        const [existing] = await db.execute('SELECT MaterialId FROM Material WHERE MaterialName = ?', [m.name]);
-        if (existing.length > 0) {
-          materialIds[m.name] = existing[0].MaterialId;
-        } else {
-          const [result] = await db.execute('INSERT INTO Material (MaterialName, MaterialType) VALUES (?, ?)', [m.name, m.type]);
-          materialIds[m.name] = result.insertId;
-        }
-      }
-  console.log('\n🌱 Starting database seed...\n');
-
   try {
     console.log('🏗️ Initializing SQLite Schema...');
     const fs = require('fs');
@@ -77,6 +35,49 @@ async function seed() {
     const schemaSql = fs.readFileSync(path.resolve(__dirname, './schema.sqlite.sql'), 'utf-8');
     await sqliteDb.exec(schemaSql);
     console.log('✅ Schema initialized');
+
+    // ── 3.1. Colors ──────────────────────────────────────
+    console.log('\n🎨 Seeding colors...');
+    const colorDefs = [
+      { name: 'Blue', hex: '#3b82f6' },
+      { name: 'Brown', hex: '#a6866a' },
+      { name: 'Green', hex: '#4ade80' },
+      { name: 'Grey', hex: '#6b7280' },
+      { name: 'White', hex: '#f3f4f6' },
+      { name: 'Black', hex: '#222' },
+    ];
+    const colorIds = {};
+    for (const c of colorDefs) {
+      const [existing] = await db.execute('SELECT ColorId FROM Color WHERE ColorName = ?', [c.name]);
+      if (existing.length > 0) {
+        colorIds[c.name] = existing[0].ColorId;
+      } else {
+        const [result] = await db.execute('INSERT INTO Color (ColorName, HexCode) VALUES (?, ?)', [c.name, c.hex]);
+        colorIds[c.name] = result.insertId;
+      }
+    }
+
+    // ── 3.2. Materials ──────────────────────────────────
+    console.log('\n🪵 Seeding materials...');
+    const materials = [
+      { name: 'Solid Wood', type: 'Natural' },
+      { name: 'Metal', type: 'Industrial' },
+      { name: 'Fabric', type: 'Soft' },
+      { name: 'Glass', type: 'Hard' },
+      { name: 'MDF', type: 'Engineered' },
+    ];
+    const materialIds = {};
+    for (const m of materials) {
+      const [existing] = await db.execute('SELECT MaterialId FROM Material WHERE MaterialName = ?', [m.name]);
+      if (existing.length > 0) {
+        materialIds[m.name] = existing[0].MaterialId;
+      } else {
+        const [result] = await db.execute('INSERT INTO Material (MaterialName, MaterialType) VALUES (?, ?)', [m.name, m.type]);
+        materialIds[m.name] = result.insertId;
+      }
+    }
+  console.log('\n🌱 Starting database seed...\n');
+
 
     // ── 1. Categories ──────────────────────────────────────
     console.log('📦 Seeding categories...');
