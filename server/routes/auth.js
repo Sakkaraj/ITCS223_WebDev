@@ -42,9 +42,28 @@ router.post('/member/register', async (req, res) => {
       [memberId, hashedPassword]
     );
 
+    // Log the login
+    await db.execute(
+      'INSERT INTO MemberLoginLog (MemberId) VALUES (?)',
+      [memberId]
+    );
+
+    const token = jwt.sign(
+      { id: memberId, role: 'member', email },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
     return res.status(201).json({
-      message: 'Account created successfully! You can now log in.',
-      memberId,
+      message: 'Account created successfully!',
+      token,
+      user: {
+        id: memberId,
+        firstName,
+        lastName,
+        email,
+        role: 'member',
+      },
     });
   } catch (err) {
     console.error('[member/register]', err);
@@ -88,9 +107,28 @@ router.post('/admin/register', async (req, res) => {
       [adminId, email, hashedPassword, 'admin']
     );
 
+    // Log the login
+    await db.execute(
+      'INSERT INTO AdminLoginLog (AdminId) VALUES (?)',
+      [adminId]
+    );
+
+    const token = jwt.sign(
+      { id: adminId, role: 'admin', email },
+      process.env.JWT_SECRET,
+      { expiresIn: '8h' }
+    );
+
     return res.status(201).json({
-      message: 'Admin account created successfully! You can now log in.',
-      adminId,
+      message: 'Admin account created successfully!',
+      token,
+      user: {
+        id: adminId,
+        firstName,
+        lastName,
+        email,
+        role: 'admin',
+      },
     });
   } catch (err) {
     console.error('[admin/register]', err);
@@ -170,13 +208,14 @@ router.post('/admin/login', async (req, res) => {
   }
 
   try {
+    // We allow login via either Email (AdminInformation) or AdminUserName (AdminLoginInformation)
     const [rows] = await db.execute(
       `SELECT ai.AdminId, ai.FirstName, ai.LastName, ai.Email,
               ali.AdminPassword, ali.Role
        FROM AdminInformation ai
        JOIN AdminLoginInformation ali ON ai.AdminId = ali.AdminId
-       WHERE ai.Email = ?`,
-      [email]
+       WHERE ai.Email = ? OR ali.AdminUserName = ?`,
+      [email, email] // Using 'email' variable for both placeholders as it holds the identifier
     );
 
     if (rows.length === 0) {

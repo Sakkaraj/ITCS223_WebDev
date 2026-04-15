@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const lastName  = document.getElementById('signup-lastname')?.value.trim();
           const phone     = document.getElementById('signup-phone')?.value.trim();
 
-          await BSC.apiFetch('/api/auth/member/register', {
+          const data = await BSC.apiFetch('/api/auth/member/register', {
             method: 'POST',
             body: JSON.stringify({
               firstName, lastName, phone,
@@ -100,9 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }),
           });
 
-          BSC.showToast('Account created! Please log in.', 'success');
-          toggleSignUpMode(false);
-          isSignUpMode = false;
+          BSC.saveSession(data.token, data.user);
+          BSC.showToast('Account created! Welcome.', 'success');
+          setTimeout(() => { window.location.href = 'home.html'; }, 1000);
 
         } else {
           const data = await BSC.apiFetch('/api/auth/member/login', {
@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.textContent = 'Creating account…';
 
       try {
-        await BSC.apiFetch('/api/auth/admin/register', {
+        const data = await BSC.apiFetch('/api/auth/admin/register', {
           method: 'POST',
           body: JSON.stringify({
             firstName: firstNameEl.value.trim(),
@@ -191,8 +191,9 @@ document.addEventListener('DOMContentLoaded', () => {
           }),
         });
 
-        BSC.showToast('Admin account created! Please log in.', 'success');
-        setTimeout(() => { window.location.href = 'admin-login.html'; }, 1500);
+        BSC.saveSession(data.token, data.user);
+        BSC.showToast('Admin account created! Welcome.', 'success');
+        setTimeout(() => { window.location.href = 'admin-panel.html'; }, 1000);
       } catch (err) {
         BSC.showToast(err.message, 'error');
       } finally {
