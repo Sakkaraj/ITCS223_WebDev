@@ -203,26 +203,29 @@ async function initHeaderSearch() {
 
   // ─── 2. Debounced API fetch for Live Search ──────────────
   let debounceTimeout;
-  searchInput.addEventListener('input', () => {
+
+  const performLiveSearch = async () => {
     const query = searchInput.value.trim();
-    clearTimeout(debounceTimeout);
     
     if (query.length < 2) {
       closeDropdown();
       return;
     }
 
-    debounceTimeout = setTimeout(async () => {
-      try {
-        const bscFetch = window.BSC ? window.BSC.apiFetch : fetch;
-        // Search API supports 'search' and 'limit'
-        const data = await bscFetch(`/api/products?search=${encodeURIComponent(query)}&limit=5`);
-        const products = data.products || (Array.isArray(data) ? data : []);
-        renderResults(products);
-      } catch (err) {
-        console.error('Live search failed:', err);
-      }
-    }, 300);
+    try {
+      const bscFetch = window.BSC ? window.BSC.apiFetch : fetch;
+      // Live search is now text-only (all products across site)
+      const data = await bscFetch(`/api/products?search=${encodeURIComponent(query)}&limit=5`);
+      const products = data.products || (Array.isArray(data) ? data : []);
+      renderResults(products);
+    } catch (err) {
+      console.error('Live search failed:', err);
+    }
+  };
+
+  searchInput.addEventListener('input', () => {
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(performLiveSearch, 300);
   });
 
   searchInput.addEventListener('blur', () => setTimeout(closeDropdown, 200));
@@ -257,6 +260,22 @@ async function initHeaderSearch() {
     advBtn.addEventListener('click', (e) => {
       e.preventDefault();
       window.location.href = '/pages/advance-search.html';
+    });
+  }
+
+  // ─── 4. Multi-Mode Search Trigger ────────────────────────
+  if (selectNode) {
+    selectNode.addEventListener('change', () => {
+      const cat = selectNode.value;
+      const query = searchInput.value.trim();
+      
+      // Mode 1: Category Only (Instant Redirect)
+      // If user picks a category and hasn't started typing, browse that category immediately
+      if (!query && cat !== 'All Categories') {
+        const params = new URLSearchParams({ category: cat });
+        window.location.href = `/pages/shop.html?${params.toString()}`;
+      }
+      // Mode 2 & 3 (Text or Hybrid): Do nothing, wait for Enter or Click
     });
   }
 
