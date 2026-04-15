@@ -19,6 +19,7 @@ Thumbs.db
 *.swo
 
 # Temporary files
+scratch/
 nul
 *.bak
 *.tmp
