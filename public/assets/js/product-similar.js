@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     products = products.slice(0, 3);
     similarGrid.innerHTML = products.map(renderSimilarCard).join('');
+    if (typeof lucide !== 'undefined') lucide.createIcons();
   } catch (err) {
     similarGrid.innerHTML = `<div style="color:#e44;padding:32px;">Failed to load similar products</div>`;
   }

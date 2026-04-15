@@ -96,6 +96,13 @@ input {
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.admin-panel-hero__add-button:hover {
+  background: #c1b2a3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(166, 134, 106, 0.3);
 }
 
 .admin-panel-hero__add-icon {
@@ -147,7 +154,7 @@ input {
   height: 0.25rem;
   width: 100%;
   background: #e5e7eb;
-  border-radius: 999px;
+  border-radius: 0;
 }
 
 .admin-panel-price-slider__range {
@@ -157,7 +164,7 @@ input {
   right: 2rem;
   height: 0.25rem;
   background: var(--brand-brown);
-  border-radius: 999px;
+  border-radius: 0;
 }
 
 .admin-panel-price-slider__thumb {
@@ -167,7 +174,7 @@ input {
   height: 1rem;
   background: #ffffff;
   border: 2px solid var(--brand-brown);
-  border-radius: 999px;
+  border-radius: 0;
   box-shadow: 0 1px 3px rgba(0,0,0,0.08);
   cursor: pointer;
 }
@@ -227,13 +234,13 @@ input {
   background: #f3f4f6;
   color: var(--text-light);
   padding: 0.15rem 0.5rem;
-  border-radius: 999px;
+  border-radius: 0;
 }
 
 .admin-panel-color-list__swatch {
   width: 0.75rem;
   height: 0.75rem;
-  border-radius: 999px;
+  border-radius: 0;
 }
 
 .admin-panel-color-list__swatch--black {
@@ -266,7 +273,7 @@ input {
   width: 3.5rem;
   height: 3.5rem;
   background: var(--bg-light);
-  border-radius: 2px;
+  border-radius: 0;
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -317,14 +324,14 @@ input {
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  border-radius: 2px;
+  border-radius: 0;
   cursor: pointer;
 }
 
 .admin-panel-table-wrapper {
   overflow-x: auto;
   border: 1px solid var(--border-soft);
-  border-radius: 2px;
+  border-radius: 0;
   box-shadow: 0 1px 2px rgba(0,0,0,0.04);
   background: #ffffff;
 }
@@ -363,8 +370,13 @@ input {
   color: #374151;
 }
 
+.admin-panel-table__row {
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
 .admin-panel-table__row:hover {
-  background: #f9fafb;
+  background: #f9fafb !important;
+  color: #000;
 }
 
 .admin-panel-table__row td {
@@ -382,7 +394,7 @@ input {
   width: 3rem;
   height: 3rem;
   object-fit: cover;
-  border-radius: 2px;
+  border-radius: 0;
 }
 
 .admin-panel-table__product-name {
@@ -430,16 +442,19 @@ input {
   border: none;
   background: transparent;
   padding: 0.25rem;
-  border-radius: 4px;
+  border-radius: 0;
   cursor: pointer;
+  transition: all var(--transition-fast);
 }
 
 .admin-panel-table__action-button--edit:hover {
   background: #eff6ff;
+  transform: scale(1.15);
 }
 
 .admin-panel-table__action-button--delete:hover {
   background: #fef2f2;
+  transform: scale(1.15);
 }
 
 .admin-panel-table__action-icon {
@@ -484,7 +499,7 @@ input {
   width: 100%;
   padding: 2rem;
   text-align: center;
-  border-radius: 4px;
+  border-radius: 0;
   box-shadow: 0 20px 40px rgba(0,0,0,0.16);
 }
 
@@ -493,7 +508,7 @@ input {
   height: 3rem;
   background: #fee2e2;
   color: var(--red);
-  border-radius: 999px;
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -524,6 +539,15 @@ input {
 .admin-panel-modal__actions {
   display: flex;
   gap: 1rem;
+}
+
+.admin-panel-content__add-button {
+  transition: all var(--transition-base);
+}
+
+.admin-panel-content__add-button:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .admin-panel-modal__button {

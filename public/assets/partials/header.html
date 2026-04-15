@@ -52,13 +52,22 @@
       <a href="../pages/sign-in.html" class="site-header__action-link" title="Sign In / Account" style="display:flex;align-items:center;color:inherit;">
         <i data-lucide="user" class="site-header__action-icon"></i>
       </a>
-      <i data-lucide="heart" class="site-header__action-icon"></i>
+      <a href="../pages/wishlist.html" class="site-header__action-link" title="Wishlist" style="display:flex;align-items:center;color:inherit;">
+        <div class="site-header__wishlist">
+          <i data-lucide="heart" class="site-header__action-icon"></i>
+          <span id="wishlistBadge" class="site-header__cart-badge wishlist-count-badge is-hidden">0</span>
+        </div>
+      </a>
 
       <a href="../pages/cart.html" class="site-header__action-link" title="Cart" style="display:flex;align-items:center;color:inherit;">
         <div class="site-header__cart">
           <i data-lucide="shopping-bag" class="site-header__action-icon"></i>
-          <span id="cartBadge" class="site-header__cart-badge is-hidden">0</span>
+          <span id="cartBadge" class="site-header__cart-badge cart-count-badge is-hidden">0</span>
         </div>
+      </a>
+
+      <a href="../pages/admin-login.html" class="site-header__action-link js-admin-access" title="Admin Access" style="display:flex;align-items:center;color:inherit;margin-left:12px;">
+        <i data-lucide="shield" class="site-header__action-icon"></i>
       </a>
     </div>
   </div>

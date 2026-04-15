@@ -94,7 +94,7 @@ select {
 /* Search panel */
 .advanced-search-panel {
   background: var(--bg-panel);
-  border-radius: 2px;
+  border-radius: 0;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -251,7 +251,7 @@ select {
   height: 1rem;
   border: 2px solid var(--brand-brown);
   border-top-color: transparent;
-  border-radius: 999px;
+  border-radius: 0;
   animation: advanced-search-spin 0.8s linear infinite;
 }
 
@@ -301,7 +301,7 @@ select {
 .advanced-search-result-card__swatches span {
   width: 0.5rem;
   height: 0.5rem;
-  border-radius: 999px;
+  border-radius: 0;
 }
 
 .advanced-search-result-card__swatches span:nth-child(1) {

@@ -37,16 +37,21 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       tableBody.innerHTML = items.map(item => {
-        const imgSrc = item.ImageUrl ||
-          'assets/images/chair.avif';
+        const imgSrc = item.ImageUrl || 'assets/images/chair.avif';
+        // Correct path for images in subpages is often tricky, but cart.html is in /pages/
+        // and images are in /assets/images/. So ../assets/images/... is correct.
+        const productLink = `product.html?id=${item.ProductId}`;
+        
         return `
           <tr class="cart-table__row" data-product-id="${item.ProductId}">
             <td class="cart-table__product-cell">
-              <img src="${imgSrc}" alt="${item.ProductName}" class="cart-table__product-image"
-                   onerror="this.src='assets/images/chair.avif'" />
+              <a href="${productLink}">
+                <img src="${imgSrc}" alt="${item.ProductName}" class="cart-table__product-image"
+                     onerror="this.src='../assets/images/chair.avif'" style="cursor:pointer;" />
+              </a>
               <div class="cart-table__product-info">
-                ${item.ProductName}
-                <div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
+                <a href="${productLink}" style="color:inherit; text-decoration:none; font-weight:600;">${item.ProductName}</a>
+                <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
                   <button class="js-qty-btn" data-action="dec" data-id="${item.ProductId}"
                     style="width:24px;height:24px;border:1px solid #ddd;background:#f9f9f9;border-radius:4px;cursor:pointer;font-size:14px;">−</button>
                   <span class="cart-table__quantity js-qty-display">${item.quantity}</span>
@@ -57,15 +62,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             </td>
             <td class="cart-table__category">${item.Category}</td>
             <td class="cart-table__price">$${parseFloat(item.Price).toFixed(2)}</td>
-            <td class="cart-table__spec">
-              <span><b>Width:</b> ${item.WidthDimension || '—'} cm</span>
-              <span><b>Height:</b> ${item.HeightDimension || '—'} cm</span>
+            <td class="cart-table__cmf">
+              <div style="font-size:12px;">
+                <div style="margin-bottom:4px;"><b>Mat:</b> ${item.MaterialName || '—'}</div>
+                <div><b>Color:</b> ${item.colorName || '—'}</div>
+              </div>
             </td>
-            <td class="cart-table__spec">
-              <span><b>Length:</b> ${item.LengthDimension || '—'} cm</span>
-              <span><b>Weight:</b> ${item.Weight || '—'} kg</span>
+            <td class="cart-table__dimension">
+              <div style="font-size:12px;">
+                <div style="margin-bottom:4px;">${item.LengthDimension || 0}x${item.WidthDimension || 0}x${item.HeightDimension || 0} cm</div>
+                <div style="color:#666;">${item.Weight || 0} kg</div>
+              </div>
             </td>
-            <td class="cart-table__description">
+            <td class="cart-table__description" style="font-size:12px; color:#666; max-width:200px;">
               ${item.ProductDescription || '—'}
             </td>
             <td class="cart-table__actions">

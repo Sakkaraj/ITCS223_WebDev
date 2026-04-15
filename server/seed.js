@@ -35,6 +35,26 @@ async function seed() {
           colorIds[c.name] = result.insertId;
         }
       }
+
+      // ── 3.2. Materials ──────────────────────────────────
+      console.log('\n🪵 Seeding materials...');
+      const materials = [
+        { name: 'Solid Wood', type: 'Natural' },
+        { name: 'Metal', type: 'Industrial' },
+        { name: 'Fabric', type: 'Soft' },
+        { name: 'Glass', type: 'Hard' },
+        { name: 'MDF', type: 'Engineered' },
+      ];
+      const materialIds = {};
+      for (const m of materials) {
+        const [existing] = await db.execute('SELECT MaterialId FROM Material WHERE MaterialName = ?', [m.name]);
+        if (existing.length > 0) {
+          materialIds[m.name] = existing[0].MaterialId;
+        } else {
+          const [result] = await db.execute('INSERT INTO Material (MaterialName, MaterialType) VALUES (?, ?)', [m.name, m.type]);
+          materialIds[m.name] = result.insertId;
+        }
+      }
   console.log('\n🌱 Starting database seed...\n');
 
   try {
@@ -109,6 +129,7 @@ async function seed() {
         detail: 'Made from solid oak wood with a smooth finish. Assembly required.',
         width: 55, height: 90, length: 55, weight: 8,
         featured: true,
+        materialId: materialIds['Solid Wood'],
         image: 'assets/images/chair.avif',
       },
       {
@@ -127,7 +148,7 @@ async function seed() {
         categoryId: categoryIds['Sofas'],
         price: 799.00,
         qty: 8,
-        desc: 'A plush, deep-seated sofa perfect for modern living rooms.',
+        desc: 'A plush, deep-seated sofa perfect for modern interiors.',
         detail: 'High-density foam cushions. Removable covers. 3-seater.',
         width: 220, height: 85, length: 95, weight: 65,
         featured: true,
@@ -204,7 +225,7 @@ async function seed() {
         categoryId: categoryIds['Cabinets'],
         price: 199.00,
         qty: 18,
-        desc: '5-Tier open bookshelf for your living room or study.',
+        desc: '5-Tier open bookshelf for your study or office.',
         detail: 'Engineered wood. Adjustable shelves. Easy self-assembly.',
         width: 80, height: 180, length: 30, weight: 25,
         featured: false,
@@ -244,10 +265,10 @@ async function seed() {
       const [result] = await db.execute(
         `INSERT INTO Product
            (CategoryId, ProductName, Price, QuantityLeft, ProductDescription, ProductDetail,
-            WidthDimension, HeightDimension, LengthDimension, Weight, Featured)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            WidthDimension, HeightDimension, LengthDimension, Weight, Featured, MaterialId)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [p.categoryId, p.name, p.price, p.qty, p.desc, p.detail,
-         p.width, p.height, p.length, p.weight, p.featured ? 1 : 0]
+         p.width, p.height, p.length, p.weight, p.featured ? 1 : 0, p.materialId || null]
       );
 
       await db.execute('INSERT INTO Image (ProductId, ImageUrl) VALUES (?, ?)', [result.insertId, p.image]);

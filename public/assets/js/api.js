@@ -4,7 +4,7 @@
  * and base URL are handled automatically in one place.
  */
 
-const API_BASE = '';  // Empty = same origin (localhost:3000)
+const API_BASE = '';  // Empty = same origin (server origin)
 
 /**
  * Core fetch wrapper. Automatically attaches:
@@ -21,18 +21,31 @@ async function apiFetch(endpoint, options = {}) {
     ...(options.headers || {}),
   };
 
+  console.log(`API Call: ${API_BASE}${endpoint}`, { headers, options });
+
   const response = await fetch(`${API_BASE}${endpoint}`, {
     credentials: 'include',
     ...options,
     headers,
   });
 
-  const data = await response.json().catch(() => ({}));
+  // Try to parse JSON
+  let data;
+  let responseText = '';
+  try {
+    responseText = await response.text();
+    data = JSON.parse(responseText);
+  } catch (parseErr) {
+    console.error('JSON Parse Error:', parseErr);
+    console.error('Response text:', responseText.substring(0, 500));
+    data = { error: 'Invalid JSON response' };
+  }
 
   if (!response.ok) {
     const error = new Error(data.error || `Request failed: ${response.status}`);
     error.status = response.status;
     error.data = data;
+    error.responseText = responseText;
     throw error;
   }
 
@@ -73,14 +86,23 @@ function isAdmin() {
 async function refreshCartCount() {
   try {
     const data = await apiFetch('/api/cart');
-    const count = data.items ? data.items.length : 0;
+    // Sum up the quantities of all items
+    const count = data.items ? data.items.reduce((sum, item) => sum + (parseInt(item.quantity) || 0), 0) : 0;
+    
     const badges = document.querySelectorAll('.cart-count-badge');
     badges.forEach(el => {
       el.textContent = count;
-      el.style.display = count > 0 ? 'flex' : 'none';
+      // Show if > 0, hide if 0
+      if (count > 0) {
+        el.style.display = 'flex';
+        el.classList.remove('is-hidden');
+      } else {
+        el.style.display = 'none';
+        el.classList.add('is-hidden');
+      }
     });
-  } catch {
-    // Silently fail — cart badge is not critical
+  } catch (err) {
+    console.warn('Failed to refresh cart count:', err);
   }
 }
 
@@ -105,7 +127,7 @@ function showToast(message, type = 'success') {
       .bsc-toast {
         position: fixed; bottom: 24px; right: 24px; z-index: 9999;
         display: flex; align-items: center; gap: 10px;
-        padding: 14px 20px; border-radius: 10px;
+        padding: 14px 20px; border-radius: 0;
         font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500;
         color: #fff; box-shadow: 0 8px 32px rgba(0,0,0,0.18);
         animation: bscSlideIn 0.3s ease, bscFadeOut 0.4s ease 2.6s forwards;

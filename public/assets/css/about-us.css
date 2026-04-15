@@ -111,7 +111,7 @@ a {
   width: 100%;
   aspect-ratio: 21 / 9;
   overflow: hidden;
-  border-radius: 2px;
+  border-radius: 0;
 }
 
 .about-lifestyle__image {
@@ -379,7 +379,7 @@ a {
 .about-video-banner__wrap {
   position: relative;
   overflow: hidden;
-  border-radius: 2px;
+  border-radius: 0;
   cursor: pointer;
 }
 
@@ -412,7 +412,7 @@ a {
   width: 4rem;
   height: 4rem;
   background: #ffffff;
-  border-radius: 999px;
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -445,7 +445,7 @@ a {
 
 .about-collection-card__image-wrap {
   overflow: hidden;
-  border-radius: 2px;
+  border-radius: 0;
 }
 
 .about-collection-card__image {

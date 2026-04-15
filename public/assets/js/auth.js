@@ -129,11 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // ─── ADMIN LOGIN FORM (admin-login.html) ─────────────────
   const adminForm = document.querySelector('.admin-login-form');
   if (adminForm) {
-    if (BSC.isLoggedIn() && BSC.isAdmin()) {
-      window.location.href = 'admin-panel.html';
-      return;
-    }
-
     adminForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = adminForm.querySelector('.admin-login-form__button');
@@ -160,6 +155,54 @@ document.addEventListener('DOMContentLoaded', () => {
       } finally {
         btn.disabled = false;
         btn.textContent = 'Log In';
+      }
+    });
+  }
+
+  // ─── ADMIN SIGNUP FORM (admin-signup.html) ──────────────
+  const adminSignupForm = document.querySelector('.admin-signup-form');
+  if (adminSignupForm) {
+    if (BSC.isLoggedIn() && BSC.isAdmin()) {
+      window.location.href = 'admin-panel.html';
+      return;
+    }
+
+    adminSignupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = adminSignupForm.querySelector('.admin-login-form__button');
+      
+      const firstNameEl = document.getElementById('signup-firstname');
+      const lastNameEl = document.getElementById('signup-lastname');
+      const emailEl = document.getElementById('signup-email');
+      const passwordEl = document.getElementById('signup-password');
+      const addressEl = document.getElementById('signup-address');
+      const ageEl = document.getElementById('signup-age');
+      const phoneEl = document.getElementById('signup-phone');
+
+      btn.disabled = true;
+      btn.textContent = 'Creating account…';
+
+      try {
+        await BSC.apiFetch('/api/auth/admin/register', {
+          method: 'POST',
+          body: JSON.stringify({
+            firstName: firstNameEl.value.trim(),
+            lastName: lastNameEl.value.trim(),
+            email: emailEl.value.trim(),
+            password: passwordEl.value,
+            address: addressEl.value.trim(),
+            age: ageEl.value,
+            phone: phoneEl.value.trim(),
+          }),
+        });
+
+        BSC.showToast('Admin account created! Please log in.', 'success');
+        setTimeout(() => { window.location.href = 'admin-login.html'; }, 1500);
+      } catch (err) {
+        BSC.showToast(err.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Create Account';
       }
     });
   }

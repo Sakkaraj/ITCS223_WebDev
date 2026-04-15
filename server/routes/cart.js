@@ -26,23 +26,42 @@ router.get('/', async (req, res) => {
     const [products] = await db.execute(
       `SELECT p.ProductId, p.ProductName, p.Price, p.ProductDescription,
               p.WidthDimension, p.HeightDimension, p.LengthDimension, p.Weight,
-              c.Category,
+              c.Category, m.MaterialName,
               (SELECT ImageUrl FROM Image WHERE ProductId = p.ProductId LIMIT 1) AS ImageUrl
        FROM Product p
        JOIN Category c ON p.CategoryId = c.CategoryId
+       LEFT JOIN Material m ON p.MaterialId = m.MaterialId
        WHERE p.ProductId IN (${placeholders})`,
       productIds
     );
 
-    // Merge DB data with cart quantities
+    // Merge DB data with cart quantities and color info
     const productMap = {};
     products.forEach(p => { productMap[p.ProductId] = p; });
 
-    const items = cart
+    const items = await Promise.all(cart
       .filter(item => productMap[item.productId]) // skip deleted products
-      .map(item => ({
-        ...productMap[item.productId],
-        quantity: item.quantity,
+      .map(async item => {
+        const productData = { ...productMap[item.productId] };
+        
+        // If no color selected in session, try to find the first one from DB
+        if (!item.colorName || item.colorName === '—') {
+          const [colors] = await db.execute(
+            `SELECT col.ColorName FROM Color col
+             JOIN ProductColor pc ON col.ColorId = pc.ColorId
+             WHERE pc.ProductId = ? LIMIT 1`,
+            [item.productId]
+          );
+          productData.colorName = colors.length > 0 ? colors[0].ColorName : 'Standard';
+        } else {
+          productData.colorName = item.colorName;
+        }
+
+        return {
+          ...productData,
+          quantity: item.quantity,
+          colorId: item.colorId || null,
+        };
       }));
 
     const total = items.reduce((sum, item) => sum + item.Price * item.quantity, 0);
@@ -59,7 +78,7 @@ router.get('/', async (req, res) => {
 // ─────────────────────────────────────────────
 // POST /api/cart
 router.post('/', async (req, res) => {
-  const { productId, quantity = 1 } = req.body;
+  const { productId, quantity = 1, colorId, colorName } = req.body;
 
   if (!productId) {
     return res.status(400).json({ error: 'productId is required.' });
@@ -76,12 +95,22 @@ router.post('/', async (req, res) => {
     }
 
     const cart = getCart(req);
-    const existingIndex = cart.findIndex(item => item.productId === parseInt(productId));
+    // Check if product with same color already exists in cart
+    const existingIndex = cart.findIndex(item => 
+      item.productId === parseInt(productId) && 
+      (item.colorId === colorId || (!item.colorId && !colorId))
+    );
 
     if (existingIndex >= 0) {
       cart[existingIndex].quantity += parseInt(quantity);
     } else {
-      cart.push({ productId: parseInt(productId), quantity: parseInt(quantity), addedAt: new Date() });
+      cart.push({
+        productId: parseInt(productId),
+        quantity: parseInt(quantity),
+        colorId: colorId || null,
+        colorName: colorName || null,
+        addedAt: new Date()
+      });
     }
 
     req.session.cart = cart;

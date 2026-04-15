@@ -59,80 +59,95 @@
               </div>
 
               <div class="add-product-form__group">
-                <label class="add-product-form__label">Category</label>
-                <select class="add-product-form__select">
-                  <option>All Categories</option>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <label class="add-product-form__label" style="margin-bottom: 0;">Category</label>
+                  <button type="button" class="add-meta-btn" data-type="category" style="background:none; border:none; color:#7c3aed; cursor:pointer; display:flex; align-items:center; gap:4px; font-size:12px; font-weight:600;">
+                    <i data-lucide="plus-circle" style="width:14px; height:14px;"></i> Add
+                  </button>
+                </div>
+                <select class="add-product-form__category-select">
+                  <option value="">— Select Category —</option>
                 </select>
               </div>
             </div>
 
-            <div class="add-product-form__spec-layout">
-              <div class="add-product-form__spec-fields">
-                <div class="add-product-form__group">
-                  <label class="add-product-form__label">Material</label>
-                  <input
-                    type="text"
-                    placeholder="Wool"
-                    class="add-product-form__input"
-                  />
-                </div>
-
-                <div class="add-product-form__group">
-                  <label class="add-product-form__label">Color</label>
-                  <select class="add-product-form__select">
-                    <option>Color</option>
-                  </select>
-                </div>
+            <div class="add-product-form__two-column">
+              <div class="add-product-form__group">
+                <label class="add-product-form__label">Quantity Left</label>
+                <input
+                  type="number"
+                  placeholder="100"
+                  class="add-product-form__input add-product-form__quantity"
+                  min="0"
+                  value="0"
+                />
               </div>
 
-              <div class="add-product-dimension-card">
-                <label class="add-product-dimension-card__title">Dimension</label>
-
-                <div class="add-product-dimension-card__row">
-                  <span class="add-product-dimension-card__name">Length</span>
-                  <input
-                    type="text"
-                    placeholder="50 cm"
-                    class="add-product-dimension-card__input"
-                  />
+              <div class="add-product-form__group">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <label class="add-product-form__label" style="margin-bottom: 0;">Material</label>
+                  <button type="button" class="add-meta-btn" data-type="material" style="background:none; border:none; color:#7c3aed; cursor:pointer; display:flex; align-items:center; gap:4px; font-size:12px; font-weight:600;">
+                    <i data-lucide="plus-circle" style="width:14px; height:14px;"></i> Add
+                  </button>
                 </div>
+                <select class="add-product-form__select add-product-form__material-select">
+                  <option value="">— Select Material —</option>
+                </select>
+              </div>
+            </div>
 
-                <div class="add-product-dimension-card__row">
-                  <span class="add-product-dimension-card__name">Width</span>
-                  <input
-                    type="text"
-                    placeholder="50 cm"
-                    class="add-product-dimension-card__input"
-                  />
+            <div class="add-product-form__group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <label class="add-product-form__label" style="margin-bottom: 0;">Colors</label>
+                <button type="button" class="add-meta-btn" data-type="color" style="background:none; border:none; color:#7c3aed; cursor:pointer; display:flex; align-items:center; gap:4px; font-size:12px; font-weight:600;">
+                  <i data-lucide="plus-circle" style="width:14px; height:14px;"></i> Add New Color
+                </button>
+              </div>
+              <div class="add-product-form__color-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; max-height: 300px; overflow-y: auto; overflow-x: hidden; border: 1px solid #ddd; padding: 12px; border-radius: 4px; background-color: #fafafa; min-height: 80px;">
+                <p style="grid-column: 1/-1; color: #999; text-align: center; padding: 20px 0; margin: 0;">Loading colors...</p>
+              </div>
+            </div>
+
+            <div style="border: 1px solid #ddd; padding: 20px; border-radius: 4px; background-color: #fafafa; margin: 20px 0;">
+              <label style="font-weight: 600; font-size: 14px; color: #333; margin-bottom: 15px; display: block;">Dimensions</label>
+              
+              <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                <div>
+                  <label style="font-size: 12px; color: #666; margin-bottom: 5px; display: block;">Length (cm)</label>
+                  <input type="number" placeholder="50" class="add-product-dimension-card__input" step="0.01" />
                 </div>
-
-                <div class="add-product-dimension-card__row">
-                  <span class="add-product-dimension-card__name">Height</span>
-                  <input
-                    type="text"
-                    placeholder="50 cm"
-                    class="add-product-dimension-card__input"
-                  />
+                <div>
+                  <label style="font-size: 12px; color: #666; margin-bottom: 5px; display: block;">Width (cm)</label>
+                  <input type="number" placeholder="50" class="add-product-dimension-card__input" step="0.01" />
                 </div>
-
-                <div class="add-product-dimension-card__row">
-                  <span class="add-product-dimension-card__name">Weight</span>
-                  <input
-                    type="text"
-                    placeholder="80 kg"
-                    class="add-product-dimension-card__input"
-                  />
+                <div>
+                  <label style="font-size: 12px; color: #666; margin-bottom: 5px; display: block;">Height (cm)</label>
+                  <input type="number" placeholder="50" class="add-product-dimension-card__input" step="0.01" />
+                </div>
+                <div>
+                  <label style="font-size: 12px; color: #666; margin-bottom: 5px; display: block;">Weight (kg)</label>
+                  <input type="number" placeholder="80" class="add-product-dimension-card__input" step="0.01" />
                 </div>
               </div>
             </div>
 
             <div class="add-product-form__group">
-              <label class="add-product-form__label">Image URL</label>
-              <input
-                type="text"
-                placeholder="https://example.com/image.jpg"
-                class="add-product-form__input add-product-form__image-url"
-              />
+              <label class="add-product-form__label">Product Images</label>
+              <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                <input
+                  type="text"
+                  id="image-url-input"
+                  placeholder="https://example.com/image.jpg"
+                  class="add-product-form__input"
+                  style="flex: 1;"
+                />
+                <button type="button" id="add-image-btn" class="add-product-form__action-button add-product-form__action-button--primary" style="padding: 10px 15px; white-space: nowrap;">
+                  Add Image
+                </button>
+              </div>
+              <div id="images-list" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
+                <!-- Images added here -->
+              </div>
             </div>
 
             <div class="add-product-form__group">
@@ -153,14 +168,14 @@
             </div>
 
             <div class="add-product-form__action-grid">
-              <button type="button" class="add-product-form__action-button add-product-form__action-button--primary">
+              <button type="button" id="btn-add-product" class="add-product-form__action-button add-product-form__action-button--primary">
                 Add Product
               </button>
-              <button type="button" class="add-product-form__action-button add-product-form__action-button--secondary">
+              <button type="button" id="btn-save-draft" class="add-product-form__action-button add-product-form__action-button--secondary">
                 Save Draft
               </button>
-              <button type="button" class="add-product-form__action-button add-product-form__action-button--primary">
-                Update
+              <button type="button" id="btn-update-product" class="add-product-form__action-button add-product-form__action-button--update" style="display:none;">
+                Update Product
               </button>
             </div>
           </form>
@@ -173,7 +188,7 @@
           <div class="add-product-preview__grid">
             <div class="add-product-preview__hero-image-wrap">
               <img
-                src="../assets/images/best-seller/img5.avif"
+                src="https://placehold.co/600x400/eae3db/999?text=Main+Image"
                 alt="Preview Hero"
                 class="add-product-preview__image"
               />
@@ -181,7 +196,7 @@
 
             <div class="add-product-preview__square-image-wrap">
               <img
-                src="../assets/images/best-seller/img.avif"
+                src="https://placehold.co/400x400/eae3db/999?text=Image+1"
                 alt="Preview 1"
                 class="add-product-preview__image"
               />
@@ -189,7 +204,7 @@
 
             <div class="add-product-preview__square-image-wrap">
               <img
-                src="../assets/images/best-seller/img1.avif"
+                src="https://placehold.co/400x400/eae3db/999?text=Image+2"
                 alt="Preview 2"
                 class="add-product-preview__image"
               />
@@ -197,7 +212,7 @@
 
             <div class="add-product-preview__portrait-image-wrap">
               <img
-                src="../assets/images/best-seller/img3.avif"
+                src="https://placehold.co/400x600/eae3db/999?text=Image+3"
                 alt="Preview 3"
                 class="add-product-preview__image"
               />
@@ -206,7 +221,7 @@
             <div class="add-product-preview__stack">
               <div class="add-product-preview__stack-top">
                 <img
-                  src="../assets/images/best-seller/img4.avif"
+                  src="https://placehold.co/400x200/eae3db/999?text=Image+4"
                   alt="Preview 4"
                   class="add-product-preview__image"
                 />
@@ -214,7 +229,7 @@
 
               <div class="add-product-preview__stack-bottom">
                 <img
-                  src="../assets/images/best-seller/img5.avif"
+                  src="https://placehold.co/400x200/eae3db/999?text=Image+5"
                   alt="Preview 5"
                   class="add-product-preview__image"
                 />
@@ -227,6 +242,23 @@
   </main>
 
   <div id="footer-placeholder"></div>
+
+  <!-- Meta Management Modal -->
+  <div id="metaModal" class="admin-panel-modal is-hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; align-items: center; justify-content: center;">
+    <div class="admin-panel-modal__backdrop" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);"></div>
+    <div class="admin-panel-modal__content" style="position: relative; background: white; width: 100%; max-width: 400px; padding: 30px; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
+      <h2 id="metaModalTitle" class="admin-panel-modal__title" style="margin-bottom: 20px; font-size: 20px;">Add New</h2>
+      
+      <div id="metaModalInputs">
+        <!-- Dynamic inputs here -->
+      </div>
+
+      <div class="admin-panel-modal__actions" style="display: flex; gap: 12px; margin-top: 25px;">
+        <button type="button" id="metaModalSubmit" class="add-product-form__action-button add-product-form__action-button--primary" style="flex: 1;">Create</button>
+        <button type="button" id="metaModalCancel" class="add-product-form__action-button add-product-form__action-button--secondary" style="flex: 1;">Cancel</button>
+      </div>
+    </div>
+  </div>
 
   <script src="../assets/js/layout.js"></script>
   <script src="../assets/js/api.js"></script>

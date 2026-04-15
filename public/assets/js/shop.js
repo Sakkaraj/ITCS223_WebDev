@@ -95,12 +95,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // ─── Render a single product card ─────────────────────────
   function renderProductCard(p) {
-    const imgSrc = p.ImageUrl ||
-      `assets/images/table.avif`;
+    let imgSrc = p.ImageUrl || 'assets/images/table.avif';
+    if (imgSrc.startsWith('assets/')) {
+      imgSrc = '../' + imgSrc;
+    }
 
-    // Render color swatches if product has colors
+    // Render color swatches if product has colors and multiple images
     let colorSwatches = '';
-    if (Array.isArray(p.colors) && p.colors.length > 0) {
+    if (Array.isArray(p.colors) && p.colors.length > 0 && p.ImageCount > 1) {
       const swatchesHTML = p.colors.slice(0, 5).map((c, idx) => {
         const isActive = idx === 0 ? ' product-color-swatch--active' : '';
         return `<button class="product-color-swatch${isActive}" style="background-color: ${c.HexCode};" title="${c.ColorName}" data-color-index="${idx}" data-color-name="${c.ColorName}"></button>`;
@@ -108,12 +110,17 @@ document.addEventListener('DOMContentLoaded', async () => {
       colorSwatches = `<div class="product-color-swatches-container">${swatchesHTML}</div>`;
     }
 
+    const isFav = window.BSC_Wishlist && window.BSC_Wishlist.has(p.ProductId) ? ' is-active' : '';
+
     return `
-      <article class="shop-product-card" data-id="${p.ProductId}" data-product-name="${p.ProductName}">
+      <article class="shop-product-card" data-id="${p.ProductId}" data-product-name="${p.ProductName}" data-images='${JSON.stringify(p.images || [])}'>
         <div class="shop-product-card__image-wrap">
           ${p.Featured ? '<span class="shop-product-card__badge">Featured</span>' : ''}
+          <button class="shop-product-card__fav-btn${isFav}" data-id="${p.ProductId}" title="Add to Wishlist">
+            <i data-lucide="heart" class="shop-product-card__heart-icon"></i>
+          </button>
           <img src="${imgSrc}" alt="${p.ProductName}" class="shop-product-card__image product-card-image"
-               onerror="this.src='assets/images/chair.avif'" />
+               onerror="this.src='../assets/images/chair.avif'" />
           <div class="shop-product-card__action-wrap">
             <button class="shop-product-card__action js-add-to-cart" data-id="${p.ProductId}">
               Add to Cart
@@ -142,7 +149,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       const params = new URLSearchParams({
         page: currentPage,
-        limit: 12,
+        limit: 9,
         sort: currentSort,
         ...(selectedCategories.length === 1 ? { category: selectedCategories[0] } : {}),
         maxPrice: maxPriceFilter,
@@ -170,6 +177,31 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       productGrid.innerHTML = products.map(renderProductCard).join('');
+
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+
+      // Bind Wishlist buttons
+      productGrid.querySelectorAll('.shop-product-card__fav-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const card = btn.closest('.shop-product-card');
+          const id = btn.dataset.id;
+          
+          // Get product data for wishlist
+          const product = {
+            ProductId: id,
+            ProductName: card.dataset.productName,
+            Price: card.querySelector('.shop-product-card__price').textContent.replace('$', ''),
+            ImageUrl: card.querySelector('.shop-product-card__image').src,
+            Category: card.querySelector('.shop-product-card__category').textContent
+          };
+
+          const added = window.BSC_Wishlist.toggle(product);
+          btn.classList.toggle('is-active', added);
+          
+          BSC.showToast(added ? 'Added to wishlist' : 'Removed from wishlist', added ? 'success' : 'info');
+        });
+      });
 
       // Bind Add to Cart buttons
       productGrid.querySelectorAll('.js-add-to-cart').forEach(btn => {
@@ -218,33 +250,64 @@ document.addEventListener('DOMContentLoaded', async () => {
             const productName = card.dataset.productName?.toLowerCase() || '';
             const colorName = swatch.dataset.colorName?.toLowerCase() || '';
             
-            // Map color names to image file extensions
             const colorMap = {
               'green': '-green',
               'gray': '-grey',
               'grey': '-grey',
               'blue': '-blue',
               'brown': '-brown',
-              'pink': '-pink',
-              'red': '-red',
             };
             
-            const colorSuffix = colorMap[colorName] || '';
+            let colorSuffix = colorMap[colorName] || '';
+            const images = JSON.parse(card.dataset.images || '[]');
+            let newImageSrc = '';
             
-            // Try to load new-product image with color variant
-            const newImageSrc = `assets/images/new-product/${productName}${colorSuffix}.jpeg`;
-            const testImg = new Image();
-            testImg.onload = () => {
-              card_img.src = newImageSrc;
+            // Helper to resolve image path correctly
+            const resolvePath = (path) => {
+              if (!path) return '../assets/images/chair.avif';
+              if (path.startsWith('http')) return path;
+              if (path.startsWith('assets/')) return '../' + path;
+              return path;
             };
-            testImg.onerror = () => {
-              // If color variant doesn't exist, cycle through thumbnails
-              const thumbnails = card.querySelectorAll('.product-gallery__thumbnail');
-              if (thumbnails.length > colorIndex) {
-                card_img.src = thumbnails[colorIndex]?.src || card_img.src;
+
+            // Try to use actual images from the database first
+            if (images.length > colorIndex) {
+              const imgObj = images[colorIndex];
+              newImageSrc = resolvePath(typeof imgObj === 'string' ? imgObj : imgObj.ImageUrl);
+            } else {
+              // Legacy fallback logic for demo categories if no DB images found
+              if (productName.includes('chair')) {
+                if (colorName === 'grey' || colorName === 'gray') {
+                  newImageSrc = '../assets/images/new-product/chair1.avif';
+                } else {
+                  newImageSrc = `../assets/images/new-product/chair${colorSuffix}.jpeg`;
+                }
+              } else if (productName.includes('sofa')) {
+                let ext = 'jpeg';
+                if (colorName === 'brown') ext = 'png';
+                if (colorName === 'green') ext = 'jpg';
+                newImageSrc = `../assets/images/new-product/sofa${colorSuffix}.${ext}`;
+              } else if (productName.includes('table')) {
+                if (colorName === 'brown') newImageSrc = '../assets/images/new-product/table.jpg';
+                else if (colorName === 'white') newImageSrc = '../assets/images/new-product/table1.jpeg';
+                else if (colorName === 'black') newImageSrc = '../assets/images/new-product/table2.jpeg';
               }
-            };
-            testImg.src = newImageSrc;
+            }
+            
+            if (newImageSrc) {
+              const testImg = new Image();
+              testImg.onload = () => {
+                card_img.src = newImageSrc;
+              };
+              testImg.onerror = () => {
+                // If color variant doesn't exist, cycle through thumbnails
+                const thumbnails = card.querySelectorAll('.product-gallery__thumbnail');
+                if (thumbnails.length > colorIndex) {
+                  card_img.src = thumbnails[colorIndex]?.src || card_img.src;
+                }
+              };
+              testImg.src = newImageSrc;
+            }
           }
         });
       });

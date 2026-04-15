@@ -3,7 +3,7 @@ const path = require('path');
 const { open } = require('sqlite');
 require('dotenv').config();
 
-const dbPath = path.resolve(__dirname, '../database.sqlite');
+const dbPath = path.resolve(__dirname, './data/database.sqlite');
 
 let dbInstance = null;
 
@@ -28,7 +28,9 @@ initDb().catch(err => console.error('❌ SQLite connection failed:', err.message
 const pool = {
   execute: async (sql, params = []) => {
     const db = await initDb();
-    const isSelect = sql.trim().toUpperCase().startsWith('SELECT') || sql.trim().toUpperCase().startsWith('WITH');
+    const isSelect = sql.trim().toUpperCase().startsWith('SELECT') || 
+                     sql.trim().toUpperCase().startsWith('WITH') || 
+                     sql.trim().toUpperCase().startsWith('PRAGMA');
     
     try {
       if (isSelect) {

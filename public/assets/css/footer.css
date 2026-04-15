@@ -63,6 +63,10 @@
   font-weight: 700;
   text-transform: uppercase;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 .site-footer__main {
@@ -85,7 +89,7 @@
   width: 2rem;
   height: 2rem;
   border: 2px solid #000000;
-  border-radius: 2px;
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -212,7 +216,7 @@
   text-transform: uppercase;
   padding: 0.4rem 1rem;
   border: 1px solid #e5e7eb;
-  border-radius: 999px;
+  border-radius: 0;
   transition: color 0.2s, border-color 0.2s, background 0.2s;
 }
 
@@ -220,4 +224,4 @@
   color: #a6866a;
   border-color: #a6866a;
   background: #fdf8f5;
-}
+}

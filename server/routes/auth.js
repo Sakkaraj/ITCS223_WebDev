@@ -53,6 +53,52 @@ router.post('/member/register', async (req, res) => {
 });
 
 // ─────────────────────────────────────────────
+//  ADMIN REGISTER
+// ─────────────────────────────────────────────
+// POST /api/auth/admin/register
+router.post('/admin/register', async (req, res) => {
+  const { firstName, lastName, email, password, address, age, phone } = req.body;
+
+  if (!firstName || !lastName || !email || !password || !address || !age || !phone) {
+    return res.status(400).json({ error: 'All fields are required.' });
+  }
+
+  try {
+    // Check if email already exists in AdminInformation
+    const [existing] = await db.execute(
+      'SELECT AdminId FROM AdminInformation WHERE Email = ?',
+      [email]
+    );
+    if (existing.length > 0) {
+      return res.status(409).json({ error: 'An admin account with this email already exists.' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+
+    // Insert into AdminInformation
+    const [adminResult] = await db.execute(
+      'INSERT INTO AdminInformation (FirstName, LastName, Email, TelephoneNumber, Address, Age) VALUES (?, ?, ?, ?, ?, ?)',
+      [firstName, lastName, email, phone, address, parseInt(age)]
+    );
+    const adminId = adminResult.insertId;
+
+    // Insert into AdminLoginInformation
+    await db.execute(
+      'INSERT INTO AdminLoginInformation (AdminId, AdminUserName, AdminPassword, Role) VALUES (?, ?, ?, ?)',
+      [adminId, email, hashedPassword, 'admin']
+    );
+
+    return res.status(201).json({
+      message: 'Admin account created successfully! You can now log in.',
+      adminId,
+    });
+  } catch (err) {
+    console.error('[admin/register]', err);
+    return res.status(500).json({ error: 'Server error. Please try again.' });
+  }
+});
+
+// ─────────────────────────────────────────────
 //  MEMBER LOGIN
 // ─────────────────────────────────────────────
 // POST /api/auth/member/login
@@ -163,7 +209,7 @@ router.post('/admin/login', async (req, res) => {
         firstName: admin.FirstName,
         lastName: admin.LastName,
         email: admin.Email,
-        role: admin.Role,
+        role: 'admin',
       },
     });
   } catch (err) {

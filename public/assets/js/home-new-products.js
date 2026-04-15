@@ -69,32 +69,37 @@ document.addEventListener('DOMContentLoaded', async () => {
         swatch.classList.add('product-color-swatch--active');
 
         // Update the product image
-        const productName = card.dataset.productName?.toLowerCase() || '';
-        const colorName = swatch.dataset.colorName?.toLowerCase() || '';
-
-        const colorMap = {
-          'green': '-green',
-          'gray': '-grey',
-          'grey': '-grey',
-          'blue': '-blue',
-          'brown': '-brown',
-          'pink': '-pink',
-          'red': '-red',
-        };
-
-        const colorSuffix = colorMap[colorName] || '';
-        const newImageSrc = `assets/images/new-product/${productName}${colorSuffix}.jpeg`;
+        const colorIndex = parseInt(swatch.dataset.colorIndex) || 0;
+        const images = JSON.parse(card.dataset.images || '[]');
         const card_img = card.querySelector('.product-card-image');
 
-        if (card_img) {
+        // Resolve path relative to root
+        const resolvePath = (path) => {
+          if (!path) return 'assets/images/table.avif';
+          if (path.startsWith('http')) return path;
+          return path; // Already relative to root
+        };
+
+        let newImageSrc = '';
+        if (images.length > colorIndex) {
+          const imgObj = images[colorIndex];
+          newImageSrc = resolvePath(typeof imgObj === 'string' ? imgObj : imgObj.ImageUrl);
+        } else {
+          // Fallback legacy logic
+          const productName = card.dataset.productName?.toLowerCase() || '';
+          const colorName = swatch.dataset.colorName?.toLowerCase() || '';
+          const colorMap = {
+            'green': '-green', 'gray': '-grey', 'grey': '-grey', 'blue': '-blue',
+            'brown': '-brown', 'pink': '-pink', 'red': '-red',
+          };
+          const colorSuffix = colorMap[colorName] || '';
+          newImageSrc = `assets/images/new-product/${productName}${colorSuffix}.jpeg`;
+        }
+
+        if (card_img && newImageSrc) {
           const testImg = new Image();
-          testImg.onload = () => {
-            card_img.src = newImageSrc;
-          };
-          testImg.onerror = () => {
-            // Fallback if image doesn't exist
-            console.log('Color image not found:', newImageSrc);
-          };
+          testImg.onload = () => { card_img.src = newImageSrc; };
+          testImg.onerror = () => { console.log('Color image not found:', newImageSrc); };
           testImg.src = newImageSrc;
         }
       });
@@ -139,6 +144,29 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       });
     });
+
+    // Wishlist buttons
+    productGrid.querySelectorAll('.product-card__wishlist').forEach((btn, idx) => {
+      const product = filtered[idx];
+      if (window.BSC_Wishlist && window.BSC_Wishlist.has(product.ProductId)) {
+        btn.classList.add('is-active');
+      }
+
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const added = window.BSC_Wishlist.toggle({
+          ProductId: product.ProductId,
+          ProductName: product.ProductName,
+          Price: product.Price,
+          ImageUrl: product.ImageUrl,
+          Category: product.Category
+        });
+        btn.classList.toggle('is-active', added);
+        BSC.showToast(added ? 'Added to wishlist' : 'Removed from wishlist', added ? 'success' : 'info');
+      });
+    });
+
+    if (typeof lucide !== 'undefined') lucide.createIcons();
   }
 
   // ─── Set up category tabs ──────────────────────────────────
@@ -174,8 +202,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     return `
-      <article class="product-card" data-id="${p.ProductId}" data-product-name="${p.ProductName}">
-        <button class="product-card__wishlist">♡</button>
+      <article class="product-card" data-id="${p.ProductId}" data-product-name="${p.ProductName}" data-images='${JSON.stringify(p.images || [])}'>
+        <button class="product-card__wishlist" title="Add to Wishlist">
+          <i data-lucide="heart" class="shop-product-card__heart-icon"></i>
+        </button>
         <img
           src="${imgSrc}"
           alt="${p.ProductName}"

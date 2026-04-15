@@ -103,6 +103,11 @@ textarea {
   background: transparent;
   padding: 0;
   cursor: pointer;
+  transition: transform var(--transition-fast);
+}
+
+.add-product-form-panel__close-button:hover {
+  transform: rotate(90deg) scale(1.2);
 }
 
 .add-product-form-panel__close-icon {
@@ -230,7 +235,7 @@ textarea {
   width: 2.5rem;
   height: 1.25rem;
   background: #e5e7eb;
-  border-radius: 999px;
+  border-radius: 0;
   cursor: pointer;
 }
 
@@ -241,7 +246,7 @@ textarea {
   width: 0.75rem;
   height: 0.75rem;
   background: #ffffff;
-  border-radius: 999px;
+  border-radius: 0;
 }
 
 .add-product-form__toggle-label {
@@ -263,9 +268,20 @@ textarea {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  border-radius: 2px;
+  border-radius: 0;
   box-shadow: 0 4px 10px rgba(0,0,0,0.08);
   cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.add-product-form__action-button:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+  filter: brightness(1.1);
+}
+
+.add-product-form__action-button:active:not(:disabled) {
+  transform: translateY(-1px);
 }
 
 .add-product-form__action-button--primary {
@@ -278,7 +294,17 @@ textarea {
   color: #ffffff;
 }
 
-/* Preview */
+.add-product-form__action-button--update {
+  background: #22c55e;
+  color: #ffffff;
+}
+
+.add-product-form__action-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
 .add-product-preview {
   background: var(--preview-bg);
   padding: 2rem;
@@ -339,6 +365,15 @@ textarea {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.add-product-preview__hero-image-wrap:hover .add-product-preview__image,
+.add-product-preview__square-image-wrap:hover .add-product-preview__image,
+.add-product-preview__portrait-image-wrap:hover .add-product-preview__image,
+.add-product-preview__stack-top:hover .add-product-preview__image,
+.add-product-preview__stack-bottom:hover .add-product-preview__image {
+  transform: scale(1.05);
 }
 
 /* Responsive */
@@ -351,4 +386,17 @@ textarea {
   .add-product-preview {
     padding: 1.5rem;
   }
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+.admin-panel-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

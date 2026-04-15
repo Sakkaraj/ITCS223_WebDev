@@ -21,14 +21,11 @@ router.post('/', requireAuth, async (req, res) => {
     return res.status(400).json({ error: 'Your cart is empty.' });
   }
 
-  const conn = await db.getConnection();
   try {
-    await conn.beginTransaction();
-
     // Fetch product details for cart items
     const productIds = cart.map(item => item.productId);
     const placeholders = productIds.map(() => '?').join(',');
-    const [products] = await conn.execute(
+    const [products] = await db.execute(
       `SELECT ProductId, Price FROM Product WHERE ProductId IN (${placeholders})`,
       productIds
     );
@@ -48,21 +45,21 @@ router.post('/', requireAuth, async (req, res) => {
     const totalAmount = parseFloat((subTotal + vatAmount).toFixed(2));
 
     // Create address record for this member
-    const [addrResult] = await conn.execute(
+    const [addrResult] = await db.execute(
       'INSERT INTO Address (MemberId, AddressDetail) VALUES (?, ?)',
       [memberId, addressDetail]
     );
     const addressId = addrResult.insertId;
 
     // Create delivery record
-    const [deliveryResult] = await conn.execute(
+    const [deliveryResult] = await db.execute(
       "INSERT INTO Delivery (AddressId, Status) VALUES (?, 'Pending')",
       [addressId]
     );
     const trackingId = deliveryResult.insertId;
 
     // Create order
-    const [orderResult] = await conn.execute(
+    const [orderResult] = await db.execute(
       `INSERT INTO Orders (MemberId, TrackingId, ContactEmail, TotalAmount, VatAmount)
        VALUES (?, ?, ?, ?, ?)`,
       [memberId, trackingId, contactEmail || req.user.email, totalAmount, vatAmount]
@@ -71,13 +68,11 @@ router.post('/', requireAuth, async (req, res) => {
 
     // Create order items
     for (const item of cart) {
-      await conn.execute(
+      await db.execute(
         'INSERT INTO OrderItem (ProductId, OrderId, ItemQuantity) VALUES (?, ?, ?)',
         [item.productId, orderId, item.quantity]
       );
     }
-
-    await conn.commit();
 
     // Clear the cart after successful order
     req.session.cart = [];
@@ -90,11 +85,8 @@ router.post('/', requireAuth, async (req, res) => {
       vatAmount,
     });
   } catch (err) {
-    await conn.rollback();
     console.error('[POST /orders]', err);
     return res.status(500).json({ error: 'Failed to place order. Please try again.' });
-  } finally {
-    conn.release();
   }
 });
 

@@ -55,7 +55,8 @@ function isAdminPage(fileName) {
   const adminPages = [
     "admin-panel.html",
     "add-product.html",
-    "admin-login.html"
+    "admin-login.html",
+    "admin-signup.html"
   ];
 
   return adminPages.includes(fileName);
@@ -75,7 +76,8 @@ function setActiveNavLink() {
       "sign-in.html": "account",
       "admin-panel.html": "admin-panel",
       "add-product.html": "add-product",
-      "admin-login.html": "admin-panel"
+      "admin-login.html": "admin-panel",
+      "admin-signup.html": "admin-panel"
     };
 
   const currentPage = pageMap[currentFile];
@@ -94,35 +96,6 @@ function setActiveNavLink() {
   });
 }
 
-function getCartItems() {
-  try {
-    const raw = localStorage.getItem("cartItems");
-    return raw ? JSON.parse(raw) : [];
-  } catch (error) {
-    console.error("Failed to read cartItems:", error);
-    return [];
-  }
-}
-
-function getCartCount() {
-  const cartItems = getCartItems();
-  return cartItems.reduce((total, item) => total + (Number(item.quantity) || 0), 0);
-}
-
-function updateCartBadge() {
-  const cartBadge = document.getElementById("cartBadge");
-  if (!cartBadge) return;
-
-  const cartCount = getCartCount();
-
-  if (cartCount > 0) {
-    cartBadge.textContent = String(cartCount);
-    cartBadge.classList.remove("is-hidden");
-  } else {
-    cartBadge.textContent = "0";
-    cartBadge.classList.add("is-hidden");
-  }
-}
 
 document.addEventListener("DOMContentLoaded", async () => {
   const currentFile = getCurrentFile();
@@ -131,23 +104,42 @@ document.addEventListener("DOMContentLoaded", async () => {
     ? "../assets/partials/admin-header.html"
     : "../assets/partials/header.html";
 
+  const wishlistScript = document.createElement('script');
+  wishlistScript.src = '../assets/js/wishlist.js';
+  document.head.appendChild(wishlistScript);
+
   await loadPartial("#header-placeholder", headerFile);
   await loadPartial("#footer-placeholder", "../assets/partials/footer.html");
 
   setActiveNavLink();
-  updateCartBadge();
+  if (window.BSC) {
+    window.BSC.refreshCartCount();
+  }
+  
+  // Initialize Wishlist Count
+  if (window.BSC_Wishlist) {
+    window.BSC.refreshWishlistCount();
+  } else {
+    wishlistScript.onload = () => window.BSC.refreshWishlistCount();
+  }
+
+  // Global listener for wishlist updates
+  document.addEventListener('wishlistUpdated', () => {
+    window.BSC.refreshWishlistCount();
+  });
 
   document.dispatchEvent(
     new CustomEvent("layoutLoaded", {
       detail: {
-        updateCartBadge,
-        getCartItems
+        refreshCartCount: window.BSC ? window.BSC.refreshCartCount : null
       }
     })
   );
 
   // Initialize Header Search and Dropdown
   initHeaderSearch();
+  // Initialize Global Newsletter
+  initNewsletter();
 });
 
 async function initHeaderSearch() {
@@ -195,4 +187,52 @@ async function initHeaderSearch() {
        console.error("Failed to load categories for header", e);
     }
   }
+}
+async function initNewsletter() {
+  const form = document.querySelector('.site-footer__newsletter-form');
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const input = form.querySelector('.site-footer__newsletter-input');
+    const button = form.querySelector('.site-footer__newsletter-button');
+    const email = input ? input.value.trim() : '';
+
+    if (!email) {
+      if (window.BSC) BSC.showToast('Please enter your email', 'info');
+      return;
+    }
+
+    if (button) {
+      button.disabled = true;
+      button.textContent = '...';
+    }
+
+    try {
+      const bscFetch = window.BSC ? window.BSC.apiFetch : fetch;
+      const response = await bscFetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await (response.json ? response.json() : response);
+
+      if (response.ok || (data && !data.error)) {
+        if (window.BSC) BSC.showToast(data.message || 'Subscribed successfully!', 'success');
+        if (input) input.value = '';
+      } else {
+        const errorMsg = data.error || data.message || 'Subscription failed';
+        if (window.BSC) BSC.showToast(errorMsg, response.status === 409 ? 'info' : 'error');
+      }
+    } catch (err) {
+      console.error('Newsletter error:', err);
+      if (window.BSC) BSC.showToast('Failed to subscribe. Try again later.', 'error');
+    } finally {
+      if (button) {
+        button.disabled = false;
+        button.textContent = 'Subscribe';
+      }
+    }
+  });
 }

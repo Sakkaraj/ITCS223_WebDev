@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Wishlist | Furniture Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../assets/css/shop.css" />
+  <link rel="stylesheet" href="../assets/css/footer.css" />
+  <link rel="stylesheet" href="../assets/css/header.css" />
+  <style>
+    .wishlist-empty {
+      text-align: center;
+      padding: 100px 24px;
+      grid-column: 1 / -1;
+    }
+    .wishlist-empty__icon {
+      width: 64px;
+      height: 64px;
+      color: #e5e7eb;
+      margin-bottom: 24px;
+    }
+    .wishlist-empty__title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .wishlist-page__title {
+      margin-bottom: 3rem;
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="header-placeholder"></div>
+
+  <main class="shop-page">
+    <div class="page-container">
+      <h1 class="wishlist-page__title">Your Wishlist</h1>
+      
+      <div class="shop-products">
+        <div id="wishlistGrid" class="shop-products__grid">
+          <!-- Wishlist items will be loaded here by wishlist-page.js -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/layout.js"></script>
+  <script src="../assets/js/wishlist-page.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

@@ -47,17 +47,29 @@
 
           <div class="home-hero__promo-grid">
             <div class="home-hero__promo-card home-hero__promo-card--image">
-              <img
-                src="../assets/images/chair1.avif"
-                alt="Promo furniture"
-                class="home-hero__promo-image"
-              />
-              <div class="home-hero__promo-price">$199</div>
+              <span class="home-hero__promo-label">New Selection</span>
+              <div class="home-hero__promo-images-wrapper">
+                <img
+                  src="../assets/images/chair1.avif"
+                  alt="Promo furniture 1"
+                  class="home-hero__promo-image"
+                />
+                <img
+                  src="../assets/images/chair.avif"
+                  alt="Promo furniture 2"
+                  class="home-hero__promo-image"
+                />
+              </div>
+              <div class="home-hero__promo-footer">
+                <div class="home-hero__promo-price">$199</div>
+                <div class="home-hero__promo-link">View Collection →</div>
+              </div>
             </div>
 
-            <div class="home-hero__promo-card home-hero__promo-card--offer">
+            <div class="home-hero__promo-card home-hero__promo-card--offer" onclick="window.location.href='shop.html'">
               <div class="home-hero__promo-offer-title">25% OFF</div>
               <div class="home-hero__promo-offer-text">Custom-made furniture</div>
+              <button class="home-hero__promo-offer-button">Grab the Deal</button>
             </div>
           </div>
         </div>
@@ -72,7 +84,7 @@
           <button class="section-heading__button">View all</button>
         </div>
 
-        <div class="category-grid">
+        <div id="homeCategoryGrid" class="category-grid">
           <article class="category-card">
             <img src="../assets/images/table.avif" alt="Tables" class="category-card__image" />
             <h3 class="category-card__title">Tables</h3>
@@ -121,28 +133,24 @@
       </div>
     </section>
 
-    <!-- Room Showcase -->
+    <!-- Featured Collections -->
     <section class="home-section home-section--rooms">
       <div class="page-container">
         <div class="room-grid">
           <article class="room-card room-card--large">
-            <img src="../assets/images/sofa.avif" alt="Bedroom" class="room-card__image" />
-            <div class="room-card__label">Bedroom →</div>
+            <img src="../assets/images/bed.webp" alt="Beds" class="room-card__image" />
           </article>
 
           <article class="room-card room-card--tall">
-            <img src="../assets/images/chair1.avif" alt="Kitchen" class="room-card__image" />
-            <div class="room-card__label">Kitchen →</div>
+            <img src="../assets/images/best-seller/img4.avif" alt="Cabinets" class="room-card__image" />
           </article>
 
           <article class="room-card">
-            <img src="../assets/images/chair.avif" alt="Living room" class="room-card__image" />
-            <div class="room-card__label">Living room →</div>
+            <img src="../assets/images/sofa.avif" alt="Sofas" class="room-card__image" />
           </article>
 
           <article class="room-card">
-            <img src="../assets/images/table.avif" alt="Hallway" class="room-card__image" />
-            <div class="room-card__label">Hallway →</div>
+            <img src="../assets/images/table.avif" alt="Tables" class="room-card__image" />
           </article>
         </div>
       </div>
@@ -223,6 +231,8 @@
   <div id="footer-placeholder"></div>
 
   <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/home-categories.js"></script>
+  <script src="../assets/js/wishlist.js"></script>
   <script src="../assets/js/layout.js"></script>
   <script src="../assets/js/animations.js"></script>
   <script>
@@ -246,7 +256,7 @@
     // ── New Products cards → product details ─────────────────
     // (Handled by home-new-products.js)
 
-    // ── Room showcase cards → shop ──────────────────────────────
+    // ── Featured collection cards → shop ──────────────────────
     document.querySelectorAll('.room-card').forEach(card => {
       card.style.cursor = 'pointer';
       card.addEventListener('click', () => window.location.href = 'shop.html');

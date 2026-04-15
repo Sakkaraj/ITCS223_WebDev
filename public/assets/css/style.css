@@ -18,6 +18,22 @@
     --gold: #D4A85A;
     --serif: 'Cormorant Garamond', Georgia, serif;
     --sans: 'DM Sans', sans-serif;
+    
+    /* Animation Tokens */
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    --lift-amount: -8px;
+    --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* Global Transitions */
+a, button, input, select, .card, .product-img, .category-card, .item img {
+    transition: all var(--transition-base);
+}
+
+img {
+    transition: transform var(--transition-base);
 }
 
 header {
@@ -78,7 +94,7 @@ header {
     display: flex;
     align-items: center;
     background: #f2f2f2;
-    border-radius: 20px;
+    border-radius: 0;
     padding: 5px 10px;
     gap: 5px;
 }
@@ -142,7 +158,7 @@ main {
 
 .details .buttons a {
     padding: 10px 26px;
-    border-radius: 8px;
+    border-radius: 0;
     font-weight: 500;
     text-decoration: none;
     transition: 0.3s ease;
@@ -190,7 +206,7 @@ main {
 .view-all-button {
     padding: 8px 18px;
     border: 2px solid black;
-    border-radius: 5px;
+    border-radius: 0;
     text-decoration: none;
     color: black;
     font-size: 14px;
@@ -213,7 +229,7 @@ main {
     overflow: hidden;
     text-align: left;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 0;
     transition: 0.3s ease;
 }
 
@@ -283,7 +299,7 @@ main {
 
 .product-img {
     background: #fff;
-    border-radius: 5px;
+    border-radius: 0;
     overflow: hidden;
     transition: all 0.3s ease;
 }
@@ -315,7 +331,7 @@ main {
 
     background: rgba(255,255,255,0.9);
     border: none;
-    border-radius: 50%;
+    border-radius: 0;
     width: 34px;
     height: 34px;
 
@@ -362,7 +378,7 @@ main {
 .color-btn {
     width: 16px;
     height: 16px;
-    border-radius: 50%;
+    border-radius: 0;
     border: 1px solid #ccc;
     cursor: pointer;
 }
@@ -403,7 +419,7 @@ main {
     width: 100%;
     height: 180px;
     object-fit: cover;
-    border-radius: 5px;
+    border-radius: 0;
     transition: 0.3s;
 }
 
@@ -460,7 +476,7 @@ main {
 .user-img {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+    border-radius: 0;
 }
 
 .review-controls {
@@ -470,7 +486,7 @@ main {
 .circle-btn {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+    border-radius: 0;
     border: 1px solid #ccc;
     background: white;
     cursor: pointer;
@@ -539,7 +555,7 @@ footer {
     height: 32px;
     background: #000;
     color: #fff;
-    border-radius: 50%;
+    border-radius: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -633,7 +649,7 @@ footer {
     width: 100%;
     padding: 12px 15px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 0;
     outline: none;
     font-size: 14px;
 }
@@ -648,7 +664,7 @@ footer {
     background-color: #8d7966; 
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 0;
     font-weight: 700;
     cursor: pointer;
     transition: 0.3s;
@@ -689,7 +705,7 @@ footer {
     margin: 10% auto;
     width: 800px;
     max-width: 90%;
-    border-radius: 12px;
+    border-radius: 0;
     overflow: hidden;
     position: relative;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
@@ -771,7 +787,7 @@ footer {
     padding: 50px;
     width: 90%; 
     max-width: 800px; 
-    border-radius: 8px; 
+    border-radius: 0; 
     
     display: flex;
     flex-direction: column;
@@ -805,7 +821,7 @@ footer {
     padding: 12px 25px;
     background: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 0;
     font-weight: bold;
     cursor: pointer;
 }
@@ -815,7 +831,7 @@ footer {
     background: transparent;
     border: 2px solid white;
     color: white;
-    border-radius: 5px;
+    border-radius: 0;
     cursor: pointer;
 }
 
@@ -866,7 +882,7 @@ footer {
     width: 100%;
     aspect-ratio: 1/1;
     overflow: hidden;
-    border-radius: 5px;
+    border-radius: 0;
     margin-bottom: 15px;
 }
 
@@ -928,7 +944,7 @@ footer {
     background: white;
     display: flex;
     box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-    border-radius: 4px;
+    border-radius: 0;
     overflow: hidden;
 }
 
@@ -1008,7 +1024,7 @@ footer {
     width: 100%;
     padding: 12px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 0;
     font-size: 14px;
 }
 
@@ -1022,7 +1038,7 @@ footer {
     color: white;
     padding: 15px 30px;
     border: none;
-    border-radius: 4px;
+    border-radius: 0;
     font-weight: 700;
     cursor: pointer;
     transition: 0.3s;
@@ -1036,7 +1052,7 @@ footer {
     width: 80%;      
     height: 450px;   
     margin: 40px auto 0 auto; 
-    border-radius: 5px;       
+    border-radius: 0;       
     overflow: hidden;         
 }
 
@@ -1055,7 +1071,7 @@ footer {
     height: fit-content;   
     background: #fff;
     padding: 25px;
-    border-radius: 8px;
+    border-radius: 0;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     z-index: 10;
 }
@@ -1076,7 +1092,7 @@ footer {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 0;
 }
 
 .dimension-grid {
@@ -1088,7 +1104,7 @@ footer {
 .input-with-unit {
     display: flex;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 0;
     overflow: hidden;
 }
 
@@ -1115,7 +1131,7 @@ footer {
 
 .category-card {
     background: #fff;
-    border-radius: 8px;
+    border-radius: 0;
     padding-bottom: 20px; 
     display: flex;
     flex-direction: column;
@@ -1141,7 +1157,7 @@ footer {
     border: 1px solid #ddd;
     background: white;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 0;
 }
 
 .page-btn.active {
@@ -1165,7 +1181,7 @@ footer {
     width: 100%;
     aspect-ratio: 1 / 1;
     background: #f9f9f9;
-    border-radius: 8px;
+    border-radius: 0;
     overflow: hidden;
 }
 
@@ -1186,7 +1202,7 @@ footer {
     width: 100%;
     aspect-ratio: 1/1;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 0;
     opacity: 0.6;
     border: 2px solid transparent;
     transition: 0.3s;
@@ -1246,7 +1262,7 @@ footer {
 .color-btn {
     width: 30px;
     height: 30px;
-    border-radius: 50%;
+    border-radius: 0;
     border: 1px solid #ddd;
     cursor: pointer;
     transition: 0.2s;
@@ -1357,7 +1373,7 @@ footer {
     width: 100%;
     height: 380px;
     object-fit: cover;
-    border-radius: 4px;
+    border-radius: 0;
     margin-bottom: 15px;
 }
 
@@ -1403,7 +1419,7 @@ footer {
     width: 100%;
     aspect-ratio: 1/1;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 0;
     opacity: 0.6;
     border: 2px solid transparent; 
     transition: all 0.3s ease;
