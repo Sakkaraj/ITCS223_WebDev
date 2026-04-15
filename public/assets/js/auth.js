@@ -100,9 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }),
           });
 
-          BSC.saveSession(data.token, data.user);
-          BSC.showToast('Account created! Welcome.', 'success');
-          setTimeout(() => { window.location.href = 'home.html'; }, 1000);
+          // BSC.saveSession(data.token, data.user); // Removed auto-login
+          BSC.showToast('Account created! Please log in.', 'success');
+          setTimeout(() => { window.location.href = 'sign-in.html'; }, 1000);
 
         } else {
           const data = await BSC.apiFetch('/api/auth/member/login', {
@@ -191,9 +191,9 @@ document.addEventListener('DOMContentLoaded', () => {
           }),
         });
 
-        BSC.saveSession(data.token, data.user);
-        BSC.showToast('Admin account created! Welcome.', 'success');
-        setTimeout(() => { window.location.href = 'admin-panel.html'; }, 1000);
+        // BSC.saveSession(data.token, data.user); // Removed auto-login
+        BSC.showToast('Admin account created! Please log in.', 'success');
+        setTimeout(() => { window.location.href = 'admin-login.html'; }, 1000);
       } catch (err) {
         BSC.showToast(err.message, 'error');
       } finally {
