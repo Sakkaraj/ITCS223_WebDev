@@ -4,6 +4,13 @@ const { requireAuth, requireAdmin } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
+function formatImageUrl(url) {
+  if (!url) return '/assets/images/placeholder.avif';
+  if (url.startsWith('http') || url.startsWith('/')) return url;
+  if (url.startsWith('../')) return url.substring(2);
+  return '/' + url;
+}
+
 // ─────────────────────────────────────────────
 //  GET ALL PRODUCTS (with optional filters)
 // ─────────────────────────────────────────────
@@ -79,6 +86,10 @@ router.get('/', async (req, res) => {
 
     // For each product, fetch its colors and images
     for (const product of products) {
+      if (product.ImageUrl) {
+        product.ImageUrl = formatImageUrl(product.ImageUrl);
+      }
+
       // Colors
       const [colors] = await db.execute(
         `SELECT col.ColorId, col.ColorName, col.HexCode, pc.SortOrder
@@ -95,7 +106,10 @@ router.get('/', async (req, res) => {
         'SELECT ImageUrl, SortOrder FROM Image WHERE ProductId = ? ORDER BY SortOrder ASC',
         [product.ProductId]
       );
-      product.images = images;
+      product.images = images.map(img => ({
+        ...img,
+        ImageUrl: formatImageUrl(img.ImageUrl)
+      }));
     }
 
     return res.json({
@@ -268,6 +282,10 @@ router.get('/:id', async (req, res) => {
       'SELECT ImageUrl, SortOrder FROM Image WHERE ProductId = ? ORDER BY SortOrder ASC',
       [req.params.id]
     );
+    const formattedImages = images.map(img => ({
+      ...img,
+      ImageUrl: formatImageUrl(img.ImageUrl)
+    }));
 
     // Get colors
     const [colors] = await db.execute(
@@ -290,7 +308,7 @@ router.get('/:id', async (req, res) => {
       [req.params.id]
     );
 
-    return res.json({ ...product, images, colors, reviews });
+    return res.json({ ...product, images: formattedImages, colors, reviews });
   } catch (err) {
     console.error('[GET /products/:id]', err);
     return res.status(500).json({ error: 'Failed to fetch product.' });
