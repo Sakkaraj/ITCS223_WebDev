@@ -1,11 +1,9 @@
 node_modules/
 package-lock.json
-.env
 .env.local
 .env.*.local
 
 # Database
-database.sqlite
 *.db
 
 # OS files
