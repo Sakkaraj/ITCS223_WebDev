@@ -130,6 +130,7 @@ CREATE TABLE IF NOT EXISTS Image (
     ImageId INTEGER PRIMARY KEY AUTOINCREMENT,
     ProductId INT NOT NULL,
     ImageUrl VARCHAR(255),
+    SortOrder INTEGER DEFAULT 0,
     CONSTRAINT ImgProd_Fk FOREIGN KEY (ProductId) REFERENCES Product (ProductId)
 );
 
@@ -143,6 +144,7 @@ CREATE TABLE IF NOT EXISTS OrderItem (
 CREATE TABLE IF NOT EXISTS ProductColor (
     ProductId INT NOT NULL,
     ColorId INT NOT NULL,
+    SortOrder INTEGER DEFAULT 0,
     PRIMARY KEY (ProductId, ColorId)
 );
 
