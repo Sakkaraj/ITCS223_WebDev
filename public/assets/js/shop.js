@@ -49,45 +49,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           });
         });
       }
-
-      if (categoryStrip) {
-        const icons = {
-          'Chair': 'armchair', 'Chairs': 'armchair',
-          'Sofa': 'sofa', 'Sofas': 'sofa',
-          'Cabinet': 'door-closed', 'Cabinets': 'door-closed',
-          'Bed': 'bed', 'Beds': 'bed',
-          'Table': 'table', 'Tables': 'table',
-          'Decor': 'lamp',
-        };
-        categoryStrip.innerHTML = categories.map(cat => `
-          <article class="shop-category-pill" data-category="${cat.Category}" style="cursor:pointer">
-            <div class="shop-category-pill__icon-box">
-              <i data-lucide="${icons[cat.Category] || 'tag'}" class="shop-category-pill__icon"></i>
-            </div>
-            <div class="shop-category-pill__content">
-              <h4 class="shop-category-pill__title">${cat.Category}</h4>
-              <p class="shop-category-pill__meta">${cat.ProductCount} products</p>
-            </div>
-          </article>
-        `).join('');
-
-        categoryStrip.querySelectorAll('.shop-category-pill').forEach(pill => {
-          pill.addEventListener('click', () => {
-            const cat = pill.dataset.category;
-            selectedCategories = [cat];
-            // Check the matching checkbox
-            categoryList?.querySelectorAll('.shop-filter-list__checkbox').forEach(cb => {
-              cb.checked = cb.value === cat;
-            });
-            currentPage = 1;
-            loadProducts();
-            // Scroll to products
-            document.querySelector('.shop-page')?.scrollIntoView({ behavior: 'smooth' });
-          });
-        });
-
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-      }
+      if (typeof lucide !== 'undefined') lucide.createIcons();
     } catch (err) {
       console.error('Failed to load categories:', err.message);
     }
