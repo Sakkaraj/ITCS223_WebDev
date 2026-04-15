@@ -109,6 +109,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   await loadPartial("#header-placeholder", headerFile);
   await loadPartial("#footer-placeholder", "../assets/partials/footer.html");
 
+  if (window.BSC && window.BSC.updateNavAuth) {
+    window.BSC.updateNavAuth();
+  }
+
   setActiveNavLink();
   if (window.BSC) {
     window.BSC.refreshCartCount();

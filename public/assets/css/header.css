@@ -249,6 +249,42 @@ body {
   border-left: 1px solid var(--border-soft);
 }
 
+.site-header__user-menu {
+  display: flex !important; /* Overrule style="display:none" set by JS if we have the class */
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: 0.5rem;
+}
+
+.site-header__user-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-dark);
+}
+
+.site-header__logout-btn {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--text-light);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.site-header__logout-btn:hover {
+  color: var(--badge-red);
+  transform: scale(1.1);
+}
+
+.site-header__logout-btn i {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
 .site-header__action-icon {
   width: 1.25rem;
   height: 1.25rem;

@@ -151,7 +151,7 @@ function showToast(message, type = 'success') {
 
 function updateNavAuth() {
   const user = getUser();
-  const loginBtns = document.querySelectorAll('#loginBtn, .js-login-btn');
+  const loginBtns = document.querySelectorAll('.js-login-btn');
   const userMenus = document.querySelectorAll('.js-user-menu');
   const userNames = document.querySelectorAll('.js-user-name');
 
@@ -159,6 +159,9 @@ function updateNavAuth() {
     loginBtns.forEach(el => el.style.display = 'none');
     userMenus.forEach(el => el.style.display = 'flex');
     userNames.forEach(el => el.textContent = user.firstName || user.email);
+  } else {
+    loginBtns.forEach(el => el.style.display = 'flex');
+    userMenus.forEach(el => el.style.display = 'none');
   }
 }
 
@@ -166,10 +169,22 @@ function updateNavAuth() {
 document.addEventListener('DOMContentLoaded', () => {
   updateNavAuth();
   refreshCartCount();
+
+  // Global logout handler
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.js-logout-btn')) {
+      clearSession();
+      showToast('Logged out successfully', 'success');
+      setTimeout(() => {
+        window.location.href = '/pages/home.html';
+      }, 800);
+    }
+  });
 });
 
 // Expose to other scripts
 window.BSC = {
   apiFetch, saveSession, clearSession, getUser,
   isLoggedIn, isAdmin, showToast, refreshCartCount,
+  updateNavAuth,
 };

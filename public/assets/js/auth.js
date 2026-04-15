@@ -8,9 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // ─── MEMBER SIGN-IN FORM (sign-in.html) ──────────────────
   const memberForm = document.querySelector('.signin-form');
   if (memberForm) {
-    // If already logged in, redirect
+    // If already logged in, redirect to home
     if (BSC.isLoggedIn() && BSC.getUser()?.role === 'member') {
-      window.location.href = 'home.html';
+      window.location.href = '/pages/home.html';
       return;
     }
 

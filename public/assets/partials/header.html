@@ -49,9 +49,18 @@
     <div class="site-header__spacer"></div>
 
     <div class="site-header__actions">
-      <a href="../pages/sign-in.html" class="site-header__action-link" title="Sign In / Account" style="display:flex;align-items:center;color:inherit;">
+      <!-- Guest View: Login Button -->
+      <a href="../pages/sign-in.html" class="site-header__action-link js-login-btn" title="Sign In / Account" style="display:flex;align-items:center;color:inherit;">
         <i data-lucide="user" class="site-header__action-icon"></i>
       </a>
+
+      <!-- Logged-in View: User Menu (hidden by default) -->
+      <div class="site-header__user-menu js-user-menu" style="display:none; align-items:center; gap:8px;">
+        <span class="site-header__user-name js-user-name" style="font-size:14px; font-weight:500;"></span>
+        <button class="site-header__logout-btn js-logout-btn" title="Logout" style="background:none; border:none; cursor:pointer; padding:4px; display:flex; align-items:center; color:inherit;">
+          <i data-lucide="log-out" class="site-header__action-icon" style="width:20px; height:20px;"></i>
+        </button>
+      </div>
       <a href="../pages/wishlist.html" class="site-header__action-link" title="Wishlist" style="display:flex;align-items:center;color:inherit;">
         <div class="site-header__wishlist">
           <i data-lucide="heart" class="site-header__action-icon"></i>
