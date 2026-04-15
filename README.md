@@ -12,7 +12,7 @@ BoonSonClon is a high-end, full-stack e-commerce platform designed for premium f
 - **Git**
 - **A terminal with script execution enabled** (e.g., PowerShell as Admin on Windows)
 
-### 2. Installation
+### 2. First-Time Setup
 ```bash
 # 1. Clone the repository
 git clone https://github.com/Sakkaraj/ITCS223_WebDev.git
@@ -21,8 +21,12 @@ cd ITCS223_WebDev
 # 2. Install dependencies
 npm install
 
-# 3. Setup environment
+# 3. Setup local environment
 cp .env.example .env
+
+# 4. Initialize the Data Directory & Database
+# This command will automatically create the /server/data folder and seed the inventory.
+npm run seed
 ```
 
 ### 3. Database Initialization

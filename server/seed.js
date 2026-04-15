@@ -64,7 +64,13 @@ async function seed() {
     const { open } = require('sqlite');
     const sqlite3 = require('sqlite3');
     
-    const dbPath = path.resolve(__dirname, '../database.sqlite');
+    const dataDir = path.resolve(__dirname, './data');
+    if (!fs.existsSync(dataDir)) {
+      console.log('📁 Creating server/data directory...');
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+
+    const dbPath = path.resolve(__dirname, './data/database.sqlite');
     const sqliteDb = await open({ filename: dbPath, driver: sqlite3.Database });
     const schemaSql = fs.readFileSync(path.resolve(__dirname, './schema.sqlite.sql'), 'utf-8');
     await sqliteDb.exec(schemaSql);
