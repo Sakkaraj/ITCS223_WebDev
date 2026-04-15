@@ -25,7 +25,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function renderSimilarCard(p) {
-  const imgSrc = p.ImageUrl || 'assets/images/table.avif';
+  let imgSrc = p.ImageUrl || 'assets/images/table.avif';
+  if (imgSrc.startsWith('assets/')) {
+    imgSrc = '../' + imgSrc;
+  }
   return `
     <article class="similar-product-card">
       <img src="${imgSrc}" alt="${p.ProductName}" class="similar-product-card__image" />

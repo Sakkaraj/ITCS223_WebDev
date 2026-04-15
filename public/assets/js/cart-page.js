@@ -37,9 +37,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       tableBody.innerHTML = items.map(item => {
-        const imgSrc = item.ImageUrl || 'assets/images/chair.avif';
-        // Correct path for images in subpages is often tricky, but cart.html is in /pages/
-        // and images are in /assets/images/. So ../assets/images/... is correct.
+        let imgSrc = item.ImageUrl || 'assets/images/chair.avif';
+        if (imgSrc.startsWith('assets/')) {
+          imgSrc = '../' + imgSrc;
+        }
         const productLink = `product.html?id=${item.ProductId}`;
         
         return `
