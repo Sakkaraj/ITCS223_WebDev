@@ -162,10 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // ─── ADMIN SIGNUP FORM (admin-signup.html) ──────────────
   const adminSignupForm = document.querySelector('.admin-signup-form');
   if (adminSignupForm) {
-    if (BSC.isLoggedIn() && BSC.isAdmin()) {
-      window.location.href = 'admin-panel.html';
-      return;
-    }
 
     adminSignupForm.addEventListener('submit', async (e) => {
       e.preventDefault();
