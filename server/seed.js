@@ -65,6 +65,7 @@ async function seed() {
       { name: 'Fabric', type: 'Soft' },
       { name: 'Glass', type: 'Hard' },
       { name: 'MDF', type: 'Engineered' },
+      { name: 'Ceramic', type: 'Clay' },
     ];
     const materialIds = {};
     for (const m of materials) {
@@ -150,6 +151,7 @@ async function seed() {
         detail: 'Available in multiple colors. Solid wood legs. Easy assembly.',
         width: 80, height: 85, length: 82, weight: 14,
         featured: true,
+        materialId: materialIds['Fabric'],
         image: 'assets/images/new-product/chair1.avif',
         image2: 'assets/images/new-product/chair-blue.jpeg',
         image3: 'assets/images/new-product/chair-brown.jpeg',
@@ -163,6 +165,7 @@ async function seed() {
         detail: 'High-density foam cushions. Removable covers. 3-seater.',
         width: 220, height: 85, length: 95, weight: 65,
         featured: true,
+        materialId: materialIds['Fabric'],
         image: 'assets/images/new-product/sofa-grey.jpeg',
         image2: 'assets/images/new-product/sofa-green.jpg',
         image3: 'assets/images/new-product/sofa-brown.jpg',
@@ -176,6 +179,7 @@ async function seed() {
         detail: 'Premium microfibre. Chaise lounge section. 5-year frame warranty.',
         width: 280, height: 85, length: 200, weight: 90,
         featured: false,
+        materialId: materialIds['Fabric'],
         image: 'assets/images/sofa.avif',
       },
       {
@@ -187,6 +191,7 @@ async function seed() {
         detail: 'Tempered glass top, iron legs. Wipe clean. Flat-pack delivery.',
         width: 110, height: 45, length: 60, weight: 18,
         featured: false,
+        materialId: materialIds['Glass'],
         image: 'assets/images/table.avif',
       },
       {
@@ -198,6 +203,7 @@ async function seed() {
         detail: 'Solid pine wood. Includes 6 chairs. Easy assembly.',
         width: 180, height: 75, length: 90, weight: 55,
         featured: true,
+        materialId: materialIds['Solid Wood'],
         image: 'assets/images/new-product/table.jpg', 
         image2: 'assets/images/new-product/table1.jpeg', 
         image3: 'assets/images/new-product/table2.jpeg',
@@ -211,6 +217,7 @@ async function seed() {
         detail: 'Solid oak construction. Fits 180x200cm mattress. Assembly required.',
         width: 200, height: 100, length: 215, weight: 80,
         featured: false,
+        materialId: materialIds['Solid Wood'],
         image: 'https://www.laura-james.co.uk/cdn/shop/files/cavill-grey-fabric-bed-frame-upholstered-king-size-laura-james-1.png?v=1753187376&width=1445',
       },
       {
@@ -222,6 +229,7 @@ async function seed() {
         detail: 'Upholstered headboard. Hydraulic lift storage. Fits 160x200cm mattress.',
         width: 185, height: 120, length: 215, weight: 95,
         featured: true,
+        materialId: materialIds['Fabric'],
         image: 'https://au.tommyswiss.com/cdn/shop/files/bf053_cc_dr_wire1a.jpg?v=1725926683',
       },
       {
@@ -233,6 +241,7 @@ async function seed() {
         detail: 'MDF construction with oak veneer. Mirror door option available.',
         width: 150, height: 200, length: 58, weight: 70,
         featured: false,
+        materialId: materialIds['MDF'],
         image: 'assets/images/best-seller/img4.avif',
       },
       {
@@ -244,6 +253,7 @@ async function seed() {
         detail: 'Engineered wood. Adjustable shelves. Easy self-assembly.',
         width: 80, height: 180, length: 30, weight: 25,
         featured: false,
+        materialId: materialIds['MDF'],
         image: 'https://eurekaergonomic.com/cdn/shop/files/Walnut_Napa_Wood_Bookcase_Cabinet_Bottom_Storage_Adjustable_Book_Shelves.jpg?v=1747809436&width=1946',
       },
       {
@@ -255,6 +265,7 @@ async function seed() {
         detail: 'E27 bulb (not included). 1.5m fabric cord. Height: 45cm.',
         width: 20, height: 45, length: 20, weight: 1.5,
         featured: false,
+        materialId: materialIds['Ceramic'],
         image: 'https://www.ikea.com/th/en/images/products/flyghoejd-table-lamp-brass-beige__1244487_pe921207_s5.jpg',
       },
       {
@@ -266,6 +277,7 @@ async function seed() {
         detail: 'Handcrafted ceramic. Waterproof interior. Sizes: Small, Medium, Large.',
         width: 15, height: 30, length: 15, weight: 0.8,
         featured: false,
+        materialId: materialIds['Ceramic'],
         image: 'https://m.media-amazon.com/images/I/8110Qq9US-L.jpg',
       },
     ];

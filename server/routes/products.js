@@ -49,6 +49,31 @@ router.get('/', async (req, res) => {
       whereClauses.push('EXISTS (SELECT 1 FROM ProductColor pc WHERE pc.ProductId = p.ProductId AND pc.ColorId = ?)');
       params.push(parseInt(req.query.colorId));
     }
+    if (req.query.materialId) {
+      whereClauses.push('p.MaterialId = ?');
+      params.push(parseInt(req.query.materialId));
+    }
+    if (req.query.maxWidth) {
+      whereClauses.push('p.WidthDimension <= ?');
+      params.push(parseFloat(req.query.maxWidth));
+    }
+    if (req.query.maxHeight) {
+      whereClauses.push('p.HeightDimension <= ?');
+      params.push(parseFloat(req.query.maxHeight));
+    }
+    if (req.query.maxLength) {
+      whereClauses.push('p.LengthDimension <= ?');
+      params.push(parseFloat(req.query.maxLength));
+    }
+    if (req.query.maxWeight) {
+      whereClauses.push('p.Weight <= ?');
+      params.push(parseFloat(req.query.maxWeight));
+    }
+    if (req.query.search) {
+      const searchTerm = `%${req.query.search}%`;
+      whereClauses.push('(p.ProductName LIKE ? OR p.ProductDescription LIKE ?)');
+      params.push(searchTerm, searchTerm);
+    }
 
     const whereSQL = whereClauses.length ? 'WHERE ' + whereClauses.join(' AND ') : '';
 

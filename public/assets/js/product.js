@@ -36,6 +36,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   const descEl = document.querySelector('.product-info__description');
   if (descEl) descEl.textContent = product.ProductDescription || '';
 
+  const materialEl = document.getElementById('productMaterial');
+  if (materialEl) {
+    if (product.MaterialName) {
+      materialEl.querySelector('span').textContent = product.MaterialName;
+      materialEl.style.display = 'block';
+    } else {
+      materialEl.style.display = 'none';
+    }
+  }
+
   // ─── Gallery ──────────────────────────────────────────────
   const mainImg = document.querySelector('.product-gallery__main-image');
   const thumbsWrap = document.querySelector('.product-gallery__thumbnails');

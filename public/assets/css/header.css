@@ -85,6 +85,12 @@ body {
   border-radius: 0;
   overflow: hidden;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.site-header__search-box.is-focused {
+  border-color: var(--brand-brown);
+  box-shadow: 0 4px 12px rgba(166, 134, 106, 0.1);
 }
 
 .site-header__category-select {
@@ -95,6 +101,12 @@ body {
   font-size: 0.75rem;
   color: var(--text-muted);
   outline: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.site-header__category-select:hover {
+  background-color: var(--border-soft);
 }
 
 .site-header__search-input-wrap {
@@ -117,6 +129,18 @@ body {
   width: 1rem;
   height: 1rem;
   color: #9ca3af;
+  transition: all 0.2s ease;
+  pointer-events: auto;
+  z-index: 10;
+}
+
+.site-header__search-icon:hover {
+  color: var(--brand-brown) !important;
+  transform: scale(1.1);
+}
+
+.site-header__search-box.is-focused .site-header__search-icon {
+  color: var(--brand-brown);
 }
 
 .site-header__search-button {
@@ -520,7 +544,84 @@ body {
   fill: var(--badge-red);
 }
 
+
 .bestseller-card__wishlist.is-active {
   color: var(--badge-red);
   font-weight: bold;
+}
+
+/* ────── LIVE SEARCH DROPDOWN ────── */
+.search-results-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-top: none;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+  max-height: 400px;
+  overflow-y: auto;
+  display: none;
+  border-radius: 0 0 4px 4px;
+  animation: searchFadeIn 0.2s ease-out;
+}
+
+.search-results-dropdown.is-visible {
+  display: block;
+}
+
+.search-results-dropdown__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.search-results-dropdown__item:last-child {
+  border-bottom: none;
+}
+
+.search-results-dropdown__item:hover {
+  background: #f9fafb;
+}
+
+.search-results-dropdown__item--empty {
+  padding: 20px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.search-results-dropdown__image {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 4px;
+  background: #f3f4f6;
+}
+
+.search-results-dropdown__info {
+  flex: 1;
+}
+
+.search-results-dropdown__name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 2px;
+}
+
+.search-results-dropdown__meta {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+@keyframes searchFadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }

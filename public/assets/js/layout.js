@@ -141,38 +141,126 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function initHeaderSearch() {
-  const selectNode = document.querySelector('.site-header__category-select');
-  const searchInput = document.querySelector('.site-header__search-input');
-  const advBtn = document.querySelector('.site-header__search-button');
+  // Selectors for both public and admin headers
+  const selectNode  = document.querySelector('.site-header__category-select, .admin-header__category-select');
+  const searchInput = document.querySelector('.site-header__search-input, .admin-header__search-input');
+  const advBtn      = document.querySelector('.site-header__search-button, .admin-header__search-button');
+  const searchIcon   = document.querySelector('.site-header__search-icon, .admin-header__search-icon');
+  const searchBox   = document.querySelector('.site-header__search-box, .admin-header__search-box');
+
+  if (!searchInput) return;
+
+  // ─── 1. Live Search UI ───────────────────────────────────
+  let resultsDropdown = null;
+
+  const createDropdown = () => {
+    if (resultsDropdown) return resultsDropdown;
+    resultsDropdown = document.createElement('div');
+    resultsDropdown.className = 'search-results-dropdown';
+    // Append to search input's parent wrapper for correct positioning
+    const wrapper = searchInput.parentElement;
+    if (wrapper) wrapper.appendChild(resultsDropdown);
+    return resultsDropdown;
+  };
+
+  const closeDropdown = () => {
+    if (resultsDropdown) {
+      resultsDropdown.classList.remove('is-visible');
+      setTimeout(() => resultsDropdown.innerHTML = '', 200);
+    }
+  };
+
+  const renderResults = (products) => {
+    const dropdown = createDropdown();
+    if (products.length === 0) {
+      dropdown.innerHTML = '<div class="search-results-dropdown__item search-results-dropdown__item--empty">No products found</div>';
+    } else {
+      dropdown.innerHTML = products.map(p => {
+        let imgSrc = p.ImageUrl || '../assets/images/placeholder.avif';
+        if (imgSrc.startsWith('assets/')) imgSrc = '../' + imgSrc;
+        
+        return `
+          <div class="search-results-dropdown__item" data-id="${p.ProductId}">
+            <img src="${imgSrc}" class="search-results-dropdown__image" onerror="this.src='../assets/images/chair.avif'" />
+            <div class="search-results-dropdown__info">
+              <div class="search-results-dropdown__name">${p.ProductName}</div>
+              <div class="search-results-dropdown__meta">${p.Category} — $${parseFloat(p.Price).toFixed(2)}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Bind clicks
+      dropdown.querySelectorAll('.search-results-dropdown__item').forEach(item => {
+        item.addEventListener('mousedown', () => { // Use mousedown to fire before blur
+          const id = item.dataset.id;
+          window.location.href = `/pages/product.html?id=${id}`;
+        });
+      });
+    }
+    dropdown.classList.add('is-visible');
+  };
+
+  // ─── 2. Debounced API fetch for Live Search ──────────────
+  let debounceTimeout;
+  searchInput.addEventListener('input', () => {
+    const query = searchInput.value.trim();
+    clearTimeout(debounceTimeout);
+    
+    if (query.length < 2) {
+      closeDropdown();
+      return;
+    }
+
+    debounceTimeout = setTimeout(async () => {
+      try {
+        const bscFetch = window.BSC ? window.BSC.apiFetch : fetch;
+        // Search API supports 'search' and 'limit'
+        const data = await bscFetch(`/api/products?search=${encodeURIComponent(query)}&limit=5`);
+        const products = data.products || (Array.isArray(data) ? data : []);
+        renderResults(products);
+      } catch (err) {
+        console.error('Live search failed:', err);
+      }
+    }, 300);
+  });
+
+  searchInput.addEventListener('blur', () => setTimeout(closeDropdown, 200));
+
+  // ─── 3. Search Trigger (Search Page) ─────────────────────
+  const triggerSearch = () => {
+    const query = searchInput.value.trim();
+    const cat = selectNode ? selectNode.value : '';
+    
+    const url = '/pages/shop.html';
+    const params = new URLSearchParams();
+    if (cat && cat !== 'All Categories') params.set('category', cat);
+    if (query) params.set('search', query);
+    
+    const queryString = params.toString();
+    window.location.href = queryString ? `${url}?${queryString}` : url;
+  };
+
+  searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') triggerSearch();
+  });
+
+  if (searchIcon) {
+    searchIcon.style.cursor = 'pointer';
+    searchIcon.addEventListener('click', (e) => {
+      e.preventDefault();
+      triggerSearch();
+    });
+  }
 
   if (advBtn) {
-    advBtn.addEventListener('click', () => {
-      window.location.href = 'advance-search.html';
+    advBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = '/pages/advance-search.html';
     });
   }
 
-  // Handle simple 'Enter' search from header
-  if (searchInput) {
-    searchInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        const cat = selectNode ? selectNode.value : '';
-        let url = '../pages/shop.html';
-        if (cat && cat !== 'All Categories') {
-          url += `?category=${encodeURIComponent(cat)}`;
-        }
-        // Assuming your backend handles 'q' or 'title' for search string.
-        // Actually the backend products.js doesn't have a specific text search currently,
-        // but we'll add the parameter 'search' just in case.
-        if (searchInput.value.trim()) {
-          url += url.includes('?') ? '&' : '?';
-          url += `search=${encodeURIComponent(searchInput.value.trim())}`;
-        }
-        window.location.href = url;
-      }
-    });
-  }
-
-  // Populate categories dynamically
+  // ─── 4. Categories Initialization ──────────────────────
   if (selectNode) {
     try {
       const bscFetch = window.BSC ? window.BSC.apiFetch : fetch;
@@ -182,8 +270,20 @@ async function initHeaderSearch() {
           data.map(c => `<option value="${c.Category}">${c.Category}</option>`).join('');
       }
     } catch(e) {
-       console.error("Failed to load categories for header", e);
+      console.warn("Failed to load categories for header", e);
     }
+  }
+
+  // ─── 5. Focus UI states ────────────────────────────────
+  if (searchInput) {
+    // Try both search-input-wrap and search-box for focus styling
+    const parent = searchInput.closest('.site-header__search-input-wrap, .admin-header__search-input-wrap, .site-header__search-box, .admin-header__search-box');
+    searchInput.addEventListener('focus', () => {
+      if (parent) parent.classList.add('is-focused');
+    });
+    searchInput.addEventListener('blur', () => {
+      if (parent) parent.classList.remove('is-focused');
+    });
   }
 }
 async function initNewsletter() {

@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const urlParams        = new URLSearchParams(window.location.search);
   let currentPage        = 1;
   let currentSort        = 'latest';
+  let currentSearch      = urlParams.get('search') || '';
   let selectedCategories = urlParams.get('category') ? [urlParams.get('category')] : [];
   let maxPriceFilter     = 9999;
   let totalPages         = 1;
@@ -115,6 +116,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         sort: currentSort,
         ...(selectedCategories.length === 1 ? { category: selectedCategories[0] } : {}),
         maxPrice: maxPriceFilter,
+        ...(currentSearch ? { search: currentSearch } : {}),
       });
 
       const data = await BSC.apiFetch(`/api/products?${params}`);
