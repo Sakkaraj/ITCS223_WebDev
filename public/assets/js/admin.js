@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                    onerror="this.src='../assets/images/chair.avif'" />
               <div style="display:flex; flex-direction:column; gap:2px;">
                 <span class="admin-panel-table__product-name" style="font-weight:600;">${p.ProductName}</span>
-                <span style="font-size:11px; color:#888;">ID: #${p.ProductId} | Stock: ${p.QuantityLeft}</span>
+                <span style="font-size:11px; color:#888;">ID: #${p.ProductId} | Stock: ${p.QuantityLeft} | Status: <span style="font-weight:700; color:${p.Status === 'Active' ? '#166534' : p.Status === 'Draft' ? '#854d0e' : '#991b1b'}">${p.Status || 'Active'}</span></span>
               </div>
             </td>
             <td class="admin-panel-table__muted">${p.Category}</td>
@@ -681,6 +681,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           return { id: colorId, index: index };
         }), // Send the full objects to stay consistent with backend updates
         featured: addProductForm.querySelector('.add-product-form__toggle-track')?.classList.contains('active') || false,
+        status: addProductForm.querySelector('.add-product-form__status-select')?.value || 'Active',
       };
 
       const btn = editId
@@ -746,6 +747,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Set textareas (Details and Description)
         if (textareas[0]) textareas[0].value = product.ProductDetail || ''; // Details
         if (textareas[1]) textareas[1].value = product.ProductDescription || ''; // Description
+        
+        // Set Status
+        const statusSelect = addProductForm.querySelector('.add-product-form__status-select');
+        if (statusSelect) statusSelect.value = product.Status || 'Active';
         
         // Set colors based on stored SortOrder
         if (product.colors && product.colors.length > 0) {

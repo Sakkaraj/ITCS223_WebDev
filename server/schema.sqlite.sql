@@ -110,6 +110,7 @@ CREATE TABLE IF NOT EXISTS Product (
     LengthDimension DECIMAL(7, 2) DEFAULT 0,
     Weight DECIMAL(7, 2) DEFAULT 0,
     Featured BOOLEAN DEFAULT 0,
+    Status VARCHAR(20) DEFAULT 'Active',
     CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     MaterialId INT,
     CONSTRAINT ProdCate_Fk FOREIGN KEY (CategoryId) REFERENCES Category (CategoryId),

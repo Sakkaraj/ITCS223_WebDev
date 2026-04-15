@@ -11,8 +11,8 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
 
-  console.log('\n🌱 Starting database seed...\n');
-  const db = require('./db');
+console.log('\n🌱 Starting database seed...\n');
+const db = require('./db');
 
 const SALT_ROUNDS = 10;
 
@@ -23,7 +23,7 @@ async function seed() {
     const path = require('path');
     const { open } = require('sqlite');
     const sqlite3 = require('sqlite3');
-    
+
     const dataDir = path.resolve(__dirname, './data');
     if (!fs.existsSync(dataDir)) {
       console.log('📁 Creating server/data directory...');
@@ -76,12 +76,12 @@ async function seed() {
         materialIds[m.name] = result.insertId;
       }
     }
-  console.log('\n🌱 Starting database seed...\n');
+    console.log('\n🌱 Starting database seed...\n');
 
 
     // ── 1. Categories ──────────────────────────────────────
     console.log('📦 Seeding categories...');
-    const categories = ['Chairs', 'Sofas', 'Tables', 'Beds', 'Cabinets', 'Decor'];
+    const categories = ['Chairs', 'Armchairs', 'Sofas', 'Tables', 'Beds', 'Cabinets', 'Decor'];
     const categoryIds = {};
 
     for (const cat of categories) {
@@ -99,7 +99,7 @@ async function seed() {
     // ── 2. Admin account ──────────────────────────────────
     console.log('\n👤 Seeding admin account...');
     const adminEmail = 'admin@boonsonclon.com';
-    const adminPass  = 'Admin@1234';
+    const adminPass = 'Admin@1234';
 
     const [existingAdmin] = await db.execute('SELECT AdminId FROM AdminInformation WHERE Email = ?', [adminEmail]);
     if (existingAdmin.length > 0) {
@@ -143,17 +143,19 @@ async function seed() {
       },
       {
         name: 'Modern Armchair',
-        categoryId: categoryIds['Chairs'],
+        categoryId: categoryIds['Armchairs'],
         price: 249.99,
         qty: 15,
         desc: 'Sleek modern armchair upholstered in premium fabric.',
         detail: 'Available in multiple colors. Solid wood legs. Easy assembly.',
         width: 80, height: 85, length: 82, weight: 14,
         featured: true,
-        image: 'assets/images/chair1.avif',
+        image: 'assets/images/new-product/chair1.avif',
+        image2: 'assets/images/new-product/chair-blue.jpeg',
+        image3: 'assets/images/new-product/chair-brown.jpeg',
       },
       {
-        name: 'Grey Comfort Sofa',
+        name: 'Comfort Sofa',
         categoryId: categoryIds['Sofas'],
         price: 799.00,
         qty: 8,
@@ -161,7 +163,9 @@ async function seed() {
         detail: 'High-density foam cushions. Removable covers. 3-seater.',
         width: 220, height: 85, length: 95, weight: 65,
         featured: true,
-        image: 'assets/images/sofa.avif',
+        image: 'assets/images/new-product/sofa-grey.jpeg',
+        image2: 'assets/images/new-product/sofa-green.jpg',
+        image3: 'assets/images/new-product/sofa-brown.jpg',
       },
       {
         name: 'L-Shape Corner Sofa',
@@ -194,7 +198,9 @@ async function seed() {
         detail: 'Solid pine wood. Includes 6 chairs. Easy assembly.',
         width: 180, height: 75, length: 90, weight: 55,
         featured: true,
-        image: 'assets/images/best-seller/img.avif',
+        image: 'assets/images/new-product/table.jpg', 
+        image2: 'assets/images/new-product/table1.jpeg', 
+        image3: 'assets/images/new-product/table2.jpeg',
       },
       {
         name: 'King Size Bed Frame',
@@ -205,7 +211,7 @@ async function seed() {
         detail: 'Solid oak construction. Fits 180x200cm mattress. Assembly required.',
         width: 200, height: 100, length: 215, weight: 80,
         featured: false,
-        image: 'assets/images/best-seller/img1.avif',
+        image: 'https://www.laura-james.co.uk/cdn/shop/files/cavill-grey-fabric-bed-frame-upholstered-king-size-laura-james-1.png?v=1753187376&width=1445',
       },
       {
         name: 'Storage Bed with Drawers',
@@ -216,7 +222,7 @@ async function seed() {
         detail: 'Upholstered headboard. Hydraulic lift storage. Fits 160x200cm mattress.',
         width: 185, height: 120, length: 215, weight: 95,
         featured: true,
-        image: 'assets/images/best-seller/img3.avif',
+        image: 'https://au.tommyswiss.com/cdn/shop/files/bf053_cc_dr_wire1a.jpg?v=1725926683',
       },
       {
         name: 'Wardrobe Cabinet',
@@ -238,7 +244,7 @@ async function seed() {
         detail: 'Engineered wood. Adjustable shelves. Easy self-assembly.',
         width: 80, height: 180, length: 30, weight: 25,
         featured: false,
-        image: 'assets/images/best-seller/img5.avif',
+        image: 'https://eurekaergonomic.com/cdn/shop/files/Walnut_Napa_Wood_Bookcase_Cabinet_Bottom_Storage_Adjustable_Book_Shelves.jpg?v=1747809436&width=1946',
       },
       {
         name: 'Table Lamp',
@@ -249,7 +255,7 @@ async function seed() {
         detail: 'E27 bulb (not included). 1.5m fabric cord. Height: 45cm.',
         width: 20, height: 45, length: 20, weight: 1.5,
         featured: false,
-        image: 'assets/images/best-seller/img6.avif',
+        image: 'https://www.ikea.com/th/en/images/products/flyghoejd-table-lamp-brass-beige__1244487_pe921207_s5.jpg',
       },
       {
         name: 'Decorative Vase Set',
@@ -260,7 +266,7 @@ async function seed() {
         detail: 'Handcrafted ceramic. Waterproof interior. Sizes: Small, Medium, Large.',
         width: 15, height: 30, length: 15, weight: 0.8,
         featured: false,
-        image: 'assets/images/best-seller/img7.avif',
+        image: 'https://m.media-amazon.com/images/I/8110Qq9US-L.jpg',
       },
     ];
 
@@ -274,43 +280,40 @@ async function seed() {
       const [result] = await db.execute(
         `INSERT INTO Product
            (CategoryId, ProductName, Price, QuantityLeft, ProductDescription, ProductDetail,
-            WidthDimension, HeightDimension, LengthDimension, Weight, Featured, MaterialId)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            WidthDimension, HeightDimension, LengthDimension, Weight, Featured, MaterialId, Status)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [p.categoryId, p.name, p.price, p.qty, p.desc, p.detail,
-         p.width, p.height, p.length, p.weight, p.featured ? 1 : 0, p.materialId || null]
+        p.width, p.height, p.length, p.weight, p.featured ? 1 : 0, p.materialId || null, 'Active']
       );
 
-      await db.execute('INSERT INTO Image (ProductId, ImageUrl) VALUES (?, ?)', [result.insertId, p.image]);
+      await db.execute('INSERT INTO Image (ProductId, ImageUrl) VALUES (?, ?)', [result.insertId, p.image || 'assets/images/placeholder.avif']);
       // ── Add new-product images and color links for 3 main products ──
       if (p.name === 'Modern Armchair') {
         // Images for Modern Armchair
-        await db.execute('INSERT INTO Image (ProductId, ImageUrl) VALUES (?, ?)', [result.insertId, 'assets/images/new-product/chair1.avif']);
         await db.execute('INSERT INTO Image (ProductId, ImageUrl) VALUES (?, ?)', [result.insertId, 'assets/images/new-product/chair-blue.jpeg']);
         await db.execute('INSERT INTO Image (ProductId, ImageUrl) VALUES (?, ?)', [result.insertId, 'assets/images/new-product/chair-brown.jpeg']);
         // Color links
-        await db.execute('INSERT OR IGNORE INTO ProductColor (ProductId, ColorId) VALUES (?, ?)', [result.insertId, colorIds['Blue']]);
-        await db.execute('INSERT OR IGNORE INTO ProductColor (ProductId, ColorId) VALUES (?, ?)', [result.insertId, colorIds['Brown']]);
-        await db.execute('INSERT OR IGNORE INTO ProductColor (ProductId, ColorId) VALUES (?, ?)', [result.insertId, colorIds['Grey']]);
+        await db.execute('INSERT OR IGNORE INTO ProductColor (ProductId, ColorId, SortOrder) VALUES (?, ?, 1)', [result.insertId, colorIds['Grey']]);
+        await db.execute('INSERT OR IGNORE INTO ProductColor (ProductId, ColorId, SortOrder) VALUES (?, ?, 2)', [result.insertId, colorIds['Blue']]);
+        await db.execute('INSERT OR IGNORE INTO ProductColor (ProductId, ColorId, SortOrder) VALUES (?, ?, 3)', [result.insertId, colorIds['Brown']]);
       }
-      if (p.name === 'Grey Comfort Sofa') {
+      if (p.name === 'Comfort Sofa') {
         // Images for Grey Comfort Sofa
-        await db.execute('INSERT INTO Image (ProductId, ImageUrl) VALUES (?, ?)', [result.insertId, 'assets/images/new-product/sofa-grey.jpeg']);
         await db.execute('INSERT INTO Image (ProductId, ImageUrl) VALUES (?, ?)', [result.insertId, 'assets/images/new-product/sofa-green.jpg']);
         await db.execute('INSERT INTO Image (ProductId, ImageUrl) VALUES (?, ?)', [result.insertId, 'assets/images/new-product/sofa-brown.png']);
         // Color links
-        await db.execute('INSERT OR IGNORE INTO ProductColor (ProductId, ColorId) VALUES (?, ?)', [result.insertId, colorIds['Grey']]);
-        await db.execute('INSERT OR IGNORE INTO ProductColor (ProductId, ColorId) VALUES (?, ?)', [result.insertId, colorIds['Green']]);
-        await db.execute('INSERT OR IGNORE INTO ProductColor (ProductId, ColorId) VALUES (?, ?)', [result.insertId, colorIds['Brown']]);
+        await db.execute('INSERT OR IGNORE INTO ProductColor (ProductId, ColorId, SortOrder) VALUES (?, ?, 1)', [result.insertId, colorIds['Brown']]);
+        await db.execute('INSERT OR IGNORE INTO ProductColor (ProductId, ColorId, SortOrder) VALUES (?, ?, 2)', [result.insertId, colorIds['Green']]);
+        await db.execute('INSERT OR IGNORE INTO ProductColor (ProductId, ColorId, SortOrder) VALUES (?, ?, 3)', [result.insertId, colorIds['Grey']]);
       }
       if (p.name === 'Dining Table Set') {
         // Images for Dining Table Set
-        await db.execute('INSERT INTO Image (ProductId, ImageUrl) VALUES (?, ?)', [result.insertId, 'assets/images/new-product/table.jpg']);
         await db.execute('INSERT INTO Image (ProductId, ImageUrl) VALUES (?, ?)', [result.insertId, 'assets/images/new-product/table1.jpeg']);
         await db.execute('INSERT INTO Image (ProductId, ImageUrl) VALUES (?, ?)', [result.insertId, 'assets/images/new-product/table2.jpeg']);
         // Color links
-        await db.execute('INSERT OR IGNORE INTO ProductColor (ProductId, ColorId) VALUES (?, ?)', [result.insertId, colorIds['Brown']]);
-        await db.execute('INSERT OR IGNORE INTO ProductColor (ProductId, ColorId) VALUES (?, ?)', [result.insertId, colorIds['White']]);
-        await db.execute('INSERT OR IGNORE INTO ProductColor (ProductId, ColorId) VALUES (?, ?)', [result.insertId, colorIds['Black']]);
+        await db.execute('INSERT OR IGNORE INTO ProductColor (ProductId, ColorId, SortOrder) VALUES (?, ?, 1)', [result.insertId, colorIds['White']]);
+        await db.execute('INSERT OR IGNORE INTO ProductColor (ProductId, ColorId, SortOrder) VALUES (?, ?, 2)', [result.insertId, colorIds['Brown']]);
+        await db.execute('INSERT OR IGNORE INTO ProductColor (ProductId, ColorId, SortOrder) VALUES (?, ?, 3)', [result.insertId, colorIds['Black']]);
       }
       console.log(`   ✅ Created: ${p.name} @ $${p.price}`);
     }

@@ -71,7 +71,7 @@ router.get('/', async (req, res) => {
     // Fetch paginated products with first image and material
     const [products] = await db.execute(
       `SELECT p.ProductId, p.ProductName, p.Price, p.QuantityLeft,
-              p.ProductDescription, p.Featured, c.Category, m.MaterialName,
+              p.ProductDescription, p.Featured, p.Status, c.Category, m.MaterialName,
               p.WidthDimension, p.HeightDimension, p.LengthDimension, p.Weight,
               (SELECT ImageUrl FROM Image WHERE ProductId = p.ProductId ORDER BY SortOrder ASC LIMIT 1) AS ImageUrl,
               (SELECT COUNT(*) FROM Image WHERE ProductId = p.ProductId) AS ImageCount
@@ -263,7 +263,7 @@ router.get('/:id', async (req, res) => {
   try {
     const [rows] = await db.execute(
       `SELECT p.*, c.Category, m.MaterialName,
-              p.WidthDimension, p.HeightDimension, p.LengthDimension, p.Weight
+              p.WidthDimension, p.HeightDimension, p.LengthDimension, p.Weight, p.Status
        FROM Product p
        JOIN Category c ON p.CategoryId = c.CategoryId
        LEFT JOIN Material m ON p.MaterialId = m.MaterialId
@@ -324,7 +324,7 @@ router.post('/', requireAuth, requireAdmin, async (req, res) => {
     productName, categoryId, materialId, price, quantityLeft = 0,
     productDescription, productDetail,
     widthDimension = 0, heightDimension = 0, lengthDimension = 0, weight = 0,
-    featured = false, imageUrls = [], colorIds = [],
+    featured = false, status = 'Active', imageUrls = [], colorIds = [],
   } = req.body;
 
   if (!productName || !categoryId || !price || !productDescription || !productDetail) {
@@ -340,8 +340,8 @@ router.post('/', requireAuth, requireAdmin, async (req, res) => {
     const [result] = await db.execute(
       `INSERT INTO Product
          (CategoryId, MaterialId, ProductName, Price, QuantityLeft, ProductDescription, ProductDetail,
-          WidthDimension, HeightDimension, LengthDimension, Weight, Featured)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          WidthDimension, HeightDimension, LengthDimension, Weight, Featured, Status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         catId,
         matId,
@@ -354,7 +354,8 @@ router.post('/', requireAuth, requireAdmin, async (req, res) => {
         parseFloat(heightDimension) || 0,
         parseFloat(lengthDimension) || 0,
         parseFloat(weight) || 0,
-        featured ? 1 : 0
+        featured ? 1 : 0,
+        status || 'Active'
       ]
     );
 
@@ -400,7 +401,7 @@ router.put('/:id', requireAuth, requireAdmin, async (req, res) => {
       productName, categoryId, materialId, price, quantityLeft,
       productDescription, productDetail,
       widthDimension, heightDimension, lengthDimension, weight,
-      featured, imageUrls = [], colorIds = [],
+      featured, status, imageUrls = [], colorIds = [],
     } = req.body;
 
     const pid = parseInt(req.params.id);
@@ -448,7 +449,8 @@ router.put('/:id', requireAuth, requireAdmin, async (req, res) => {
            HeightDimension = ?,
            LengthDimension = ?,
            Weight = ?,
-           Featured = ?
+           Featured = ?,
+           Status = COALESCE(?, Status)
          WHERE ProductId = ?`,
         [
           catId || null,
@@ -463,6 +465,7 @@ router.put('/:id', requireAuth, requireAdmin, async (req, res) => {
           !isNaN(numLength) ? numLength : 0,
           !isNaN(numWeight) ? numWeight : 0,
           featured ? 1 : 0,
+          status || null,
           pid
         ]
       );
