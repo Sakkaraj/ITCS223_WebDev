@@ -151,7 +151,7 @@ async function seed() {
         detail: 'Available in multiple colors. Solid wood legs. Easy assembly.',
         width: 80, height: 85, length: 82, weight: 14,
         featured: true,
-        materialId: materialIds['Fabric'],
+        materialId: materialIds['Metal'],
         image: 'assets/images/new-product/chair1.avif',
         image2: 'assets/images/new-product/chair-blue.jpeg',
         image3: 'assets/images/new-product/chair-brown.jpeg',
@@ -191,7 +191,7 @@ async function seed() {
         detail: 'Tempered glass top, iron legs. Wipe clean. Flat-pack delivery.',
         width: 110, height: 45, length: 60, weight: 18,
         featured: false,
-        materialId: materialIds['Glass'],
+        materialId: materialIds['Solid Wood'],
         image: 'assets/images/table.avif',
       },
       {
@@ -229,7 +229,7 @@ async function seed() {
         detail: 'Upholstered headboard. Hydraulic lift storage. Fits 160x200cm mattress.',
         width: 185, height: 120, length: 215, weight: 95,
         featured: true,
-        materialId: materialIds['Fabric'],
+        materialId: materialIds['Solid Wood'],
         image: 'https://au.tommyswiss.com/cdn/shop/files/bf053_cc_dr_wire1a.jpg?v=1725926683',
       },
       {
@@ -265,7 +265,7 @@ async function seed() {
         detail: 'E27 bulb (not included). 1.5m fabric cord. Height: 45cm.',
         width: 20, height: 45, length: 20, weight: 1.5,
         featured: false,
-        materialId: materialIds['Ceramic'],
+        materialId: materialIds['Metal'],
         image: 'https://www.ikea.com/th/en/images/products/flyghoejd-table-lamp-brass-beige__1244487_pe921207_s5.jpg',
       },
       {
