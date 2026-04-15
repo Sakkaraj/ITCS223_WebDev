@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login | Furniture Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../assets/css/admin-login.css" />
+  <link rel="stylesheet" href="../assets/css/footer.css" />
+  <link rel="stylesheet" href="../assets/css/admin-header.css" />
+
+</head>
+<body>
+  <div id="header-placeholder"></div>
+
+  <main class="admin-login-page">
+    <section class="admin-login-page__visual">
+      <img
+        src="../assets/images/best-seller/img4.avif"
+        alt="Furniture visual"
+        class="admin-login-page__visual-image"
+      />
+      <div class="admin-login-page__visual-overlay"></div>
+      <div class="admin-login-page__visual-content">
+        <h1 class="admin-login-page__visual-title">Furniture</h1>
+        <p class="admin-login-page__visual-text">
+          For the adminstrater for mange the product or the cathegory of the product
+        </p>
+      </div>
+    </section>
+
+    <section class="admin-login-page__form-section">
+      <div class="admin-login-form-card">
+        <div class="admin-login-form-card__header">
+          <h2 class="admin-login-form-card__title">Log in as Admin</h2>
+          <p class="admin-login-form-card__subtitle">Sign in to your account</p>
+        </div>
+
+        <form class="admin-login-form">
+          <div class="admin-login-form__group">
+            <label class="admin-login-form__label">Email</label>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              class="admin-login-form__input"
+            />
+          </div>
+
+          <div class="admin-login-form__group">
+            <label class="admin-login-form__label">Password</label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              class="admin-login-form__input"
+            />
+          </div>
+
+          <button type="submit" class="admin-login-form__button">
+            Log In
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="../assets/js/layout.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

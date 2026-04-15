@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Details | Furniture Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../assets/css/product.css" />
+  <link rel="stylesheet" href="../assets/css/footer.css" />
+  <link rel="stylesheet" href="../assets/css/header.css" />
+</head>
+<body>
+  <div id="header-placeholder"></div>
+
+  <main class="product-page">
+    <div class="page-container">
+      <div class="product-page__layout">
+
+        <!-- Gallery -->
+        <section class="product-gallery">
+          <div class="product-gallery__main">
+            <img
+              src="../assets/images/sofa.avif"
+              alt="Main Product"
+              class="product-gallery__main-image"
+            />
+          </div>
+
+          <div class="product-gallery__thumbnails">
+            <img
+              src="../assets/images/chair.avif"
+              alt="Thumbnail 1"
+              class="product-gallery__thumbnail product-gallery__thumbnail--active"
+            />
+            <img
+              src="../assets/images/chair1.avif"
+              alt="Thumbnail 2"
+              class="product-gallery__thumbnail"
+            />
+            <img
+              src="../assets/images/table.avif"
+              alt="Thumbnail 3"
+              class="product-gallery__thumbnail"
+            />
+            <img
+              src="../assets/images/best-seller/img.avif"
+              alt="Thumbnail 4"
+              class="product-gallery__thumbnail"
+            />
+          </div>
+        </section>
+
+        <!-- Product Info -->
+        <section class="product-info">
+          <div class="product-info__header">
+            <h1 class="product-info__title">Green 2-Seater Velvet Sofa</h1>
+
+            <div class="product-info__rating-row">
+              <div class="product-info__stars">★★★★★</div>
+              <span class="product-info__reviews">Read reviews (24)</span>
+            </div>
+          </div>
+
+          <div class="product-info__price">$299</div>
+
+          <p class="product-info__description">
+            Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit, Sed Do Eiusmod Tempor Incididunt Ut Labore Et Dolore Magna Aliqua.
+          </p>
+
+          <!-- Color Selection -->
+          <div class="product-info__color-label">Color : Green</div>
+          <div class="product-info__color-options">
+            <button class="product-info__color-swatch product-info__color-swatch--active product-info__color-swatch--green" data-color="Green" title="Green"></button>
+            <button class="product-info__color-swatch product-info__color-swatch--gray" data-color="Gray" title="Gray"></button>
+            <button class="product-info__color-swatch product-info__color-swatch--blue" data-color="Blue" title="Blue"></button>
+            <button class="product-info__color-swatch product-info__color-swatch--pink" data-color="Pink" title="Pink"></button>
+          </div>
+
+          <div class="product-info__purchase-row">
+            <select id="productQuantity" class="product-info__quantity-select">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+
+            <button id="addToCartBtn" class="product-info__add-to-cart">
+              Add to Cart
+            </button>
+          </div>
+
+          <div class="product-info__details">
+            <div class="product-info__tabs">
+              <button class="product-info__tab product-info__tab--active">Details</button>
+              <button class="product-info__tab">Dimensions</button>
+            </div>
+
+            <div class="product-info__details-content">
+              <p class="product-info__details-text">
+                Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit, Sed Do Eiusmod Tempor Incididunt Ut Labore Et Dolore Magna Aliqua. Ut Enim Ad Minim Veniam, Quis Nostrud Exercitation Ullamco Laboris.
+              </p>
+            </div>
+
+            <div class="product-info__dimension-list" style="display: none;">
+              <p><span>Width:</span> 125 Inch</p>
+              <p><span>Length:</span> 90 Inch</p>
+              <p><span>Height:</span> 40 Inch</p>
+              <p><span>Weight:</span> 150kg</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Similar Products -->
+      <section class="similar-products">
+        <h2 class="similar-products__title">Similar Products</h2>
+
+        <div class="similar-products__grid">
+          <!-- Similar product cards will be loaded dynamically by product-similar.js -->
+          <script src="../assets/js/product-similar.js"></script>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/layout.js"></script>
+  <script src="../assets/js/product.js"></script>
+  <script>
+    lucide.createIcons();
+
+    // ── Color swatch selection for static demo ────────────────
+    const colorSwatches = document.querySelectorAll('.product-info__color-swatch');
+    const colorLabel = document.querySelector('.product-info__color-label');
+    const mainImage = document.querySelector('.product-gallery__main-image');
+    const thumbnails = document.querySelectorAll('.product-gallery__thumbnail');
+    const colorNames = ['Green', 'Gray', 'Blue', 'Pink'];
+
+    colorSwatches.forEach((swatch, index) => {
+      swatch.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        // Remove active from all swatches
+        colorSwatches.forEach(s => s.classList.remove('product-info__color-swatch--active'));
+        
+        // Add active to clicked swatch
+        swatch.classList.add('product-info__color-swatch--active');
+        
+        // Update color label
+        if (colorLabel) {
+          colorLabel.textContent = `Color : ${colorNames[index] || 'Color'}`;
+        }
+        
+        // Change main image to corresponding thumbnail
+        if (thumbnails[index] && mainImage) {
+          mainImage.src = thumbnails[index].src;
+        }
+      });
+    });
+
+    // ── Details / Dimensions tab switching ──────────────────────
+    const tabs            = document.querySelectorAll('.product-info__tab');
+    const detailsContent  = document.querySelector('.product-info__details-content');
+    const dimensionList   = document.querySelector('.product-info__dimension-list');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('product-info__tab--active'));
+        tab.classList.add('product-info__tab--active');
+
+        const isDimensions = tab.textContent.trim().toLowerCase().includes('dimension');
+        
+        if (detailsContent) {
+          detailsContent.style.display = isDimensions ? 'none' : '';
+        }
+        if (dimensionList) {
+          dimensionList.style.display = isDimensions ? '' : 'none';
+        }
+      });
+    });
+
+    // ── Similar product cards → shop ────────────────────────────
+    document.querySelectorAll('.similar-product-card').forEach(card => {
+      card.style.cursor = 'pointer';
+
+      // Make the whole card navigate
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.similar-product-card__link')) return; // let link handle itself
+        window.location.href = 'shop.html';
+      });
+
+      // Fix the "Shop Now" link
+      const link = card.querySelector('.similar-product-card__link');
+      if (link) {
+        link.href = 'shop.html';
+        link.removeAttribute('onclick');
+      }
+    });
+  </script>
+</body>
+</html>

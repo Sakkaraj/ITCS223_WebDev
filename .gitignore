@@ -1,1 +1,29 @@
+node_modules/
+package-lock.json
+.env
+.env.local
+.env.*.local
+
+# Database
+database.sqlite
+*.db
+
+# OS files
 .DS_Store
+Thumbs.db
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+nul
+*.bak
+*.tmp
+
+# Old database files
+DataBase.sql
+check_mysql.bat

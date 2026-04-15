@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Search | Furniture Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../assets/css/advance-search.css" />
+  <link rel="stylesheet" href="../assets/css/footer.css" />
+  <link rel="stylesheet" href="../assets/css/header.css" />
+</head>
+<body>
+  <div id="header-placeholder"></div>
+
+  <section class="advanced-search-hero">
+    <img
+      src="../assets/images/table.avif"
+      alt="Advanced Search Banner"
+      class="advanced-search-hero__image"
+    />
+    <div class="advanced-search-hero__overlay"></div>
+    <h1 class="advanced-search-hero__title">Advanced Search</h1>
+  </section>
+
+  <main class="advanced-search-page">
+    <div class="page-container">
+      <div class="advanced-search-page__layout">
+        <!-- Search panel -->
+        <aside class="advanced-search-panel">
+          <div class="advanced-search-panel__group">
+            <label class="advanced-search-panel__label">Category</label>
+            <select class="advanced-search-panel__select" id="as-category">
+              <option value="">All Categories</option>
+            </select>
+          </div>
+
+          <div class="advanced-search-panel__group">
+            <label class="advanced-search-panel__label">Max Price ($)</label>
+            <input
+              id="as-price"
+              type="number"
+              placeholder="e.g. 500"
+              class="advanced-search-panel__input"
+            />
+          </div>
+
+          <div class="advanced-search-panel__group">
+            <label class="advanced-search-panel__label">Material</label>
+            <select class="advanced-search-panel__select">
+              <option>ALL</option>
+              <option>Wood</option>
+              <option>Metal</option>
+            </select>
+          </div>
+
+          <div class="advanced-search-panel__dimension-grid">
+            <div class="advanced-search-panel__dimension-field">
+              <label class="advanced-search-panel__mini-label">Width</label>
+              <div class="advanced-search-panel__unit-input">
+                <input type="text" class="advanced-search-panel__unit-input-field" />
+                <span class="advanced-search-panel__unit-label">Unit</span>
+              </div>
+            </div>
+
+            <div class="advanced-search-panel__dimension-field">
+              <label class="advanced-search-panel__mini-label">Length</label>
+              <div class="advanced-search-panel__unit-input">
+                <input type="text" class="advanced-search-panel__unit-input-field" />
+                <span class="advanced-search-panel__unit-label">Unit</span>
+              </div>
+            </div>
+
+            <div class="advanced-search-panel__dimension-field">
+              <label class="advanced-search-panel__mini-label">Height</label>
+              <div class="advanced-search-panel__unit-input">
+                <input type="text" class="advanced-search-panel__unit-input-field" />
+                <span class="advanced-search-panel__unit-label">Unit</span>
+              </div>
+            </div>
+
+            <div class="advanced-search-panel__dimension-field">
+              <label class="advanced-search-panel__mini-label">Weight</label>
+              <div class="advanced-search-panel__unit-input">
+                <input type="text" class="advanced-search-panel__unit-input-field" />
+                <span class="advanced-search-panel__unit-label">Kg</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="advanced-search-panel__checkbox-row">
+            <input type="checkbox" id="featured" class="advanced-search-panel__checkbox" />
+            <label for="featured" class="advanced-search-panel__checkbox-label">
+              Featured Product
+            </label>
+          </div>
+
+          <div class="advanced-search-panel__actions">
+            <button id="as-search-btn" class="advanced-search-panel__button advanced-search-panel__button--primary">
+              Search
+            </button>
+            <button id="as-clear-btn" class="advanced-search-panel__button advanced-search-panel__button--secondary">
+              Clear
+            </button>
+          </div>
+        </aside>
+
+        <!-- Preview results -->
+        <section class="advanced-search-results">
+          <div class="advanced-search-results__header">
+            <h2 class="advanced-search-results__title">
+              Search Product <br />
+              Preview
+            </h2>
+            <span id="loading-spinner" class="advanced-search-results__spinner"></span>
+          </div>
+
+          <div class="advanced-search-results__grid">
+            <article class="advanced-search-result-card">
+              <img
+                src="../assets/images/table.avif"
+                alt="Coffee Table"
+                class="advanced-search-result-card__image"
+              />
+              <h3 class="advanced-search-result-card__title">Coffee Table</h3>
+              <p class="advanced-search-result-card__price">$150</p>
+              <div class="advanced-search-result-card__swatches">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </article>
+
+            <article class="advanced-search-skeleton-card">
+              <div class="advanced-search-skeleton-card__image skeleton"></div>
+              <div class="advanced-search-skeleton-card__title skeleton"></div>
+              <div class="advanced-search-skeleton-card__price skeleton"></div>
+            </article>
+
+            <article class="advanced-search-skeleton-card">
+              <div class="advanced-search-skeleton-card__image skeleton"></div>
+              <div class="advanced-search-skeleton-card__title skeleton"></div>
+              <div class="advanced-search-skeleton-card__price skeleton"></div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/layout.js"></script>
+  <script>
+    lucide.createIcons();
+
+    // ── Populate category dropdown from API ──────────────────
+    (async () => {
+      try {
+        const cats = await BSC.apiFetch('/api/products/meta/categories');
+        const sel  = document.getElementById('as-category');
+        if (sel && Array.isArray(cats)) {
+          cats.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value       = c.Category;
+            opt.textContent = `${c.Category} (${c.ProductCount})`;
+            sel.appendChild(opt);
+          });
+        }
+      } catch (e) { /* Silently ignore — categories are optional */ }
+    })();
+
+    // ── Search button ────────────────────────────────────────
+    document.getElementById('as-search-btn')?.addEventListener('click', async () => {
+      const category = document.getElementById('as-category')?.value || '';
+      const maxPrice = document.getElementById('as-price')?.value || '';
+      const featured = document.getElementById('featured')?.checked || false;
+
+      const params = new URLSearchParams({ limit: 12, sort: 'latest' });
+      if (category) params.set('category', category);
+      if (maxPrice)  params.set('maxPrice', maxPrice);
+      if (featured)  params.set('featured', '1');
+
+      const grid    = document.querySelector('.advanced-search-results__grid');
+      const spinner = document.getElementById('loading-spinner');
+      if (!grid) return;
+
+      if (spinner) spinner.style.display = 'inline-block';
+      grid.innerHTML = '<p style="text-align:center;padding:40px;color:#888;">Searching…</p>';
+
+      try {
+        const data     = await BSC.apiFetch(`/api/products?${params}`);
+        const products = data.products || [];
+
+        if (products.length === 0) {
+          grid.innerHTML = '<p style="text-align:center;padding:40px;color:#888;">No products found. Try different filters.</p>';
+          return;
+        }
+
+        grid.innerHTML = products.map(p => {
+          const img = p.ImageUrl ||
+            'https://images.unsplash.com/photo-1592078615290-033ee584e267?auto=format&fit=crop&q=80&w=400';
+          return `
+            <article class="advanced-search-result-card" style="cursor:pointer;"
+              onclick="window.location.href='product.html?id=${p.ProductId}'">
+              <img src="${img}" alt="${p.ProductName}"
+                   class="advanced-search-result-card__image"
+                   onerror="this.src='https://images.unsplash.com/photo-1592078615290-033ee584e267?auto=format&fit=crop&q=80&w=400'" />
+              <h3 class="advanced-search-result-card__title">${p.ProductName}</h3>
+              <p class="advanced-search-result-card__price">$${parseFloat(p.Price).toFixed(2)}</p>
+              <p style="font-size:12px;color:#888;margin-top:4px;">${p.Category}</p>
+            </article>
+          `;
+        }).join('');
+      } catch (err) {
+        grid.innerHTML = `<p style="text-align:center;padding:40px;color:#e44;">Search failed: ${err.message}</p>`;
+      } finally {
+        if (spinner) spinner.style.display = 'none';
+      }
+    });
+
+    // ── Clear button ─────────────────────────────────────────
+    document.getElementById('as-clear-btn')?.addEventListener('click', () => {
+      document.getElementById('as-category').value  = '';
+      document.getElementById('as-price').value     = '';
+      document.getElementById('featured').checked   = false;
+      const grid = document.querySelector('.advanced-search-results__grid');
+      if (grid) grid.innerHTML = '';
+    });
+  </script>
+</body>
+</html>

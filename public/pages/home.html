@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Furniture Store | Where Traditional Meets Modern</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../assets/css/home.css" />
+  <link rel="stylesheet" href="../assets/css/footer.css" />
+  <link rel="stylesheet" href="../assets/css/header.css" />
+</head>
+<body>
+
+  <div id="header-placeholder"></div>
+
+  <main class="home-page">
+    <!-- Hero -->
+    <section class="home-hero">
+      <img
+        src="../assets/images/chair.avif"
+        alt="Furniture hero background"
+        class="home-hero__background"
+      />
+
+      <div class="home-hero__overlay">
+        <div class="home-hero__container">
+          <div class="home-hero__content">
+            <span class="home-hero__eyebrow">Furniture</span>
+            <h1 class="home-hero__title">Where Traditional Meets Modern</h1>
+            <p class="home-hero__description">
+              Mi tristique est nunc, sapien ante tortor ac. Suspendisse leo et cursus pharetra tellus tincidunt.
+            </p>
+
+            <div class="home-hero__actions">
+              <button class="home-hero__button home-hero__button--primary"
+                onclick="window.location.href='shop.html'">Shop now</button>
+              <button class="home-hero__button home-hero__button--secondary"
+                onclick="window.location.href='about-us.html'">Learn more</button>
+            </div>
+          </div>
+
+          <div class="home-hero__promo-grid">
+            <div class="home-hero__promo-card home-hero__promo-card--image">
+              <img
+                src="../assets/images/chair1.avif"
+                alt="Promo furniture"
+                class="home-hero__promo-image"
+              />
+              <div class="home-hero__promo-price">$199</div>
+            </div>
+
+            <div class="home-hero__promo-card home-hero__promo-card--offer">
+              <div class="home-hero__promo-offer-title">25% OFF</div>
+              <div class="home-hero__promo-offer-text">Custom-made furniture</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="home-section home-section--categories">
+      <div class="page-container">
+        <div class="section-heading">
+          <h2 class="section-heading__title">Shop by Categories</h2>
+          <button class="section-heading__button">View all</button>
+        </div>
+
+        <div class="category-grid">
+          <article class="category-card">
+            <img src="../assets/images/table.avif" alt="Tables" class="category-card__image" />
+            <h3 class="category-card__title">Tables</h3>
+            <span class="category-card__meta">24 products</span>
+          </article>
+
+          <article class="category-card">
+            <img src="../assets/images/chair.avif" alt="Chairs" class="category-card__image" />
+            <h3 class="category-card__title">Chairs</h3>
+            <span class="category-card__meta">28 products</span>
+          </article>
+
+          <article class="category-card">
+            <img src="../assets/images/chair1.avif" alt="Armchairs" class="category-card__image" />
+            <h3 class="category-card__title">Armchairs</h3>
+            <span class="category-card__meta">18 products</span>
+          </article>
+
+          <article class="category-card">
+            <img src="../assets/images/sofa.avif" alt="Sofas" class="category-card__image" />
+            <h3 class="category-card__title">Sofas</h3>
+            <span class="category-card__meta">42 products</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- New Products -->
+    <section class="home-section home-section--products">
+      <div class="page-container">
+        <div class="section-heading section-heading--center">
+          <h2 class="section-heading__title">New Products</h2>
+        </div>
+
+        <div class="product-tabs">
+          <a href="#" class="product-tabs__link product-tabs__link--active">All</a>
+          <a href="#" class="product-tabs__link">Chairs</a>
+          <a href="#" class="product-tabs__link">Tables</a>
+          <a href="#" class="product-tabs__link">Armchairs</a>
+        </div>
+
+        <div class="product-grid">
+          <!-- Product cards will be loaded dynamically by home-new-products.js -->
+          <script src="../assets/js/home-new-products.js"></script>
+        </div>
+      </div>
+    </section>
+
+    <!-- Room Showcase -->
+    <section class="home-section home-section--rooms">
+      <div class="page-container">
+        <div class="room-grid">
+          <article class="room-card room-card--large">
+            <img src="../assets/images/sofa.avif" alt="Bedroom" class="room-card__image" />
+            <div class="room-card__label">Bedroom →</div>
+          </article>
+
+          <article class="room-card room-card--tall">
+            <img src="../assets/images/chair1.avif" alt="Kitchen" class="room-card__image" />
+            <div class="room-card__label">Kitchen →</div>
+          </article>
+
+          <article class="room-card">
+            <img src="../assets/images/chair.avif" alt="Living room" class="room-card__image" />
+            <div class="room-card__label">Living room →</div>
+          </article>
+
+          <article class="room-card">
+            <img src="../assets/images/table.avif" alt="Hallway" class="room-card__image" />
+            <div class="room-card__label">Hallway →</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature Split -->
+    <section class="home-feature">
+      <div class="home-feature__media">
+        <img
+          src="../assets/images/best-seller/img1.avif"
+          alt="Affordable furniture"
+          class="home-feature__image"
+        />
+        <div class="home-feature__play-button">▶</div>
+      </div>
+
+      <div class="home-feature__content">
+        <h2 class="home-feature__title">Affordable furniture for every home</h2>
+        <p class="home-feature__text">
+          Ultrices porttitor lacus sed condimentum nulla viverra. Maecenas sed nisi imperdiet sed lorem sed quis sagittis in. Auctor augue ut nec a quisque libero imperdiet velit ut.
+        </p>
+        <p class="home-feature__subtext">
+          Tellus dui pharetra ut pellentesque posuere sit amet. Curabitur lacus viverra in sit tortor. Magna tristique tristique blandit nunc tincidunt et duis adipiscing ac. Nulla dictum semper commodo.
+        </p>
+      </div>
+    </section>
+
+    <!-- Bestsellers -->
+    <section class="home-section home-section--bestsellers">
+      <div class="page-container">
+        <div class="bestseller-header">
+          <div class="bestseller-header__left">
+            <h2 class="section-heading__title">Bestsellers</h2>
+            <p class="bestseller-header__subtitle">Most loved by customers</p>
+          </div>
+          <button class="section-heading__button">View all</button>
+        </div>
+
+        <div class="bestseller-grid">
+          <!-- Bestseller cards will be loaded dynamically by home-bestseller.js -->
+          <script src="../assets/js/home-bestseller.js"></script>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reviews -->
+    <section class="home-section home-section--reviews">
+      <div class="page-container home-review">
+        <div class="home-review__content">
+          <h2 class="home-review__title">Customer Reviews</h2>
+
+          <div class="home-review__stars">★★★★★</div>
+
+          <p class="home-review__quote">
+            "Ultrices porttitor lacus sed condimentum nulla viverra. Maecenas sed nisi imperdiet sed lorem sed quis sagittis in. Auctor augue ut nec a quisque libero imperdiet velit ut."
+          </p>
+
+          <div class="home-review__author">
+            <img src="../assets/images/user.png" alt="Devon Simpson" class="home-review__avatar" />
+            <div>
+              <p class="home-review__author-name">Devon Simpson</p>
+              <p class="home-review__author-role">Customer</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="home-review__image-wrap">
+          <img
+            src="../assets/images/best-seller/img3.avif"
+            alt="Customer review"
+            class="home-review__image"
+          />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/layout.js"></script>
+  <script src="../assets/js/animations.js"></script>
+  <script>
+    lucide.createIcons();
+
+    // ── Category cards → shop filtered by category ─────────────
+    document.querySelectorAll('.category-card').forEach(card => {
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', () => {
+        const cat = card.querySelector('.category-card__title')?.textContent.trim() || '';
+        window.location.href = `shop.html?category=${encodeURIComponent(cat)}`;
+      });
+    });
+
+    // ── "View all" section buttons → shop ──────────────────────
+    document.querySelectorAll('.section-heading__button').forEach(btn => {
+      btn.style.cursor = 'pointer';
+      btn.addEventListener('click', () => window.location.href = 'shop.html');
+    });
+
+    // ── New Products cards → product details ─────────────────
+    // (Handled by home-new-products.js)
+
+    // ── Room showcase cards → shop ──────────────────────────────
+    document.querySelectorAll('.room-card').forEach(card => {
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', () => window.location.href = 'shop.html');
+    });
+
+    // ── Bestseller cards → shop ─────────────────────────────────
+    document.querySelectorAll('.bestseller-card').forEach(card => {
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.bestseller-card__wishlist') || e.target.closest('.bestseller-card__btn')) return;
+        window.location.href = 'shop.html';
+      });
+    });
+
+    // ── Bestseller wishlist buttons ──────────────────────────────
+    document.querySelectorAll('.bestseller-card__wishlist').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        btn.style.color = btn.style.color === 'red' ? 'black' : 'red';
+      });
+    });
+
+    // ── Bestseller "Add to Cart" buttons ─────────────────────────
+    document.querySelectorAll('.bestseller-card__btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        alert('Added to cart! (This is a demo)');
+      });
+    });
+  </script>
+</body>
+</html>

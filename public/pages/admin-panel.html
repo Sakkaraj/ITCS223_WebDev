@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel | Furniture Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../assets/css/admin-panel.css" />
+  <link rel="stylesheet" href="../assets/css/footer.css" />
+  <link rel="stylesheet" href="../assets/css/admin-header.css" />
+</head>
+<body>
+  <div id="header-placeholder"></div>
+
+  <section class="admin-panel-hero">
+    <img
+      src="../assets/images/table.avif"
+      alt="Admin Panel Banner"
+      class="admin-panel-hero__image"
+    />
+    <div class="admin-panel-hero__overlay"></div>
+
+    <div class="admin-panel-hero__content">
+      <h1 class="admin-panel-hero__title">Admin Panel</h1>
+
+      <button class="admin-panel-hero__add-button">
+        <i data-lucide="plus" class="admin-panel-hero__add-icon"></i>
+        <span>Add Product</span>
+      </button>
+    </div>
+  </section>
+
+  <main class="admin-panel-page">
+    <div class="page-container">
+      <div class="admin-panel-page__layout">
+        <!-- Sidebar -->
+        <aside class="admin-panel-sidebar">
+          <section class="admin-panel-filter-group">
+            <h3 class="admin-panel-filter-group__title">Filter by Price</h3>
+
+            <div class="admin-panel-price-slider">
+              <div class="admin-panel-price-slider__track"></div>
+              <div class="admin-panel-price-slider__range"></div>
+              <div class="admin-panel-price-slider__thumb admin-panel-price-slider__thumb--left"></div>
+              <div class="admin-panel-price-slider__thumb admin-panel-price-slider__thumb--right"></div>
+            </div>
+
+            <p class="admin-panel-filter-group__price-text">
+              Price: <span>$99 — $9999</span>
+            </p>
+          </section>
+
+          <section class="admin-panel-filter-group">
+            <h3 class="admin-panel-filter-group__title">Filter by Categories</h3>
+
+            <ul class="admin-panel-filter-list">
+              <li class="admin-panel-filter-list__item">
+                <label class="admin-panel-filter-list__label">
+                  <input type="checkbox" class="admin-panel-filter-list__checkbox" />
+                  <span>Chairs</span>
+                </label>
+                <span class="admin-panel-filter-list__count">10</span>
+              </li>
+
+              <li class="admin-panel-filter-list__item">
+                <label class="admin-panel-filter-list__label">
+                  <input type="checkbox" class="admin-panel-filter-list__checkbox" />
+                  <span>Beds</span>
+                </label>
+                <span class="admin-panel-filter-list__count">10</span>
+              </li>
+
+              <li class="admin-panel-filter-list__item">
+                <label class="admin-panel-filter-list__label">
+                  <input type="checkbox" class="admin-panel-filter-list__checkbox" />
+                  <span>Cabinets</span>
+                </label>
+                <span class="admin-panel-filter-list__count">10</span>
+              </li>
+            </ul>
+          </section>
+
+          <section class="admin-panel-filter-group">
+            <h3 class="admin-panel-filter-group__title">Filter by Color</h3>
+
+            <ul class="admin-panel-color-list">
+              <li class="admin-panel-color-list__item">
+                <div class="admin-panel-color-list__label">
+                  <span class="admin-panel-color-list__swatch admin-panel-color-list__swatch--black"></span>
+                  <span>Black</span>
+                </div>
+                <span class="admin-panel-filter-list__count">10</span>
+              </li>
+
+              <li class="admin-panel-color-list__item">
+                <div class="admin-panel-color-list__label">
+                  <span class="admin-panel-color-list__swatch admin-panel-color-list__swatch--blue"></span>
+                  <span>Blue</span>
+                </div>
+                <span class="admin-panel-filter-list__count">10</span>
+              </li>
+            </ul>
+          </section>
+
+          <section class="admin-panel-best-sellers">
+            <h3 class="admin-panel-best-sellers__title">Best Sellers</h3>
+
+            <div class="admin-panel-best-sellers__list">
+              <article class="admin-panel-best-seller-card">
+                <div class="admin-panel-best-seller-card__image-wrap">
+                  <img
+                    src="../assets/images/best-seller/img.avif"
+                    alt="Classic Chair"
+                    class="admin-panel-best-seller-card__image"
+                  />
+                </div>
+                <div class="admin-panel-best-seller-card__content">
+                  <h4 class="admin-panel-best-seller-card__name">Classic Chair</h4>
+                  <p class="admin-panel-best-seller-card__price">$99</p>
+                </div>
+              </article>
+
+              <article class="admin-panel-best-seller-card">
+                <div class="admin-panel-best-seller-card__image-wrap">
+                  <img
+                    src="../assets/images/best-seller/img1.avif"
+                    alt="Coffee Table"
+                    class="admin-panel-best-seller-card__image"
+                  />
+                </div>
+                <div class="admin-panel-best-seller-card__content">
+                  <h4 class="admin-panel-best-seller-card__name">Coffee Table</h4>
+                  <p class="admin-panel-best-seller-card__price">$1800</p>
+                </div>
+              </article>
+
+              <article class="admin-panel-best-seller-card">
+                <div class="admin-panel-best-seller-card__image-wrap">
+                  <img
+                    src="../assets/images/best-seller/img3.avif"
+                    alt="Papasan Chair"
+                    class="admin-panel-best-seller-card__image"
+                  />
+                </div>
+                <div class="admin-panel-best-seller-card__content">
+                  <h4 class="admin-panel-best-seller-card__name">Papasan Chair</h4>
+                  <p class="admin-panel-best-seller-card__price">$1000</p>
+                </div>
+              </article>
+            </div>
+          </section>
+        </aside>
+
+        <!-- Main content -->
+        <section class="admin-panel-content">
+          <div class="admin-panel-content__header">
+            <h2 class="admin-panel-content__title">Admin Panel</h2>
+            <button class="admin-panel-content__add-button">+ Add Product</button>
+          </div>
+
+          <div class="admin-panel-table-wrapper">
+            <table class="admin-panel-table">
+              <thead class="admin-panel-table__head">
+                <tr>
+                  <th>Product</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>CMF</th>
+                  <th>Dimension</th>
+                  <th>Description</th>
+                  <th>Featured</th>
+                  <th class="admin-panel-table__actions-header">Actions</th>
+                </tr>
+              </thead>
+
+              <tbody class="admin-panel-table__body">
+                <!-- Products loaded dynamically by admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <div id="deleteModal" class="admin-panel-modal is-hidden">
+    <div class="admin-panel-modal__backdrop" onclick="closeModal()"></div>
+
+    <div class="admin-panel-modal__dialog">
+      <div class="admin-panel-modal__icon-wrap">
+        <i data-lucide="trash-2" class="admin-panel-modal__icon"></i>
+      </div>
+
+      <h2 class="admin-panel-modal__title">Confirm Service Deletion?</h2>
+      <p class="admin-panel-modal__text">
+        Are you sure you want to delete this service? This action cannot be undone.
+      </p>
+
+      <div class="admin-panel-modal__actions">
+        <button onclick="closeModal()" class="admin-panel-modal__button admin-panel-modal__button--cancel">
+          Cancel
+        </button>
+        <button class="admin-panel-modal__button admin-panel-modal__button--delete">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="../assets/js/layout.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/admin.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

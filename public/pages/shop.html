@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop | Furniture Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../assets/css/shop.css" />
+  <link rel="stylesheet" href="../assets/css/footer.css" />
+  <link rel="stylesheet" href="../assets/css/header.css" />
+</head>
+<body>
+  <div id="header-placeholder"></div>
+
+  <!-- Category Strip -->
+<section class="shop-category-strip">
+  <div class="page-container">
+    <div class="shop-category-strip__grid">
+      <article class="shop-category-pill">
+        <div class="shop-category-pill__icon-box">
+          <i data-lucide="armchair" class="shop-category-pill__icon"></i>
+        </div>
+        <div class="shop-category-pill__content">
+          <h4 class="shop-category-pill__title">Armchairs</h4>
+          <p class="shop-category-pill__meta">124 products</p>
+        </div>
+      </article>
+
+      <article class="shop-category-pill">
+        <div class="shop-category-pill__icon-box">
+          <i data-lucide="door-closed" class="shop-category-pill__icon"></i>
+        </div>
+        <div class="shop-category-pill__content">
+          <h4 class="shop-category-pill__title">Cabinets</h4>
+          <p class="shop-category-pill__meta">20 products</p>
+        </div>
+      </article>
+
+      <article class="shop-category-pill">
+        <div class="shop-category-pill__icon-box">
+          <i data-lucide="sofa" class="shop-category-pill__icon"></i>
+        </div>
+        <div class="shop-category-pill__content">
+          <h4 class="shop-category-pill__title">Sofas</h4>
+          <p class="shop-category-pill__meta">42 products</p>
+        </div>
+      </article>
+
+      <article class="shop-category-pill">
+        <div class="shop-category-pill__icon-box">
+          <i data-lucide="proportions" class="shop-category-pill__icon shop-category-pill__icon--rotated"></i>
+        </div>
+        <div class="shop-category-pill__content">
+          <h4 class="shop-category-pill__title">Chairs</h4>
+          <p class="shop-category-pill__meta">120 products</p>
+        </div>
+      </article>
+
+      <article class="shop-category-pill">
+        <div class="shop-category-pill__icon-box">
+          <i data-lucide="lamp" class="shop-category-pill__icon"></i>
+        </div>
+        <div class="shop-category-pill__content">
+          <h4 class="shop-category-pill__title">Decor</h4>
+          <p class="shop-category-pill__meta">299 products</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+  <main class="shop-page">
+    <div class="page-container">
+      <div class="shop-page__layout">
+        <!-- Sidebar -->
+        <aside class="shop-sidebar">
+          <section class="shop-filter-group">
+            <h4 class="shop-filter-group__title">Filter by Price</h4>
+            <input type="range" min="99" max="9999" class="shop-filter-group__range" />
+            <div class="shop-filter-group__range-values">
+              <span>$99</span>
+              <span>$9,999</span>
+            </div>
+          </section>
+
+          <section class="shop-filter-group">
+            <h4 class="shop-filter-group__title">Categories</h4>
+            <ul class="shop-filter-list">
+              <!-- Categories will be loaded dynamically by shop.js -->
+            </ul>
+          </section>
+
+          <section class="shop-filter-group">
+            <h4 class="shop-filter-group__title">Sort By</h4>
+            <select class="shop-products__sort">
+              <option value="latest">Sort by latest</option>
+              <option value="price_asc">Price: Low to High</option>
+              <option value="price_desc">Price: High to Low</option>
+            </select>
+          </section>
+        </aside>
+        <!-- Product Grid -->
+        <section class="shop-products">
+          <div class="shop-products__toolbar">
+            <p class="shop-products__result-text">Showing 0 results</p>
+          </div>
+          <div class="shop-products__grid">
+            <!-- Products will be dynamically loaded here by shop.js -->
+          </div>
+          <div class="shop-pagination"></div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Featured Products -->
+  <section class="shop-featured">
+    <div class="page-container">
+      <div class="shop-featured__header">
+        <h2 class="shop-featured__title">Featured Products</h2>
+        <a href="shop.html" class="shop-featured__button">View all</a>
+      </div>
+      <div class="shop-featured__grid">
+        <!-- Featured products will be dynamically loaded here by shop-featured.js -->
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="../assets/js/layout.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/animations.js"></script>
+  <script src="../assets/js/shop.js"></script>
+  <script src="../assets/js/shop-featured.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Cart | Furniture Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../assets/css/cart.css" />
+  <link rel="stylesheet" href="../assets/css/footer.css" />
+  <link rel="stylesheet" href="../assets/css/header.css" />
+</head>
+<body>
+  <div id="header-placeholder"></div>
+
+  <section class="cart-hero">
+    <img
+      src="../assets/images/chair.avif"
+      alt="Cart banner"
+      class="cart-hero__image"
+    />
+    <div class="cart-hero__overlay">
+      <h1 class="cart-hero__title">Your Cart</h1>
+    </div>
+  </section>
+
+  <main class="cart-page">
+    <div class="page-container">
+      <section class="cart-content">
+        <div class="cart-progress">
+          <div class="cart-progress__track">
+            <div id="top-slider-thumb" class="cart-progress__thumb"></div>
+          </div>
+        </div>
+
+        <div class="cart-table-wrapper no-scrollbar" id="cart-table-container">
+          <table class="cart-table">
+            <thead class="cart-table__head">
+              <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>CMF</th>
+                <th>Dimension</th>
+                <th>Description</th>
+                <th class="cart-table__actions-column">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody class="cart-table__body">
+              <!-- Cart items loaded dynamically by cart-api.js -->
+            </tbody>
+          </table>
+        </div>
+
+        <section class="cart-summary">
+          <p class="cart-summary__line">Item Total: <span class="js-subtotal">$0.00</span></p>
+          <p class="cart-summary__line">Vat + Tax: <span class="js-vat">$0.00 (7%)</span></p>
+          <p class="cart-summary__line">Logistic cost: <span>$500.00</span></p>
+
+          <div class="cart-summary__total">
+            <p>Total: <span class="js-grand-total">$0.00</span></p>
+          </div>
+
+          <button class="cart-summary__checkout-button">Check Out</button>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <div id="deleteModal" class="cart-modal is-hidden">
+    <div class="cart-modal__backdrop" onclick="closeDeleteModal()"></div>
+
+    <div class="cart-modal__dialog">
+      <div class="cart-modal__icon-wrap">
+        <i data-lucide="trash-2" class="cart-modal__icon"></i>
+      </div>
+
+      <h2 class="cart-modal__title">Confirm Service Deletion?</h2>
+      <p class="cart-modal__text">
+        Are you sure you want to delete this service?<br />
+        This action cannot be undone.
+      </p>
+
+      <div class="cart-modal__actions">
+        <button onclick="closeDeleteModal()" class="cart-modal__button cart-modal__button--cancel">
+          Cancel
+        </button>
+        <button class="cart-modal__button cart-modal__button--delete">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="../assets/js/layout.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/cart-api.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

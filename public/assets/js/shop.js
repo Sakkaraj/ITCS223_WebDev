@@ -1,0 +1,343 @@
+/**
+ * shop.js — Dynamically loads products for shop.html
+ * Depends on api.js being loaded first.
+ */
+
+document.addEventListener('DOMContentLoaded', async () => {
+
+  // ─── State ────────────────────────────────────────────────
+  const urlParams        = new URLSearchParams(window.location.search);
+  let currentPage        = 1;
+  let currentSort        = 'latest';
+  let selectedCategories = urlParams.get('category') ? [urlParams.get('category')] : [];
+  let maxPriceFilter     = 9999;
+  let totalPages         = 1;
+
+
+  // ─── DOM References ───────────────────────────────────────
+  const productGrid    = document.querySelector('.shop-products__grid');
+  const resultText     = document.querySelector('.shop-products__result-text');
+  const sortSelect     = document.querySelector('.shop-products__sort');
+  const priceRange     = document.querySelector('.shop-filter-group__range');
+  const paginationWrap = document.querySelector('.shop-pagination');
+  const categoryList   = document.querySelector('.shop-filter-list');
+  const categoryStrip  = document.querySelector('.shop-category-strip__grid');
+
+  // ─── Load Categories into Sidebar & Strip ─────────────────
+  async function loadCategories() {
+    try {
+      const categories = await BSC.apiFetch('/api/products/meta/categories');
+
+      if (categoryList) {
+        categoryList.innerHTML = categories.map(cat => `
+          <li class="shop-filter-list__item">
+            <label class="shop-filter-list__label">
+              <input type="checkbox" class="shop-filter-list__checkbox" value="${cat.Category}" />
+              <span>${cat.Category}</span>
+            </label>
+            <span class="shop-filter-list__count">${cat.ProductCount}</span>
+          </li>
+        `).join('');
+
+        // Bind category checkboxes
+        categoryList.querySelectorAll('.shop-filter-list__checkbox').forEach(cb => {
+          cb.addEventListener('change', () => {
+            selectedCategories = [...categoryList.querySelectorAll('.shop-filter-list__checkbox:checked')]
+              .map(el => el.value);
+            currentPage = 1;
+            loadProducts();
+          });
+        });
+      }
+
+      if (categoryStrip) {
+        const icons = {
+          'Chair': 'armchair', 'Chairs': 'armchair',
+          'Sofa': 'sofa', 'Sofas': 'sofa',
+          'Cabinet': 'door-closed', 'Cabinets': 'door-closed',
+          'Bed': 'bed', 'Beds': 'bed',
+          'Table': 'table', 'Tables': 'table',
+          'Decor': 'lamp',
+        };
+        categoryStrip.innerHTML = categories.map(cat => `
+          <article class="shop-category-pill" data-category="${cat.Category}" style="cursor:pointer">
+            <div class="shop-category-pill__icon-box">
+              <i data-lucide="${icons[cat.Category] || 'tag'}" class="shop-category-pill__icon"></i>
+            </div>
+            <div class="shop-category-pill__content">
+              <h4 class="shop-category-pill__title">${cat.Category}</h4>
+              <p class="shop-category-pill__meta">${cat.ProductCount} products</p>
+            </div>
+          </article>
+        `).join('');
+
+        categoryStrip.querySelectorAll('.shop-category-pill').forEach(pill => {
+          pill.addEventListener('click', () => {
+            const cat = pill.dataset.category;
+            selectedCategories = [cat];
+            // Check the matching checkbox
+            categoryList?.querySelectorAll('.shop-filter-list__checkbox').forEach(cb => {
+              cb.checked = cb.value === cat;
+            });
+            currentPage = 1;
+            loadProducts();
+            // Scroll to products
+            document.querySelector('.shop-page')?.scrollIntoView({ behavior: 'smooth' });
+          });
+        });
+
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      }
+    } catch (err) {
+      console.error('Failed to load categories:', err.message);
+    }
+  }
+
+  // ─── Render a single product card ─────────────────────────
+  function renderProductCard(p) {
+    const imgSrc = p.ImageUrl ||
+      `assets/images/table.avif`;
+
+    // Render color swatches if product has colors
+    let colorSwatches = '';
+    if (Array.isArray(p.colors) && p.colors.length > 0) {
+      const swatchesHTML = p.colors.slice(0, 5).map((c, idx) => {
+        const isActive = idx === 0 ? ' product-color-swatch--active' : '';
+        return `<button class="product-color-swatch${isActive}" style="background-color: ${c.HexCode};" title="${c.ColorName}" data-color-index="${idx}" data-color-name="${c.ColorName}"></button>`;
+      }).join('');
+      colorSwatches = `<div class="product-color-swatches-container">${swatchesHTML}</div>`;
+    }
+
+    return `
+      <article class="shop-product-card" data-id="${p.ProductId}" data-product-name="${p.ProductName}">
+        <div class="shop-product-card__image-wrap">
+          ${p.Featured ? '<span class="shop-product-card__badge">Featured</span>' : ''}
+          <img src="${imgSrc}" alt="${p.ProductName}" class="shop-product-card__image product-card-image"
+               onerror="this.src='assets/images/chair.avif'" />
+          <div class="shop-product-card__action-wrap">
+            <button class="shop-product-card__action js-add-to-cart" data-id="${p.ProductId}">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+        <h3 class="shop-product-card__title">${p.ProductName}</h3>
+        <p class="shop-product-card__price">$${parseFloat(p.Price).toFixed(2)}</p>
+        <p class="shop-product-card__category" style="font-size:12px;color:#888;margin-top:2px;">${p.Category}</p>
+        ${colorSwatches}
+      </article>
+    `;
+  }
+
+  // ─── Load Products ─────────────────────────────────────────
+  async function loadProducts() {
+    if (!productGrid) return;
+
+    productGrid.innerHTML = `
+      <div style="grid-column:1/-1;text-align:center;padding:60px 0;color:#888;">
+        <div style="font-size:32px;animation:spin 1s linear infinite;display:inline-block;">⟳</div>
+        <p style="margin-top:12px;">Loading products…</p>
+      </div>
+    `;
+
+    try {
+      const params = new URLSearchParams({
+        page: currentPage,
+        limit: 12,
+        sort: currentSort,
+        ...(selectedCategories.length === 1 ? { category: selectedCategories[0] } : {}),
+        maxPrice: maxPriceFilter,
+      });
+
+      const data = await BSC.apiFetch(`/api/products?${params}`);
+      const { products, pagination } = data;
+      totalPages = pagination.totalPages;
+
+      if (resultText) {
+        const start = (pagination.page - 1) * pagination.limit + 1;
+        const end   = Math.min(pagination.page * pagination.limit, pagination.total);
+        resultText.textContent = `Showing ${products.length > 0 ? start : 0}–${end} of ${pagination.total} results`;
+      }
+
+      if (products.length === 0) {
+        productGrid.innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:80px 0;color:#888;">
+            <p style="font-size:48px;">🪑</p>
+            <p style="font-size:18px;font-weight:600;margin-top:12px;">No products found</p>
+            <p style="font-size:14px;margin-top:6px;">Try adjusting your filters</p>
+          </div>
+        `;
+        return;
+      }
+
+      productGrid.innerHTML = products.map(renderProductCard).join('');
+
+      // Bind Add to Cart buttons
+      productGrid.querySelectorAll('.js-add-to-cart').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const id = btn.dataset.id;
+          btn.disabled = true;
+          btn.textContent = 'Adding…';
+          try {
+            await BSC.apiFetch('/api/cart', {
+              method: 'POST',
+              body: JSON.stringify({ productId: id, quantity: 1 }),
+            });
+            BSC.showToast('Item added to cart!', 'success');
+            BSC.refreshCartCount();
+          } catch (err) {
+            BSC.showToast(err.message, 'error');
+          } finally {
+            btn.disabled = false;
+            btn.textContent = 'Add to Cart';
+          }
+        });
+      });
+
+      // ─── Color swatch selection ────────────────────────────
+      productGrid.querySelectorAll('.product-color-swatch').forEach(swatch => {
+        swatch.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const card = swatch.closest('.shop-product-card');
+          const container = swatch.closest('.product-color-swatches-container');
+          
+          if (!card || !container) return;
+          
+          // Remove active from all swatches in this card
+          container.querySelectorAll('.product-color-swatch').forEach(s => {
+            s.classList.remove('product-color-swatch--active');
+          });
+          
+          // Add active to clicked swatch
+          swatch.classList.add('product-color-swatch--active');
+          
+          // Update the product image (cycle through available images)
+          const colorIndex = parseInt(swatch.dataset.colorIndex) || 0;
+          const card_img = card.querySelector('.product-card-image');
+          if (card_img) {
+            const productName = card.dataset.productName?.toLowerCase() || '';
+            const colorName = swatch.dataset.colorName?.toLowerCase() || '';
+            
+            // Map color names to image file extensions
+            const colorMap = {
+              'green': '-green',
+              'gray': '-grey',
+              'grey': '-grey',
+              'blue': '-blue',
+              'brown': '-brown',
+              'pink': '-pink',
+              'red': '-red',
+            };
+            
+            const colorSuffix = colorMap[colorName] || '';
+            
+            // Try to load new-product image with color variant
+            const newImageSrc = `assets/images/new-product/${productName}${colorSuffix}.jpeg`;
+            const testImg = new Image();
+            testImg.onload = () => {
+              card_img.src = newImageSrc;
+            };
+            testImg.onerror = () => {
+              // If color variant doesn't exist, cycle through thumbnails
+              const thumbnails = card.querySelectorAll('.product-gallery__thumbnail');
+              if (thumbnails.length > colorIndex) {
+                card_img.src = thumbnails[colorIndex]?.src || card_img.src;
+              }
+            };
+            testImg.src = newImageSrc;
+          }
+        });
+      });
+
+      renderPagination(pagination);
+
+      // ─── Click product card → go to detail page ────────────
+      productGrid.querySelectorAll('.shop-product-card').forEach(card => {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', (e) => {
+          // Don't navigate if they clicked the Add-to-Cart button or color swatch
+          if (e.target.closest('.js-add-to-cart') || e.target.closest('.product-color-swatch')) return;
+          window.location.href = `product.html?id=${card.dataset.id}`;
+        });
+      });
+
+    } catch (err) {
+      productGrid.innerHTML = `
+        <div style="grid-column:1/-1;text-align:center;padding:80px 0;color:#e44;">
+          <p style="font-size:18px;font-weight:600;">Failed to load products</p>
+          <p style="font-size:13px;margin-top:6px;">${err.message}</p>
+          <button onclick="location.reload()" style="margin-top:16px;padding:8px 20px;border:1px solid #e44;background:none;color:#e44;border-radius:6px;cursor:pointer;">Retry</button>
+        </div>
+      `;
+    }
+  }
+
+  // ─── Render Pagination ─────────────────────────────────────
+  function renderPagination(pagination) {
+    if (!paginationWrap) return;
+    paginationWrap.innerHTML = '';
+
+    if (pagination.page > 1) {
+      const prev = document.createElement('button');
+      prev.className = 'shop-pagination__button';
+      prev.textContent = '← Prev';
+      prev.onclick = () => { currentPage--; loadProducts(); window.scrollTo(0, 0); };
+      paginationWrap.appendChild(prev);
+    }
+
+    for (let p = 1; p <= pagination.totalPages; p++) {
+      const btn = document.createElement('button');
+      btn.className = `shop-pagination__button${p === pagination.page ? ' shop-pagination__button--active' : ''}`;
+      btn.textContent = p;
+      btn.onclick = () => { currentPage = p; loadProducts(); window.scrollTo(0, 0); };
+      paginationWrap.appendChild(btn);
+    }
+
+    if (pagination.page < pagination.totalPages) {
+      const next = document.createElement('button');
+      next.className = 'shop-pagination__button shop-pagination__button--next';
+      next.textContent = 'Next →';
+      next.onclick = () => { currentPage++; loadProducts(); window.scrollTo(0, 0); };
+      paginationWrap.appendChild(next);
+    }
+  }
+
+  // ─── Sort ─────────────────────────────────────────────────
+  if (sortSelect) {
+    sortSelect.innerHTML = `
+      <option value="latest">Sort by latest</option>
+      <option value="price_asc">Price: Low to High</option>
+      <option value="price_desc">Price: High to Low</option>
+    `;
+    sortSelect.addEventListener('change', () => {
+      currentSort = sortSelect.value;
+      currentPage = 1;
+      loadProducts();
+    });
+  }
+
+  // ─── Price Range ───────────────────────────────────────────
+  if (priceRange) {
+    const rangeValues = document.querySelectorAll('.shop-filter-group__range-values span');
+    priceRange.addEventListener('input', () => {
+      maxPriceFilter = priceRange.value;
+      if (rangeValues[1]) rangeValues[1].textContent = `$${parseInt(priceRange.value).toLocaleString()}`;
+    });
+    priceRange.addEventListener('change', () => {
+      currentPage = 1;
+      loadProducts();
+    });
+  }
+
+  // ─── Initialise ────────────────────────────────────────────
+  await loadCategories();
+  await loadProducts();
+
+  // Inject spin animation
+  if (!document.getElementById('spin-style')) {
+    const s = document.createElement('style');
+    s.id = 'spin-style';
+    s.textContent = '@keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }';
+    document.head.appendChild(s);
+  }
+});
