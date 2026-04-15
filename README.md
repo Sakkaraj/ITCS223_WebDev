@@ -1,114 +1,156 @@
-# BoonSonClon Furniture Store
+# 🛋️ BoonSonClon — Furniture Store
+### *Where Traditional Meets Modern*
 
-A premium full-stack e-commerce furniture shopping application built with Node.js, Express, and SQLite.
-
-## 🚀 Quick Start Instructions
-
-Follow these steps to get the server up and running on your local machine:
-
-1. **Install Dependencies** (Required first time):
-   ```bash
-   npm install
-   ```
-
-2. **Setup Environment**:
-   Ensure you have a `.env` file in the root directory (copy from `.env.example` if needed).
-
-3. **Initialize Database**:
-   If you are starting fresh or need to reset the inventory:
-   ```bash
-   npm run seed
-   ```
-
-4. **Start the Server**:
-   ```bash
-   npm start
-   ```
-   The server will be available at **`http://localhost:3000`**.
+BoonSonClon is a high-end, full-stack e-commerce platform designed for premium furniture retail. Built with a robust Node.js backend and a sleek, responsive frontend, it provides a seamless shopping experience from discovery to checkout.
 
 ---
 
-## 📂 Project Structure
+## 🚀 Quick Start Guide
 
-This project follows a strict hierarchy to maintain code clarity and separation of concerns.
+### 1. Prerequisites
+- **Node.js** (v18+ recommended)
+- **Git**
+- **A terminal with script execution enabled** (e.g., PowerShell as Admin on Windows)
 
-```
-boonsonclon-furniture/
-├── public/                 # Frontend (Client-side)
-│   ├── assets/             # Images, CSS, and JS
-│   │   ├── css/            # Style sheets (modular)
-│   │   └── js/             # Page logic (modular)
-│   └── pages/              # HTML documents
-│
-├── server/                 # Backend (Server-side)
-│   ├── data/               # Persistent storage (SQLite DB)
-│   ├── middleware/         # Security & Auth logic
-│   ├── routes/             # API Endpoints
-│   ├── db.js               # Database connection logic
-│   └── server.js           # Main application entry
-│
-├── tools/                  # Developer utilities & test scripts
-├── .env                    # Environment configuration
-└── README.md               # You are here
+### 2. Installation
+```bash
+# 1. Clone the repository
+git clone https://github.com/Sakkaraj/ITCS223_WebDev.git
+cd ITCS223_WebDev
+
+# 2. Install dependencies
+npm install
+
+# 3. Setup environment
+cp .env.example .env
 ```
 
----
+### 3. Database Initialization
+This project uses a file-based SQLite database. To seed the initial data (Furniture, Categories, Admin account):
+```bash
+npm run seed
+```
 
-## 🛠 Available Scripts
+### 4. Run the Application
+```bash
+# Development Mode (with auto-restart)
+npm run dev
 
-In the project directory, you can run:
-
-| Command | Description |
-|---------|-------------|
-| `npm start` | Runs the server in production mode. |
-| `npm run dev` | Runs the server with **nodemon** (auto-restarts on changes). |
-| `npm run seed` | Re-initializes the database with default inventory and admin accounts. |
-
----
-
-## 🎯 Key Features
-
-- **Dynamic Shop**: Real-time product counts and chronological sorting for new arrivals.
-- **Admin Panel**: Full CRUD (Create, Read, Update, Delete) capabilities for product management.
-- **Interactive Maps**: Live Google Maps integration for store location.
-- **Newsletter**: Fully functional subscription system with database persistence.
-- **Responsive UI**: Premium, high-end design optimized for all screen sizes.
+# Production Mode
+npm start
+```
+Default Entry: **`http://localhost:3000`**
 
 ---
 
-## 💻 Tech Stack
+## 📂 Project Architecture
 
-- **Frontend**: HTML5, Vanilla CSS, JavaScript, Lucide Icons.
-- **Backend**: Node.js, Express.js.
-- **Database**: SQLite (file-based, no external setup required).
-- **Security**: JWT (JSON Web Tokens) and bcrypt password hashing.
+The project follows a modular "Clean Clean" structure, ensuring separation of concerns between backend logic and frontend presentation.
+
+```text
+ITCS223_WebDev/
+├── public/                 # 🌐 Frontend (Client-side)
+│   ├── assets/             # Shared resources
+│   │   ├── css/            # Modular stylesheets (style.css, header.css, etc.)
+│   │   ├── js/             # Page logic (shop.js, api.js, layout.js)
+│   │   └── images/         # Optimized product & UI assets
+│   └── pages/              # HTML templates
+│
+├── server/                 # 🏗️ Backend (Server-side)
+│   ├── data/               # Persistent storage (database.sqlite)
+│   ├── middleware/         # Security (Auth, JWT verification)
+│   ├── routes/             # RESTful API Endpoints
+│   ├── db.js               # Database connection & pooling
+│   └── server.js           # Core Express application
+│
+├── tools/                  # 🛠️ Dev Tools (Tests, DB Audit, Migrations)
+├── .env                    # Environment variables
+└── README.md               # Documentation
+```
 
 ---
 
-## 📋 API Overview
+## 🎯 Key Feature Catalog
 
-- `GET /api/products`: Fetch all inventory.
-- `POST /api/auth/login`: Admin and member authentication.
-- `POST /api/newsletter`: Subscribe to updates.
-- `POST /api/contact`: Send inquiries to the store.
+### 💎 Smart Inventory
+- **Dynamic Categorization**: The homepage automatically maps furniture to categories with real-time product counts.
+- **Chronological Sorting**: Newer pieces are automatically timestamped and pushed to the top of the "New Products" section.
+- **Smart Search**: Advanced filtering by Category, Material, and Price Range.
+
+### 🔐 Secure Administration
+- **Full CRUD**: Admins can Create, Read, Update, and Delete products through a secure dashboard.
+- **Image Management**: Support for multiple product views and thumbnail generation.
+- **JWT Authentication**: Secure, token-based access for Admins and Members.
+
+### ✉️ Interactive Marketing
+- **Functional Newsletter**: Fully integrated sign-up form with database persistence and duplicate prevention.
+- **Contact Integration**: Live connection between the Contact Us form and the administrative inbox.
+- **Live Maps**: Interactive Google Maps integration for physical store discovery.
 
 ---
 
-*This project is part of the ITCS223 Web Development course.*
-# Deployment
+## 🗄️ Database Schema (SQLite)
 
-To deploy this application:
+The system utilizes 16 integrated tables to manage every aspect of the store.
 
-1. Set `NODE_ENV=production`
-2. Use proper environment variables in production
-3. Consider using a process manager like PM2
-4. Set up a reverse proxy (nginx/Apache)
-5. Enable HTTPS
+| Table Name | Primary Role |
+|------------|--------------|
+| `Product` | Core furniture data (dimensions, price, weight, timestamps). |
+| `Category` | Dynamic product grouping (Chairs, Tables, Sofas, etc.). |
+| `Image` | Mapping multiple high-res assets to individual products. |
+| `Color` / `ProductColor` | Enabling multi-variant furniture selection. |
+| `AdminInformation` | Secure profile data for store managers. |
+| `AdminLoginInformation`| Credentials storage (Bcrypt hashed) with Role-based access. |
+| `Member` | Customer profile management. |
+| `NewsLetterSubscriber`| Email list for marketing automation. |
+| `Orders` / `OrderItem` | Transactional history and fulfillment tracking. |
 
-## Support
+---
 
-For issues or questions, please check the project documentation or contact the development team.
+## 🔌 API Reference
 
-## License
+### 🛋️ Products
+- `GET /api/products` — Retrieve all inventory (supports pagination & sorting).
+- `GET /api/products/:id` — Detailed view for a single item.
+- `POST /api/products` — [ADMIN] Create new furniture.
+- `DELETE /api/products/:id` — [ADMIN] Remove inventory.
 
-This project is part of ITCS223 Web Development course.
+### 🔑 Authentication
+- `POST /api/auth/member/login` — Customer access.
+- `POST /api/auth/admin/login` — Administrative access.
+- `GET /api/auth/me` — Verify current session/JWT.
+
+### 🛒 Commerce
+- `GET /api/cart` — View current session cart.
+- `POST /api/cart` — Add item to cart.
+- `POST /api/newsletter` — Subscribe to updates.
+
+---
+
+## 🛠️ Advanced Troubleshooting
+
+### **Port 3000 Conflict**
+If you see `EADDRINUSE`, the port is already occupied.
+**Fix (Windows):**
+```powershell
+netstat -ano | findstr :3000
+taskkill /F /PID <ActualPID>
+```
+
+### **Windows Script Error (Execution Policy)**
+If `npm` or `nodemon` fails to load:
+**Fix:** Open PowerShell as Administrator and run:
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+---
+
+## 👨‍💻 Developer Support
+All development help scripts are located in the `/tools` directory.
+- `tools/db-verify.js` — Audits the current database integrity.
+- `tools/update_products.js` — Batch update utility for inventory.
+
+---
+
+*© 2024 BoonSonClon Furniture. Part of the ITCS223 Web Development Course.*
