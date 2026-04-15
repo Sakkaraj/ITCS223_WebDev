@@ -54,9 +54,7 @@ function getCurrentFile() {
 function isAdminPage(fileName) {
   const adminPages = [
     "admin-panel.html",
-    "add-product.html",
-    "admin-login.html",
-    "admin-signup.html"
+    "add-product.html"
   ];
 
   return adminPages.includes(fileName);
