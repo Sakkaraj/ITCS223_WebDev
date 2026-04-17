@@ -33,7 +33,3 @@ nul
 *.bak
 *.tmp
 
-# Old/Unused files
-DataBase.sql
-check_mysql.bat
-schema.sqlite.sql
