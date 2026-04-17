@@ -61,20 +61,6 @@ To ensure the best experience for both developers and users, we utilize a dual-d
 
 ---
 
-## 🔌 API Reference Highlights
-Full test cases are documented within each route file in `sec2_gr14_ws_src/routes/`.
-
-| Endpoint | Method | Role |
-|----------|--------|------|
-| `/api/products` | GET | List inventory with advanced filters |
-| `/api/products` | POST | **[ADMIN]** Add new equipment |
-| `/api/auth/me` | GET | Verify session |
-| `/api/cart` | POST | Add to persistent session cart |
-| `/api/cart/:id` | PATCH | Update item quantity in cart |
-| `/api/orders` | POST | **[MEMBER]** Checkout & Order creation |
-
----
-
 ## 📂 Project Structure
 ```text
 ITCS223_WebDev/
