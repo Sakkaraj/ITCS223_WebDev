@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       } catch (err) {
         if (err.status === 401) {
           BSC.showToast('Please sign in to add items to your cart.', 'error');
-          setTimeout(() => { window.location.href = 'sign-in.html'; }, 1500);
+          setTimeout(() => { window.location.href = 'sign-in'; }, 1500);
         } else {
           BSC.showToast(err.message || 'Failed to add to cart.', 'error');
         }

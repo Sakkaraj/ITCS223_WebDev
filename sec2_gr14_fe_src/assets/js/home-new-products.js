@@ -1,5 +1,5 @@
 /**
- * home-new-products.js — Dynamically loads new products on home.html
+ * home-new-products.js — Dynamically loads new products on home
  * with category filtering (All, Chairs, Tables, Armchairs)
  * Depends on api.js being loaded first.
  */
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         const productId = card.dataset.id;
         if (productId) {
-          window.location.href = `product.html?id=${productId}`;
+          window.location.href = `product?id=${productId}`;
         }
       });
     });

@@ -26,7 +26,7 @@ function renderWishlist() {
                 <i data-lucide="heart" class="wishlist-empty__icon"></i>
                 <h2 class="wishlist-empty__title">Your wishlist is empty</h2>
                 <p>Start adding items you love to find them here easily.</p>
-                <a href="shop.html" class="button-shop-now" style="display:inline-block; margin-top:24px; padding: 12px 30px; background: #000; color: #fff; text-decoration:none;">Go to Shop</a>
+                <a href="shop" class="button-shop-now" style="display:inline-block; margin-top:24px; padding: 12px 30px; background: #000; color: #fff; text-decoration:none;">Go to Shop</a>
             </div>
         `;
         if (window.lucide) lucide.createIcons();
@@ -70,7 +70,7 @@ function renderWishlist() {
     grid.querySelectorAll('.shop-product-card').forEach(card => {
         card.addEventListener('click', (e) => {
             if (e.target.closest('.js-add-to-cart') || e.target.closest('.shop-product-card__fav-btn')) return;
-            window.location.href = `product.html?id=${card.dataset.id}`;
+            window.location.href = `product?id=${card.dataset.id}`;
         });
     });
 

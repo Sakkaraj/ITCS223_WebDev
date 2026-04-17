@@ -11,7 +11,7 @@
     rel="stylesheet"
   />
   <script src="https://unpkg.com/lucide@latest"></script>
-  <link rel="stylesheet" href="../assets/css/advance-search.css" />
+  <link rel="stylesheet" href="../assets/css/style.css" /><link rel="stylesheet" href="../assets/css/advance-search.css" />
   <link rel="stylesheet" href="../assets/css/footer.css" />
   <link rel="stylesheet" href="../assets/css/header.css" />
 </head>
@@ -232,7 +232,7 @@
 
           return `
             <article class="advanced-search-result-card" style="cursor:pointer;"
-              onclick="window.location.href='product.html?id=${p.ProductId}'">
+              onclick="window.location.href='product?id=${p.ProductId}'">
               <div class="advanced-search-result-card__img-wrap">
                 <img src="${img}" alt="${p.ProductName}"
                      class="advanced-search-result-card__image"
@@ -275,3 +275,5 @@
   </script>
 </body>
 </html>
+
+

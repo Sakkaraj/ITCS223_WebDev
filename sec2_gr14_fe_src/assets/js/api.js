@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
       clearSession();
       showToast('Logged out successfully', 'success');
       setTimeout(() => {
-        window.location.href = '/pages/home.html';
+        window.location.href = '/pages/home';
       }, 800);
     }
   });

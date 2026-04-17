@@ -1,16 +1,16 @@
 /**
- * auth.js — Handles sign-in.html (member) and admin-login.html forms.
+ * auth.js — Handles sign-in (member) and admin-login forms.
  * Depends on api.js being loaded first.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ─── MEMBER SIGN-IN FORM (sign-in.html) ──────────────────
+  // ─── MEMBER SIGN-IN FORM (sign-in) ──────────────────
   const memberForm = document.querySelector('.signin-form');
   if (memberForm) {
     // If already logged in, redirect to home
     if (BSC.isLoggedIn() && BSC.getUser()?.role === 'member') {
-      window.location.href = '/pages/home.html';
+      window.location.href = '/pages/home';
       return;
     }
 
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           // BSC.saveSession(data.token, data.user); // Removed auto-login
           BSC.showToast('Account created! Please log in.', 'success');
-          setTimeout(() => { window.location.href = 'sign-in.html'; }, 1000);
+          setTimeout(() => { window.location.href = 'sign-in'; }, 1000);
 
         } else {
           const data = await BSC.apiFetch('/api/auth/member/login', {
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           BSC.saveSession(data.token, data.user);
           BSC.showToast(`Welcome back, ${data.user.firstName}!`, 'success');
-          setTimeout(() => { window.location.href = 'home.html'; }, 1000);
+          setTimeout(() => { window.location.href = 'home'; }, 1000);
         }
       } catch (err) {
         BSC.showToast(err.message, 'error');
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ─── ADMIN LOGIN FORM (admin-login.html) ─────────────────
+  // ─── ADMIN LOGIN FORM (admin-login) ─────────────────
   const adminForm = document.querySelector('.admin-login-form');
   if (adminForm) {
     adminForm.addEventListener('submit', async (e) => {
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         BSC.saveSession(data.token, data.user);
         BSC.showToast('Welcome, Admin!', 'success');
-        setTimeout(() => { window.location.href = 'admin-panel.html'; }, 1000);
+        setTimeout(() => { window.location.href = 'admin-panel'; }, 1000);
       } catch (err) {
         BSC.showToast(err.message, 'error');
       } finally {
@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ─── ADMIN SIGNUP FORM (admin-signup.html) ──────────────
+  // ─── ADMIN SIGNUP FORM (admin-signup) ──────────────
   const adminSignupForm = document.querySelector('.admin-signup-form');
   if (adminSignupForm) {
     adminSignupForm.addEventListener('submit', async (e) => {
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // BSC.saveSession(data.token, data.user); // Removed auto-login
         BSC.showToast('Admin account created! Please log in.', 'success');
-        setTimeout(() => { window.location.href = 'admin-login.html'; }, 1000);
+        setTimeout(() => { window.location.href = 'admin-login'; }, 1000);
       } catch (err) {
         BSC.showToast(err.message, 'error');
       } finally {
@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.js-logout-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       BSC.clearSession();
-      window.location.href = '/index.html';
+      window.location.href = '/index';
     });
   });
 

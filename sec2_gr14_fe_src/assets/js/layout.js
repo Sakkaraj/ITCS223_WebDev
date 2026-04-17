@@ -48,13 +48,16 @@ async function loadPartial(selector, filePath) {
 }
 
 function getCurrentFile() {
-  return window.location.pathname.split("/").pop() || "home.html";
+  const file = window.location.pathname.split("/").pop() || "home";
+  return file.replace(".html", "");
 }
 
 function isAdminPage(fileName) {
   const adminPages = [
-    "admin-panel.html",
-    "add-product.html"
+    "admin-panel",
+    "add-product",
+    "admin-login",
+    "admin-signup"
   ];
 
   return adminPages.includes(fileName);
@@ -64,18 +67,18 @@ function setActiveNavLink() {
   const currentFile = getCurrentFile();
 
     const pageMap = {
-      "home.html": "home",
-      "shop.html": "shop",
-      "product.html": "shop",
-      "advance-search.html": "shop",
-      "about-us.html": "about",
-      "contact-us.html": "contact",
-      "cart.html": "shop",
-      "sign-in.html": "account",
-      "admin-panel.html": "admin-panel",
-      "add-product.html": "add-product",
-      "admin-login.html": "admin-panel",
-      "admin-signup.html": "admin-panel"
+      "home": "home",
+      "shop": "shop",
+      "product": "shop",
+      "advance-search": "shop",
+      "about-us": "about",
+      "contact-us": "contact",
+      "cart": "shop",
+      "sign-in": "account",
+      "admin-panel": "admin-panel",
+      "add-product": "add-product",
+      "admin-login": "admin-panel",
+      "admin-signup": "admin-panel"
     };
 
   const currentPage = pageMap[currentFile];
@@ -99,15 +102,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   const currentFile = getCurrentFile();
 
   const headerFile = isAdminPage(currentFile)
-    ? "../assets/partials/admin-header.html"
-    : "../assets/partials/header.html";
+    ? "../assets/partials/admin-header"
+    : "../assets/partials/header";
 
   const wishlistScript = document.createElement('script');
   wishlistScript.src = '../assets/js/wishlist.js';
   document.head.appendChild(wishlistScript);
 
   await loadPartial("#header-placeholder", headerFile);
-  await loadPartial("#footer-placeholder", "../assets/partials/footer.html");
+  await loadPartial("#footer-placeholder", "../assets/partials/footer");
 
   if (window.BSC && window.BSC.updateNavAuth) {
     window.BSC.updateNavAuth();
@@ -198,7 +201,7 @@ async function initHeaderSearch() {
       dropdown.querySelectorAll('.search-results-dropdown__item').forEach(item => {
         item.addEventListener('mousedown', () => { // Use mousedown to fire before blur
           const id = item.dataset.id;
-          window.location.href = `/pages/product.html?id=${id}`;
+          window.location.href = `/pages/product?id=${id}`;
         });
       });
     }
@@ -239,7 +242,7 @@ async function initHeaderSearch() {
     const query = searchInput.value.trim();
     const cat = selectNode ? selectNode.value : '';
     
-    const url = '/pages/shop.html';
+    const url = '/pages/shop';
     const params = new URLSearchParams();
     if (cat && cat !== 'All Categories') params.set('category', cat);
     if (query) params.set('search', query);
@@ -263,7 +266,7 @@ async function initHeaderSearch() {
   if (advBtn) {
     advBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      window.location.href = '/pages/advance-search.html';
+      window.location.href = '/pages/advance-search';
     });
   }
 
@@ -277,7 +280,7 @@ async function initHeaderSearch() {
       // If user picks a category and hasn't started typing, browse that category immediately
       if (!query && cat !== 'All Categories') {
         const params = new URLSearchParams({ category: cat });
-        window.location.href = `/pages/shop.html?${params.toString()}`;
+        window.location.href = `/pages/shop?${params.toString()}`;
       }
       // Mode 2 & 3 (Text or Hybrid): Do nothing, wait for Enter or Click
     });

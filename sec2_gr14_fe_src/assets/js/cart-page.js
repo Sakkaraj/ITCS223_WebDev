@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const summarySection = document.querySelector('.cart-summary');
   const checkoutBtn  = document.querySelector('.cart-summary__checkout-button');
 
-  if (!tableBody) return; // Only run on cart.html
+  if (!tableBody) return; // Only run on cart
 
   // ─── Render Cart ──────────────────────────────────────────
   async function renderCart() {
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <tr><td colspan="7" style="text-align:center;padding:60px;color:#888;">
             <p style="font-size:48px;">🛒</p>
             <p style="font-size:18px;font-weight:600;margin-top:12px;">Your cart is empty</p>
-            <p style="font-size:14px;margin-top:6px;"><a href="shop.html" style="color:#333;text-decoration:underline;">Continue Shopping</a></p>
+            <p style="font-size:14px;margin-top:6px;"><a href="shop" style="color:#333;text-decoration:underline;">Continue Shopping</a></p>
           </td></tr>
         `;
         updateSummary([]);
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (imgSrc.startsWith('assets/')) {
           imgSrc = '../' + imgSrc;
         }
-        const productLink = `product.html?id=${item.ProductId}`;
+        const productLink = `product?id=${item.ProductId}`;
         
         return `
           <tr class="cart-table__row" data-product-id="${item.ProductId}">
@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     checkoutBtn.addEventListener('click', async () => {
       if (!BSC.isLoggedIn()) {
         BSC.showToast('Please sign in to checkout.', 'info');
-        setTimeout(() => { window.location.href = 'sign-in.html'; }, 1500);
+        setTimeout(() => { window.location.href = 'sign-in'; }, 1500);
         return;
       }
 

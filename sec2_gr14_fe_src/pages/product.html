@@ -11,7 +11,7 @@
     rel="stylesheet"
   />
   <script src="https://unpkg.com/lucide@latest"></script>
-  <link rel="stylesheet" href="../assets/css/product.css" />
+  <link rel="stylesheet" href="../assets/css/style.css" /><link rel="stylesheet" href="../assets/css/product.css" />
   <link rel="stylesheet" href="../assets/css/footer.css" />
   <link rel="stylesheet" href="../assets/css/header.css" />
 </head>
@@ -202,16 +202,18 @@
       // Make the whole card navigate
       card.addEventListener('click', (e) => {
         if (e.target.closest('.similar-product-card__link')) return; // let link handle itself
-        window.location.href = 'shop.html';
+        window.location.href = 'shop';
       });
 
       // Fix the "Shop Now" link
       const link = card.querySelector('.similar-product-card__link');
       if (link) {
-        link.href = 'shop.html';
+        link.href = 'shop';
         link.removeAttribute('onclick');
       }
     });
   </script>
 </body>
 </html>
+
+

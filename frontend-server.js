@@ -16,7 +16,7 @@ const PORT = process.env.FRONTEND_PORT || 5000;
 //  SERVE STATIC FILES
 // ─────────────────────────────────────────────
 const frontendPath = path.join(__dirname, 'sec2_gr14_fe_src');
-app.use(express.static(frontendPath));
+app.use(express.static(frontendPath, { extensions: ['html'] }));
 
 // ─────────────────────────────────────────────
 //  SPA FALLBACK: Serve index.html for routes
@@ -38,10 +38,10 @@ app.use((err, req, res, next) => {
 // ─────────────────────────────────────────────
     app.listen(PORT, () => {
     console.log('');
-    console.log('╔══════════════════════════════════════════╗');
-    console.log(`║  BoonSonClon Frontend Server on port ${PORT}  ║`);
-    console.log(`║  Open: http://localhost:${PORT}            ║`);
-    console.log('║  API:  http://localhost:3000/api           ║');
-    console.log('╚══════════════════════════════════════════╝');
+    console.log('╔═══════════════════════════════════════════╗');
+    console.log(`║  BoonSonClon Frontend Server on port ${PORT} ║`);
+    console.log(`║  Open: http://localhost:${PORT}              ║`);
+    console.log('║  API:  http://localhost:3000/api          ║');
+    console.log('╚═══════════════════════════════════════════╝');
     console.log('');
     });

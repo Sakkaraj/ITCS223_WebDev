@@ -8,18 +8,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ─── Guard: Admin only ────────────────────────────────────
   if (!BSC.isLoggedIn() || !BSC.isAdmin()) {
     BSC.showToast('Admin access required. Redirecting…', 'error');
-    setTimeout(() => { window.location.href = 'admin-login.html'; }, 1500);
+    setTimeout(() => { window.location.href = 'admin-login'; }, 1500);
     return;
   }
 
-  // ─── Admin Panel Page (admin-panel.html) ──────────────────
+  // ─── Admin Panel Page (admin-panel) ──────────────────
   const adminTableBody = document.querySelector('.admin-panel-table__body');
   if (adminTableBody) {
     loadAdminProducts();
     initAdminFilters();
   }
 
-  // ─── Add Product Page (add-product.html) ─────────────────
+  // ─── Add Product Page (add-product) ─────────────────
   const addProductForm = document.querySelector('.add-product-form');
   if (addProductForm) {
     await populateCategoryDropdown();
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (products.length === 0) {
         adminTableBody.innerHTML = `
           <tr><td colspan="8" style="text-align:center;padding:60px;color:#888;">
-            No products found. <a href="add-product.html" style="color:#333;text-decoration:underline;">Add one?</a>
+            No products found. <a href="add-product" style="color:#333;text-decoration:underline;">Add one?</a>
           </td></tr>
         `;
         return;
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   function bindAdminActions() {
     adminTableBody.querySelectorAll('.js-edit-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        window.location.href = `add-product.html?edit=${btn.dataset.id}`;
+        window.location.href = `add-product?edit=${btn.dataset.id}`;
       });
     });
 
@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     document.querySelector('.admin-panel-content__add-button')
       ?.addEventListener('click', () => {
-        window.location.href = 'add-product.html';
+        window.location.href = 'add-product';
       });
   }
 
@@ -704,7 +704,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           });
           BSC.showToast('Product added!', 'success');
         }
-        setTimeout(() => window.location.href = 'admin-panel.html', 1000);
+        setTimeout(() => window.location.href = 'admin-panel', 1000);
       } catch (err) {
         const errorMsg = err.data?.message || err.data?.error || err.message;
         console.error('Submission failed:', err);

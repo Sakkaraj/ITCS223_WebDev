@@ -1,4 +1,4 @@
-// product-similar.js — Dynamically loads similar products for product.html
+// product-similar.js — Dynamically loads similar products for product
 // Depends on api.js being loaded first.
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -37,7 +37,7 @@ function renderSimilarCard(p) {
         <span class="similar-product-card__price">$${parseFloat(p.Price).toFixed(2)}</span>
       </div>
       <p class="similar-product-card__description">${p.ProductDescription || ''}</p>
-      <a href="product.html?id=${p.ProductId}" class="similar-product-card__link">Shop Now</a>
+      <a href="product?id=${p.ProductId}" class="similar-product-card__link">Shop Now</a>
     </article>
   `;
 }

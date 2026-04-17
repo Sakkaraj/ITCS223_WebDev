@@ -1,4 +1,4 @@
-// shop-featured.js — Dynamically loads featured products for shop.html
+// shop-featured.js — Dynamically loads featured products for shop
 // Depends on api.js being loaded first.
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Handle card click
       card.addEventListener('click', (e) => {
         if (e.target.closest('.shop-featured-card__wishlist')) return;
-        window.location.href = `product.html?id=${product.ProductId}`;
+        window.location.href = `product?id=${product.ProductId}`;
       });
 
       // Handle wishlist toggle

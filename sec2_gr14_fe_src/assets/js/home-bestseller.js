@@ -1,4 +1,4 @@
-// home-bestseller.js — Dynamically loads bestsellers for home.html
+// home-bestseller.js — Dynamically loads bestsellers for home
 // Depends on api.js being loaded first.
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Card click (except wishlist and Add to Cart)
       card.addEventListener('click', (e) => {
         if (e.target.closest('.bestseller-card__wishlist') || e.target.closest('.bestseller-card__btn')) return;
-        window.location.href = `product.html?id=${product.ProductId}`;
+        window.location.href = `product?id=${product.ProductId}`;
       });
 
       // Wishlist button

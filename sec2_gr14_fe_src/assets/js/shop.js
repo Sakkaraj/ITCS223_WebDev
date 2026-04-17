@@ -1,5 +1,5 @@
 /**
- * shop.js — Dynamically loads products for shop.html
+ * shop.js — Dynamically loads products for shop
  * Depends on api.js being loaded first.
  */
 
@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         card.addEventListener('click', (e) => {
           // Don't navigate if they clicked the Add-to-Cart button or color swatch
           if (e.target.closest('.js-add-to-cart') || e.target.closest('.product-color-swatch')) return;
-          window.location.href = `product.html?id=${card.dataset.id}`;
+          window.location.href = `product?id=${card.dataset.id}`;
         });
       });
 

@@ -1,5 +1,5 @@
 /**
- * home-categories.js — Dynamically loads category product counts on home.html
+ * home-categories.js — Dynamically loads category product counts on home
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       categoryGrid.innerHTML = displayCategories.map(cat => {
         const imgSrc = categoryImages[cat.Category] || '../assets/images/table.avif';
         return `
-          <article class="category-card" style="cursor:pointer" onclick="window.location.href='shop.html?category=${encodeURIComponent(cat.Category)}'">
+          <article class="category-card" style="cursor:pointer" onclick="window.location.href='shop?category=${encodeURIComponent(cat.Category)}'">
             <img src="${imgSrc}" alt="${cat.Category}" class="category-card__image" />
             <h3 class="category-card__title">${cat.Category}</h3>
             <span class="category-card__meta">${cat.ProductCount} products</span>
