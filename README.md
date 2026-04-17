@@ -103,6 +103,7 @@ Full test cases are documented within each route file in `sec2_gr14_ws_src/route
 | `/api/products` | POST | **[ADMIN]** Add new equipment |
 | `/api/auth/me` | GET | Verify session |
 | `/api/cart` | POST | Add to persistent session cart |
+| `/api/cart/:id` | PATCH | Update item quantity in cart |
 | `/api/orders` | POST | **[MEMBER]** Checkout & Order creation |
 
 ---
