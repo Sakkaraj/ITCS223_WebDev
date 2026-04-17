@@ -65,6 +65,7 @@ To ensure the best experience for both developers and users, we utilize a dual-d
 ```text
 ITCS223_WebDev/
 ├── sec2_gr14_fe_src/       # 🌐 Frontend Source (HTML/CSS/JS)
+│   └── frontend-server.js  # 🖥️ Local Dev Server (Port 5000)
 ├── sec2_gr14_ws_src/       # 🏗️ Backend Web Service 
 │   ├── routes/             # API Endpoints (with Postman Test Cases)
 │   ├── db.js               # Universal DB Bridge (SQLite <-> Postgres)
