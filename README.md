@@ -1,35 +1,36 @@
 # 🛋️ BoonSonClon — Furniture Store
-### *Where Traditional Meets Modern*
+**68_Section2_Group14**
 
-BoonSonClon is a high-end, full-stack e-commerce platform designed for premium furniture retail. Built with a robust Node.js backend and a sleek, responsive frontend, it provides a seamless shopping experience from discovery to checkout.
+BoonSonClon is a high-end, full-stack e-commerce platform designed for premium furniture retail. This repository has been prepared for submission with the required directory structure for Tasks 1, 2, 3, and 4.
+
+---
+
+## 📝 Submission Checklist
+- **[x] Tasks 1 & 4 (Front-end Source)**: Located in `sec2_gr14_fe_src/`
+- **[x] Task 2 (Database Export)**: Available in `sec2_gr14_database.sql`
+- **[x] Task 3 (Web Service Source)**: Located in `sec2_gr14_ws_src/`
 
 ---
 
 ## 🚀 Quick Start Guide
 
-### 1. Prerequisites
+# 1. Prerequisites
 - **Node.js** (v18+ recommended)
 - **Git**
-- **A terminal with script execution enabled** (e.g., PowerShell as Admin on Windows)
 
-### 2. First-Time Setup
+# 2. Installation & Setup
 ```bash
-# 1. Clone the repository
-git clone https://github.com/Sakkaraj/ITCS223_WebDev.git
-cd ITCS223_WebDev
-
-# 2. Install dependencies
+# 1. Install dependencies
 npm install
 
-# 3. Setup local environment
+# 2. Setup environment variables
 cp .env.example .env
 
-# 4. Initialize the Data Directory & Database
-# This command will automatically create the /server/data folder and seed the inventory.
+# 3. Initialize Database
+# This command creates the /data folder inside the web service directory and seeds it.
 npm run seed
 ```
 
-### 3. Database Initialization
 This project uses a file-based SQLite database. To seed the initial data (Furniture, Categories, Admin account):
 ```bash
 npm run seed
@@ -85,23 +86,19 @@ The project follows a modular "Clean Clean" structure, ensuring separation of co
 
 ```text
 ITCS223_WebDev/
-├── public/                 # 🌐 Frontend (Client-side)
-│   ├── assets/             # Shared resources
-│   │   ├── css/            # Modular stylesheets (style.css, header.css, etc.)
-│   │   ├── js/             # Page logic (shop.js, api.js, layout.js)
-│   │   └── images/         # Optimized product & UI assets
+├── sec2_gr14_fe_src/       # 🌐 Frontend Source (Tasks 1 & 4)
+│   ├── assets/             # Shared resources (CSS, JS, Images)
 │   └── pages/              # HTML templates
 │
-├── server/                 # 🏗️ Backend (Server-side)
-│   ├── data/               # Persistent storage (database.sqlite)
-│   ├── middleware/         # Security (Auth, JWT verification)
-│   ├── routes/             # RESTful API Endpoints
-│   ├── db.js               # Database connection & pooling
+├── sec2_gr14_ws_src/       # 🏗️ Web Service Source (Task 3)
+│   ├── data/               # Persistent storage (SQLite)
+│   ├── routes/             # API Endpoints
 │   └── server.js           # Core Express application
 │
-├── tools/                  # 🛠️ Dev Tools (Tests, DB Audit, Migrations)
+├── sec2_gr14_database.sql  # 🗄️ Database Export (Task 2)
 ├── .env                    # Environment variables
-└── README.md               # Documentation
+├── package.json            # Project configuration
+└── README.md               # This documentation
 ```
 
 ---

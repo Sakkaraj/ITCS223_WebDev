@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let currentPage        = 1;
   let currentSort        = 'latest';
   let currentSearch      = urlParams.get('search') || '';
-  let selectedCategories = urlParams.get('category') ? [urlParams.get('category')] : [];
+  let selectedCategories = urlParams.getAll('category');
   let maxPriceFilter     = 9999;
   let totalPages         = 1;
 
@@ -40,8 +40,11 @@ document.addEventListener('DOMContentLoaded', async () => {
           </li>
         `).join('');
 
-        // Bind category checkboxes
+        // Bind category checkboxes & set initial state
         categoryList.querySelectorAll('.shop-filter-list__checkbox').forEach(cb => {
+          if (selectedCategories.includes(cb.value)) {
+            cb.checked = true;
+          }
           cb.addEventListener('change', () => {
             selectedCategories = [...categoryList.querySelectorAll('.shop-filter-list__checkbox:checked')]
               .map(el => el.value);
@@ -114,10 +117,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         page: currentPage,
         limit: 9,
         sort: currentSort,
-        ...(selectedCategories.length === 1 ? { category: selectedCategories[0] } : {}),
         maxPrice: maxPriceFilter,
         ...(currentSearch ? { search: currentSearch } : {}),
       });
+      selectedCategories.forEach(cat => params.append('category', cat));
 
       const data = await BSC.apiFetch(`/api/products?${params}`);
       const { products, pagination } = data;

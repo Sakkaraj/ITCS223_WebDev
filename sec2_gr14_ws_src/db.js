@@ -4,7 +4,7 @@ const fs = require('fs');
 const { open } = require('sqlite');
 require('dotenv').config();
 
-const dbPath = path.resolve(__dirname, './data/database.sqlite');
+const dbPath = path.resolve(__dirname, './data/sec2_gr14_database.sqlite');
 
 let dbInstance = null;
 

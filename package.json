@@ -2,11 +2,11 @@
   "name": "boonsonclon-furniture",
   "version": "1.0.0",
   "description": "BoonSonClon Furniture Store - Full Stack Node.js Application",
-  "main": "server/server.js",
+  "main": "sec2_gr14_ws_src/server.js",
   "scripts": {
-    "start": "node server/server.js",
-    "dev": "nodemon server/server.js",
-    "seed": "node server/seed.js"
+    "start": "node sec2_gr14_ws_src/server.js",
+    "dev": "nodemon sec2_gr14_ws_src/server.js",
+    "seed": "node sec2_gr14_ws_src/seed.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

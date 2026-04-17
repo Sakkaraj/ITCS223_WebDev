@@ -31,8 +31,12 @@ router.get('/', async (req, res) => {
     let params = [];
 
     if (category) {
-      whereClauses.push('c.Category = ?');
-      params.push(category);
+      const categoryList = Array.isArray(category) ? category : category.split(',').filter(Boolean);
+      if (categoryList.length > 0) {
+        const placeholders = categoryList.map(() => '?').join(',');
+        whereClauses.push(`c.Category IN (${placeholders})`);
+        params.push(...categoryList);
+      }
     }
     if (minPrice) {
       whereClauses.push('p.Price >= ?');

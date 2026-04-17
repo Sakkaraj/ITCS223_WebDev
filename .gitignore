@@ -1,11 +1,19 @@
+# Dependencies
 node_modules/
+
+# Environment
 .env
 .env.local
 .env.*.local
 
-# Database
-server/data/database.sqlite
+# Database (Local Binary)
+# We ignore the active .sqlite file because it changes constantly
+sec2_gr14_ws_src/data/*.sqlite
+server/data/*.sqlite
 *.db
+
+# Submission Files (Required)
+!sec2_gr14_database.sql
 
 # OS files
 .DS_Store
@@ -18,12 +26,14 @@ Thumbs.db
 *.swp
 *.swo
 
-# Temporary files
+# Temporary & Helper files
+tools/
 scratch/
 nul
 *.bak
 *.tmp
 
-# Old database files
+# Old/Unused files
 DataBase.sql
 check_mysql.bat
+schema.sqlite.sql

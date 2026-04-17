@@ -41,7 +41,7 @@ app.use(session({
 //  Express serves all HTML, CSS, JS, images
 //  from the public directory.
 // ─────────────────────────────────────────────
-const publicPath = path.join(__dirname, '..', 'public');
+const publicPath = path.join(__dirname, '..', 'sec2_gr14_fe_src');
 app.use(express.static(publicPath));
 
 // ─────────────────────────────────────────────
