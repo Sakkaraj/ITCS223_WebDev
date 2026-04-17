@@ -6,6 +6,9 @@
   "scripts": {
     "start": "node sec2_gr14_ws_src/server.js",
     "dev": "nodemon sec2_gr14_ws_src/server.js",
+    "frontend": "node frontend-server.js",
+    "frontend:dev": "nodemon frontend-server.js",
+    "both": "concurrently \"npm run dev\" \"npm run frontend:dev\"",
     "seed": "node sec2_gr14_ws_src/seed.js"
   },
   "dependencies": {
@@ -20,6 +23,7 @@
     "sqlite3": "^6.0.1"
   },
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "nodemon": "^3.1.0"
   },
   "overrides": {

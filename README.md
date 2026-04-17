@@ -9,16 +9,18 @@ BoonSonClon is a high-end, full-stack e-commerce platform designed for premium f
 - **[x] Tasks 1 & 4 (Front-end Source)**: Located in `sec2_gr14_fe_src/`
 - **[x] Task 2 (Database Export)**: Available in `sec2_gr14_database.sql`
 - **[x] Task 3 (Web Service Source)**: Located in `sec2_gr14_ws_src/`
+- **[x] Team Page**: Located in `sec2_gr14_fe_src/pages/about-us.html` with team member details
+- **[x] Test Cases**: Documented in all API route files for Postman testing
 
 ---
 
 ## 🚀 Quick Start Guide
 
-# 1. Prerequisites
+### # 1. Prerequisites
 - **Node.js** (v18+ recommended)
 - **Git**
 
-# 2. Installation & Setup
+### # 2. Installation & Setup
 ```bash
 # 1. Install dependencies
 npm install
@@ -36,17 +38,83 @@ This project uses a file-based SQLite database. To seed the initial data (Furnit
 npm run seed
 ```
 
-### 4. Run the Application
-```bash
-# Development Mode (with auto-restart)
-npm run dev
+---
 
-# Production Mode
+## 🖥️ Running the Application (Separate Servers)
+
+### **Option 1: Run Both Servers Together** (recommended for development)
+```bash
+npm run both
+```
+This uses `concurrently` to run both frontend and backend servers simultaneously.
+
+- **Frontend**: http://localhost:5000
+- **Backend API**: http://localhost:3000/api
+
+---
+
+### **Option 2: Run Servers Separately**
+
+#### **Terminal 1 - Start Backend API Server**
+```bash
+npm run dev
+```
+- **Backend runs on**: http://localhost:3000
+- **API Endpoints**: http://localhost:3000/api/*
+
+#### **Terminal 2 - Start Frontend Server**
+```bash
+npm run frontend:dev
+```
+- **Frontend runs on**: http://localhost:5000
+- **Open in browser**: http://localhost:5000
+
+---
+
+### **Option 3: Production Mode**
+```bash
+# Terminal 1 - Start backend
 npm start
+
+# Terminal 2 - Start frontend (in another terminal)
+node frontend-server.js
 ```
 
-Default Entry: **`http://localhost:3000`**
-The frontend is automatically served by the backend.
+---
+
+## 🧪 Testing Web Services with Postman
+
+All API endpoints have **test case documentation** included in the route files.
+
+### **Test Cases Location**
+- Authentication: `sec2_gr14_ws_src/routes/auth.js`
+- Products (CRUD): `sec2_gr14_ws_src/routes/products.js`
+- Cart: `sec2_gr14_ws_src/routes/cart.js`
+- Contact: `sec2_gr14_ws_src/routes/contact.js`
+- Newsletter: `sec2_gr14_ws_src/routes/newsletter.js`
+
+### **Example: Testing Product Search**
+```
+Method: GET
+URL: http://localhost:3000/api/products?category=Chairs&minPrice=100&maxPrice=500&limit=10
+Expected: 200 OK with filtered products
+```
+
+### **Example: Testing Product Insert (Admin)**
+```
+Method: POST
+URL: http://localhost:3000/api/products
+Headers: { "Authorization": "Bearer <admin_token>" }
+Body: {
+  "productName": "Modern Coffee Table",
+  "categoryId": 4,
+  "price": 250.00,
+  ...
+}
+Expected: 201 Created with product ID
+```
+
+Each API file contains 2+ test cases per endpoint formatted for easy import into Postman.
 
 ---
 
@@ -70,34 +138,124 @@ taskkill /F /PID <PID>
 lsof -ti:3000 | xargs kill -9
 ```
 
-### 2. Windows Execution Policy
+### 2. Port 5000 Already in Use
+If the frontend port is taken, modify the port:
+```bash
+FRONTEND_PORT=5001 npm run frontend:dev
+```
+
+### 3. Windows Execution Policy
 If `npm` or `nodemon` fails to run scripts:
 - Open PowerShell as **Administrator**.
 - Run: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
+
+### 4. Database Connection Issues
+If you get database errors:
+1. Delete `/sec2_gr14_ws_src/data/` folder
+2. Run `npm run seed` again to reinitialize
+
+### 5. CORS Errors in Browser Console
+Ensure both servers are running and the frontend is on port 5000 while backend is on port 3000. The backend has CORS configured for cross-origin requests.
 
 ---
 
 ## 📂 Project Architecture
 
-The project follows a modular "Clean Clean" structure, ensuring separation of concerns between backend logic and frontend presentation.
+The project follows a modular "Clean Architecture" structure, ensuring separation of concerns between backend logic and frontend presentation with separate servers.
 
 ```text
 ITCS223_WebDev/
 ├── sec2_gr14_fe_src/       # 🌐 Frontend Source (Tasks 1 & 4)
 │   ├── assets/             # CSS, JS, Images, Partials
-│   └── pages/              # HTML templates (Home, Shop, Admin, Search)
+│   ├── pages/              # HTML templates (Home, Shop, Admin, Team/About-Us)
+│   └── index.html          # SPA Entry point
 │
-├── sec2_gr14_ws_src/       # 🏗️ Web Service Source (Task 3)
-│   ├── data/               # Persistent storage (SQLite .sqlite file)
+├── sec2_gr14_ws_src/       # 🏗️ Backend Web Service (Task 3)
+│   ├── data/               # SQLite database storage
 │   ├── middleware/         # Auth & validation logic
-│   ├── routes/             # API Endpoints (Auth, Products, Cart, etc.)
-│   └── server.js           # Core Express application entry
+│   ├── routes/             # API Endpoints with TEST CASES
+│   │   ├── auth.js         # Authentication (login, register)
+│   │   ├── products.js     # Products CRUD with search filters
+│   │   ├── cart.js         # Shopping cart
+│   │   ├── contact.js      # Contact form
+│   │   ├── newsletter.js   # Newsletter subscription
+│   │   └── orders.js       # Order management
+│   ├── db.js               # Database connection
+│   ├── seed.js             # Database seeding with sample data
+│   └── server.js           # Express API server (port 3000, API-only)
 │
-├── sec2_gr14_database.sql  # 🗄️ Database Export (Task 2)
-├── .env                    # Local environment config
-├── package.json            # Base package configuration
-└── README.md               # Main project documentation
+├── frontend-server.js      # 🖥️ Frontend Static Server (port 5000)
+├── sec2_gr14_database.sql  # 🗄️ Database Schema (Task 2)
+├── package.json            # Node.js dependencies & scripts
+├── .env                    # Environment configuration
+└── README.md               # Project documentation
 ```
+
+---
+
+## 📊 Server Architecture
+
+### **Port Configuration**
+- **Frontend Server**: `http://localhost:5000` (Static files, SPA routing)
+- **Backend API Server**: `http://localhost:3000/api` (REST API endpoints only)
+
+### **Communication Flow**
+```
+Browser (http://localhost:5000)
+    ↓
+Frontend Code (HTML/CSS/JS)
+    ↓
+Fetch API calls to: http://localhost:3000/api/*
+    ↓
+Backend Express Server (API Routes)
+    ↓
+SQLite Database
+```
+
+---
+
+## 🔧 Environment Variables
+
+Create a `.env` file in the root directory:
+```env
+# Backend Server
+PORT=3000
+JWT_SECRET=your_jwt_secret_key_here
+SESSION_SECRET=your_session_secret_here
+
+# Frontend Server
+FRONTEND_PORT=5000
+
+# Database
+DB_PATH=./sec2_gr14_ws_src/data/boonsonclon.sqlite
+
+# CORS Configuration
+CORS_ORIGIN=http://localhost:5000
+```
+
+---
+
+## 👥 Team Page
+
+The team page is implemented in `sec2_gr14_fe_src/pages/about-us.html` with the following team members:
+
+- **Sakkarat Tuvajit** (6788140) - Backend Development
+- **Jirathiwat Sun** (6788122) - Frontend Development  
+- **Radhabhumi Pang** (6788077) - Frontend Development
+- **Pipat Suphat** (6788221) - Backend Development
+- **Pannakarn Sing** (6788212) - Frontend Development
+
+The page includes member images, roles, and skills.
+
+---
+
+## 📝 Notes
+
+- All API endpoints support JSON request/response format
+- Authentication uses JWT tokens stored in `localStorage` as `bsc_token`
+- Admin role required for product management endpoints
+- Frontend automatically configures API base URL for separate servers
+- CORS is enabled for development cross-origin requests
 
 ---
 

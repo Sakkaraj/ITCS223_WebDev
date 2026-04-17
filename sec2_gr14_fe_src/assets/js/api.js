@@ -4,7 +4,12 @@
  * and base URL are handled automatically in one place.
  */
 
-const API_BASE = '';  // Empty = same origin (server origin)
+// Configure API base URL
+// For local development with separate servers:
+// - Backend: http://localhost:3000
+// - Frontend: http://localhost:5000 (or other port)
+// Set this to the backend server URL
+const API_BASE = localStorage.getItem('api_base') || (window.location.hostname === 'localhost' ? 'http://localhost:3000' : '');
 
 /**
  * Core fetch wrapper. Automatically attaches:

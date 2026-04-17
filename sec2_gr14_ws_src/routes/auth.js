@@ -9,6 +9,32 @@ const SALT_ROUNDS = 10;
 // ─────────────────────────────────────────────
 //  MEMBER REGISTER
 // ─────────────────────────────────────────────
+// Testing Member Registration
+// method: POST
+// URL: http://localhost:3000/api/auth/member/register
+// body: raw JSON
+// {
+//   "firstName": "John",
+//   "lastName": "Doe",
+//   "email": "john.doe@email.com",
+//   "password": "SecurePass123",
+//   "phone": "0896604300"
+// }
+// Expected: 201 Created with token and user info
+
+// Testing Member Registration - Duplicate Email
+// method: POST
+// URL: http://localhost:3000/api/auth/member/register
+// body: raw JSON
+// {
+//   "firstName": "Jane",
+//   "lastName": "Smith",
+//   "email": "john.doe@email.com",
+//   "password": "AnotherPass123",
+//   "phone": "0896604301"
+// }
+// Expected: 409 Conflict - Email already exists
+
 // POST /api/auth/member/register
 router.post('/member/register', async (req, res) => {
   const { firstName, lastName, email, password, phone } = req.body;
@@ -139,6 +165,26 @@ router.post('/admin/register', async (req, res) => {
 // ─────────────────────────────────────────────
 //  MEMBER LOGIN
 // ─────────────────────────────────────────────
+// Testing Member Login - Success
+// method: POST
+// URL: http://localhost:3000/api/auth/member/login
+// body: raw JSON
+// {
+//   "email": "john.doe@email.com",
+//   "password": "SecurePass123"
+// }
+// Expected: 200 OK with token and user info
+
+// Testing Member Login - Invalid Credentials
+// method: POST
+// URL: http://localhost:3000/api/auth/member/login
+// body: raw JSON
+// {
+//   "email": "john.doe@email.com",
+//   "password": "WrongPassword123"
+// }
+// Expected: 401 Unauthorized - Invalid credentials
+
 // POST /api/auth/member/login
 router.post('/member/login', async (req, res) => {
   const { email, password } = req.body;
