@@ -3,28 +3,7 @@
 
 🚀 **Live Production URL**: [https://boonsonclon-furniture.onrender.com](https://boonsonclon-furniture.onrender.com)
 
-BoonSonClon is a high-performance, full-stack e-commerce platform designed for premium furniture retail. This project features a modern **Unified Node.js Architecture**, **Clean extensionless URLs**, and a **Hybrid Database System** optimized for both development speed and production reliability.
-
----
-
-## 💎 Key Architectural Highlights
-
-### ⚡ Clean extensionless URLs
-We have implemented a modern routing system that removes the need for `.html` extensions. 
-- **Legacy**: `boonsonclon.com/pages/shop.html`
-- **Modern**: `boonsonclon.com/pages/shop`
-This makes the application feel like a professional Single Page Application (SPA).
-
-### 🛡️ Hybrid Database Strategy
-To ensure the best experience for both developers and users, we utilize a dual-database approach:
-- **Local (Offline)**: Uses **SQLite**. This allows the project to run immediately on any computer with zero configuration. No database installation is required for grading or development.
-- **Cloud (Production)**: Uses **PostgreSQL**. When deployed to Render, the app automatically connects to a professional cloud database to ensure your orders, accounts, and inventory data are **permanently saved**.
-
-### 🏗️ Unified Production Server
-The backend and frontend have been unified into a single Express instance for production. This enables:
-- Hosting the entire project on a single Render Web Service.
-- Faster load times and simplified 404 handling.
-- Seamless "Clean URL" resolution at the server level.
+BoonSonClon is a high-performance, full-stack e-commerce platform designed for premium furniture retail. This project features a robust **Hybrid Database System** optimized for both easy local development and reliable production hosting.
 
 ---
 
@@ -63,34 +42,22 @@ npm run both
 
 This project is pre-configured for **Render.com** with support for PostgreSQL.
 
-### 1. Setup PostgreSQL
-1. Create a **New -> PostgreSQL** database on Render.
-2. Copy the **Internal Database URL**.
-
-### 2. Setup Web Service
-1. Create a **New -> Web Service** and connect this GitHub repository.
-2. **Build Command**: `npm run build`
-3. **Start Command**: `npm run render:start`
-4. Add the following **Environment Variables**:
-   - `DATABASE_URL`: (Paste your Internal Database URL here)
-   - `SERVE_FRONTEND`: `true`
-   - `SESSION_SECRET`: (Any random string for security)
+1.  **Create a PostgreSQL Database**: Create a **New -> PostgreSQL** database on Render and copy the **Internal Database URL**.
+2.  **Create a Web Service**: Create a **New -> Web Service** and connect this GitHub repository.
+3.  **Configure Environment**:
+    - **Build Command**: `npm run build`
+    - **Start Command**: `npm run render:start`
+    - **Add Environment Variables**:
+        - `DATABASE_URL`: (Paste your Internal Database URL here)
+        - `SERVE_FRONTEND`: `true`
+        - `SESSION_SECRET`: (Any random string)
 
 ---
 
-## 📂 Project Structure
-```text
-ITCS223_WebDev/
-├── sec2_gr14_fe_src/       # 🌐 Frontend Source (HTML/CSS/JS)
-├── sec2_gr14_ws_src/       # 🏗️ Backend Web Service 
-│   ├── routes/             # API Endpoints (with Postman Test Cases)
-│   ├── db.js               # Universal DB Bridge (SQLite <-> Postgres)
-│   ├── seed.js             # Smart Seeding (with SQL translation engine)
-│   └── server.js           # Unified Express Server
-├── sec2_gr14_database.sql  # 🗄️ Master Database Schema
-├── package.json            # Scripts & Dependencies
-└── .env                    # Environment Config (Local)
-```
+## 🛡️ Hybrid Database Strategy
+To ensure the best experience for both developers and users, we utilize a dual-database approach:
+- **Local (Offline)**: Uses **SQLite**. This allows the project to run immediately on any computer with zero configuration. No database installation is required for grading.
+- **Cloud (Production)**: Uses **PostgreSQL**. When deployed to Render, the app automatically connects to a professional cloud database to ensure your orders and account data are **permanently saved**.
 
 ---
 
@@ -105,6 +72,22 @@ Full test cases are documented within each route file in `sec2_gr14_ws_src/route
 | `/api/cart` | POST | Add to persistent session cart |
 | `/api/cart/:id` | PATCH | Update item quantity in cart |
 | `/api/orders` | POST | **[MEMBER]** Checkout & Order creation |
+
+---
+
+## 📂 Project Structure
+```text
+ITCS223_WebDev/
+├── sec2_gr14_fe_src/       # 🌐 Frontend Source (HTML/CSS/JS)
+├── sec2_gr14_ws_src/       # 🏗️ Backend Web Service 
+│   ├── routes/             # API Endpoints (with Postman Test Cases)
+│   ├── db.js               # Universal DB Bridge (SQLite <-> Postgres)
+│   ├── seed.js             # Smart Seeding (with SQL translation engine)
+│   └── server.js           # Production Server
+├── sec2_gr14_database.sql  # 🗄️ Master Database Schema
+├── package.json            # Scripts & Dependencies
+└── .env                    # Environment Config (Local)
+```
 
 ---
 
