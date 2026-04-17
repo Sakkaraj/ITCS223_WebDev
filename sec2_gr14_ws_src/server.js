@@ -61,20 +61,38 @@ app.get('/api/health', (req, res) => {
 });
 
 // ─────────────────────────────────────────────
-//  SERVE STATIC FILES (Frontend Unified)
+//  OPTIONAL: SERVE STATIC FILES (For Unified Production)
 // ─────────────────────────────────────────────
-const frontendPath = path.join(__dirname, '..', 'sec2_gr14_fe_src');
-app.use(express.static(frontendPath));
+if (process.env.SERVE_FRONTEND === 'true') {
+  const frontendPath = path.join(__dirname, '..', 'sec2_gr14_fe_src');
+  app.use(express.static(frontendPath));
 
-// Fallback for SPA routing: serve index.html for any non-API route
-app.get('*', (req, res) => {
-  // If it starts with /api/, it's a 404 for the API
-  if (req.path.startsWith('/api/')) {
-    return res.status(404).json({ error: 'API endpoint not found' });
-  }
-  // Otherwise, serve index.html to allow frontend routing
-  res.sendFile(path.join(frontendPath, 'index.html'));
-});
+  // Fallback for SPA routing: serve index.html for any non-API route
+  app.get('*', (req, res) => {
+    // If it starts with /api/, it's a 404 for the API
+    if (req.path.startsWith('/api/')) {
+      return res.status(404).json({ error: 'API endpoint not found' });
+    }
+    // Otherwise, serve index.html to allow frontend routing
+    res.sendFile(path.join(frontendPath, 'index.html'));
+  });
+} else {
+  // Default root route for API-only mode (Local Development)
+  app.get('/', (req, res) => {
+    res.send(`
+      <div style="font-family: sans-serif; padding: 50px; text-align: center;">
+        <h1 style="color: #4f46e5;">🛋️ BoonSonClon API Server</h1>
+        <p style="color: #666; font-size: 18px;">The backend API service is running successfully on port ${PORT}.</p>
+        <p style="color: #999;">For the website, please use <strong>http://localhost:5000</strong></p>
+        <div style="margin-top: 30px;">
+          <code style="background: #f3f4f6; padding: 10px 20px; border-radius: 8px; font-size: 16px;">
+            API Base: http://localhost:${PORT}/api
+          </code>
+        </div>
+      </div>
+    `);
+  });
+}
 
 // ─────────────────────────────────────────────
 //  GLOBAL ERROR HANDLER
