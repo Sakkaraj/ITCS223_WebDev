@@ -28,6 +28,11 @@ Thumbs.db
 
 # Temporary & Helper files
 tools/
+
+# Postman Collections & Environments
+*.postman_collection.json
+*.postman_environment.json
+postman/
 scratch/
 nul
 *.bak
