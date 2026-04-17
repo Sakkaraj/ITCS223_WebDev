@@ -1,5 +1,3 @@
--- BoonSonClon Database Dump
--- Generated for 68_Section2_Group14
 
 CREATE TABLE IF NOT EXISTS AdminInformation (
     AdminId INTEGER PRIMARY KEY AUTOINCREMENT,
