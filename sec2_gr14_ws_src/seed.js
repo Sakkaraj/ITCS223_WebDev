@@ -1,54 +1,79 @@
 /**
- * seed.js — Populates the BoonSunClon database with:
- *   - 1 Admin account
- *   - 6 Categories
- *   - 12 Products with images
- *
- * Run once after importing DataBase.sql:
- *   node server/seed.js
+ * seed.js — Populates the BoonSonClon database.
+ * Supports both SQLite (local) and PostgreSQL (Production).
  */
 
 require('dotenv').config();
-const bcrypt = require('bcrypt');
+const fs = require('fs');
+const path = require('path');
+const { Pool } = require('pg');
+const sqlite3 = require('sqlite3');
+const { open } = require('sqlite');
 
-console.log('\n🌱 Starting database seed...\n');
-
-const SALT_ROUNDS = 10;
+const isPostgres = !!process.env.DATABASE_URL;
 
 async function seed() {
-  try {
-    console.log('🏗️ Initializing SQLite Schema...');
-    const fs = require('fs');
-    const path = require('path');
-    const { open } = require('sqlite');
-    const sqlite3 = require('sqlite3');
+  console.log(`\n🌱 Starting database seed (${isPostgres ? 'PostgreSQL' : 'SQLite'})...\n`);
 
-    const dbPath = path.resolve(__dirname, './data/sec2_gr14_database.sqlite');
-    
-    // Delete existing database if it exists to ensure a clean start
-    if (fs.existsSync(dbPath)) {
-      console.log('🗑️  Removing existing database...');
-      fs.unlinkSync(dbPath);
+  try {
+    if (isPostgres) {
+      /**
+       * PostgreSQL Seeding
+       */
+      const pool = new Pool({
+        connectionString: process.env.DATABASE_URL,
+        ssl: process.env.DATABASE_URL.includes('render.com') ? { rejectUnauthorized: false } : false
+      });
+
+      console.log('🏗️  Reading PostgreSQL schema...');
+      const sqlPath = path.resolve(__dirname, '../sec2_gr14_database_pg.sql');
+      const pgSql = fs.readFileSync(sqlPath, 'utf8');
+
+      console.log('🏗️  Executing PostgreSQL SQL (Schema + Data)...');
+      await pool.query(pgSql);
+      console.log('✅ PostgreSQL database initialized and populated successfully');
+      
+      await pool.end();
+
+    } else {
+      /**
+       * SQLite Seeding
+       */
+      const dbPath = path.resolve(__dirname, './data/sec2_gr14_database.sqlite');
+      
+      // Ensure directory exists
+      const dir = path.dirname(dbPath);
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+
+      // Delete existing database for a clean start
+      if (fs.existsSync(dbPath)) {
+        console.log('🗑️  Removing existing SQLite database...');
+        fs.unlinkSync(dbPath);
+      }
+
+      const sqliteDb = await open({ filename: dbPath, driver: sqlite3.Database });
+      
+      console.log('🏗️  Reading SQLite schema...');
+      const sqlPath = path.resolve(__dirname, '../sec2_gr14_database.sql');
+      const sqliteSql = fs.readFileSync(sqlPath, 'utf-8');
+      
+      console.log('🏗️  Executing SQLite SQL (Schema + Data)...');
+      await sqliteDb.exec(sqliteSql);
+      console.log('✅ SQLite database initialized and populated successfully');
+      
+      await sqliteDb.close();
     }
 
-    const sqliteDb = await open({ filename: dbPath, driver: sqlite3.Database });
-    
-    // Read the consolidated SQL file (contains both Schema and Data)
-    const combinedSql = fs.readFileSync(path.resolve(__dirname, '../sec2_gr14_database.sql'), 'utf-8');
-    
-    console.log('🏗️  Executing consolidated SQL (Schema + Data)...');
-    await sqliteDb.exec(combinedSql);
-    console.log('✅ Database initialized and populated successfully');
-
-    console.log('\n✨ Reset complete!\n');
+    console.log('\n✨ Seed complete!\n');
     console.log('┌─────────────────────────────────────────────┐');
-    console.log('│  Admin Login Credentials (from SQL)         │');
+    console.log('│  Admin Login Credentials                    │');
     console.log('│  Email:    admin@boonsonclon.com            │');
     console.log('│  Password: Admin@1234                       │');
     console.log('└─────────────────────────────────────────────┘\n');
 
   } catch (err) {
-    console.error('\n❌ Reset failed:', err.message);
+    console.error('\n❌ Seed failed:', err.message);
+    process.exit(1);
   } finally {
     process.exit(0);
   }

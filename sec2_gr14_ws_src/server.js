@@ -61,21 +61,38 @@ app.get('/api/health', (req, res) => {
 });
 
 // ─────────────────────────────────────────────
-//  OPTIONAL: SERVE STATIC FILES (For Unified Production)
+//  UNIFIED PRODUCTION MODE (Serve Frontend + API)
 // ─────────────────────────────────────────────
-if (process.env.SERVE_FRONTEND === 'true') {
+if (process.env.SERVE_FRONTEND === 'true' || process.env.NODE_ENV === 'production') {
   const frontendPath = path.join(__dirname, '..', 'sec2_gr14_fe_src');
-  app.use(express.static(frontendPath));
+  
+  // 1. Serve static assets (js, css, images) directly
+  app.use(express.static(frontendPath, { 
+    extensions: ['html'], // 👈 Supports Clean URLs (e.g. /pages/shop instead of shop.html)
+    index: 'index.html'
+  }));
 
-  // Fallback for SPA routing: serve index.html for any non-API route
+  // 2. Custom route for cleaner page resolution if needed
+  app.get('/pages/:page', (req, res, next) => {
+    const page = req.params.page;
+    const filePath = path.join(frontendPath, 'pages', `${page}.html`);
+    if (fs.existsSync(filePath)) {
+      return res.sendFile(filePath);
+    }
+    next();
+  });
+
+  // 3. Fallback for SPA routing or 404s
   app.get('*', (req, res) => {
     // If it starts with /api/, it's a 404 for the API
     if (req.path.startsWith('/api/')) {
       return res.status(404).json({ error: 'API endpoint not found' });
     }
-    // Otherwise, serve index.html to allow frontend routing
+    // Otherwise, serve the main landing page
     res.sendFile(path.join(frontendPath, 'index.html'));
   });
+
+  console.log('🚀 Unified Mode: Serving frontend from ' + frontendPath);
 } else {
   // Default root route for API-only mode (Local Development)
   app.get('/', (req, res) => {
@@ -86,7 +103,7 @@ if (process.env.SERVE_FRONTEND === 'true') {
         <p style="color: #999;">For the website, please use <strong>http://localhost:5000</strong></p>
         <div style="margin-top: 30px;">
           <code style="background: #f3f4f6; padding: 10px 20px; border-radius: 8px; font-size: 16px;">
-            API Base: http://localhost:${PORT}/api
+            API Base URL: http://localhost:${PORT}/api
           </code>
         </div>
       </div>
