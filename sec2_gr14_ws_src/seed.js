@@ -1,6 +1,9 @@
 /**
  * seed.js — Populates the BoonSonClon database.
  * Supports both SQLite (local) and PostgreSQL (Production).
+ * 
+ * DESIGN: We use a SINGLE sec2_gr14_database.sql (Postgres format) 
+ * and translate it for SQLite on-the-fly if needed.
  */
 
 require('dotenv').config();
@@ -12,10 +15,33 @@ const { open } = require('sqlite');
 
 const isPostgres = !!process.env.DATABASE_URL;
 
+/**
+ * Translates PostgreSQL specific syntax to SQLite syntax
+ * So we only need ONE master SQL file.
+ */
+function translatePostgresToSqlite(sql) {
+  return sql
+    .replace(/SERIAL PRIMARY KEY/gi, 'INTEGER PRIMARY KEY AUTOINCREMENT')
+    .replace(/TIMESTAMP DEFAULT CURRENT_TIMESTAMP/gi, 'DATETIME DEFAULT CURRENT_TIMESTAMP')
+    .replace(/TIMESTAMP/gi, 'DATETIME')
+    .replace(/SMALLINT/gi, 'TINYINT')
+    .replace(/BOOLEAN DEFAULT TRUE/gi, 'BOOLEAN DEFAULT 1')
+    .replace(/BOOLEAN DEFAULT FALSE/gi, 'BOOLEAN DEFAULT 0')
+    .replace(/TRUE/g, '1')
+    .replace(/FALSE/g, '0')
+    .replace(/DROP TABLE IF EXISTS ([a-z0-9_]+) CASCADE/gi, 'DROP TABLE IF EXISTS $1');
+}
+
 async function seed() {
-  console.log(`\n🌱 Starting database seed (${isPostgres ? 'PostgreSQL' : 'SQLite'})...\n`);
+  console.log(`\n🌱 Starting unified database seed (${isPostgres ? 'PostgreSQL' : 'SQLite'})...\n`);
 
   try {
+    const sqlPath = path.resolve(__dirname, '../sec2_gr14_database.sql');
+    if (!fs.existsSync(sqlPath)) {
+        throw new Error(`Master SQL file not found at ${sqlPath}`);
+    }
+    const masterSql = fs.readFileSync(sqlPath, 'utf8');
+
     if (isPostgres) {
       /**
        * PostgreSQL Seeding
@@ -25,27 +51,20 @@ async function seed() {
         ssl: process.env.DATABASE_URL.includes('render.com') ? { rejectUnauthorized: false } : false
       });
 
-      console.log('🏗️  Reading PostgreSQL schema...');
-      const sqlPath = path.resolve(__dirname, '../sec2_gr14_database_pg.sql');
-      const pgSql = fs.readFileSync(sqlPath, 'utf8');
-
-      console.log('🏗️  Executing PostgreSQL SQL (Schema + Data)...');
-      await pool.query(pgSql);
-      console.log('✅ PostgreSQL database initialized and populated successfully');
-      
+      console.log('🏗️  Executing Master SQL on PostgreSQL...');
+      await pool.query(masterSql);
+      console.log('✅ PostgreSQL database initialized successfully');
       await pool.end();
 
     } else {
       /**
-       * SQLite Seeding
+       * SQLite Seeding (with Translation)
        */
       const dbPath = path.resolve(__dirname, './data/sec2_gr14_database.sqlite');
       
-      // Ensure directory exists
       const dir = path.dirname(dbPath);
       if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
-      // Delete existing database for a clean start
       if (fs.existsSync(dbPath)) {
         console.log('🗑️  Removing existing SQLite database...');
         fs.unlinkSync(dbPath);
@@ -53,13 +72,12 @@ async function seed() {
 
       const sqliteDb = await open({ filename: dbPath, driver: sqlite3.Database });
       
-      console.log('🏗️  Reading SQLite schema...');
-      const sqlPath = path.resolve(__dirname, '../sec2_gr14_database.sql');
-      const sqliteSql = fs.readFileSync(sqlPath, 'utf-8');
+      console.log('🏗️  Translating Master SQL for SQLite...');
+      const localSql = translatePostgresToSqlite(masterSql);
       
-      console.log('🏗️  Executing SQLite SQL (Schema + Data)...');
-      await sqliteDb.exec(sqliteSql);
-      console.log('✅ SQLite database initialized and populated successfully');
+      console.log('🏗️  Executing Translated SQL on SQLite...');
+      await sqliteDb.exec(localSql);
+      console.log('✅ SQLite database initialized successfully');
       
       await sqliteDb.close();
     }
