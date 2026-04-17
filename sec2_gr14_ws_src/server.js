@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
+const path = require('path');
 
 // Route imports
 const authRoutes = require('./routes/auth');
@@ -57,6 +58,22 @@ app.use('/api/newsletter', newsletterRoutes);
 // ─────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
   res.json({ status: 'Backend API is running', timestamp: new Date() });
+});
+
+// ─────────────────────────────────────────────
+//  SERVE STATIC FILES (Frontend Unified)
+// ─────────────────────────────────────────────
+const frontendPath = path.join(__dirname, '..', 'sec2_gr14_fe_src');
+app.use(express.static(frontendPath));
+
+// Fallback for SPA routing: serve index.html for any non-API route
+app.get('*', (req, res) => {
+  // If it starts with /api/, it's a 404 for the API
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ error: 'API endpoint not found' });
+  }
+  // Otherwise, serve index.html to allow frontend routing
+  res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
 // ─────────────────────────────────────────────

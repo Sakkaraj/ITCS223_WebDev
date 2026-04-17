@@ -11,7 +11,8 @@
     "both": "concurrently \"npm run dev\" \"npm run frontend:dev\"",
     "seed": "node sec2_gr14_ws_src/seed.js",
     "test": "node test-all-endpoints.js",
-    "test:watch": "nodemon test-all-endpoints.js"
+    "test:watch": "nodemon test-all-endpoints.js",
+    "render:start": "npm run seed && npm start"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
