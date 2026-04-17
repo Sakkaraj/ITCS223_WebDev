@@ -14,17 +14,8 @@ function formatImageUrl(url) {
 // ─────────────────────────────────────────────
 //  GET ALL PRODUCTS (with optional filters)
 // ─────────────────────────────────────────────
-// Testing Get All Products
-// method: GET
-// URL: http://localhost:3000/api/products?limit=12&page=1
-// Expected: 200 OK with array of products and pagination info
-
-// Testing Get Products with Filters
-// method: GET
-// URL: http://localhost:3000/api/products?category=Chairs&minPrice=100&maxPrice=500&limit=10
-// Expected: 200 OK with filtered products matching criteria
-
 // GET /api/products?category=&minPrice=&maxPrice=&featured=&sort=&page=&limit=
+
 router.get('/', async (req, res) => {
   try {
     const {
@@ -207,6 +198,7 @@ router.get('/filter-meta', async (req, res) => {
 //  GET ALL CATEGORIES  ← must be before /:id
 // ─────────────────────────────────────────────
 // GET /api/products/meta/categories
+
 router.get('/meta/categories', async (req, res) => {
   try {
     const [categories] = await db.execute(
@@ -228,6 +220,7 @@ router.get('/meta/categories', async (req, res) => {
 //  GET ALL COLORS
 // ─────────────────────────────────────────────
 // GET /api/products/meta/colors
+
 router.get('/meta/colors', async (req, res) => {
   try {
     const [colors] = await db.execute('SELECT ColorId, ColorName, HexCode FROM Color ORDER BY ColorName');
@@ -242,6 +235,7 @@ router.get('/meta/colors', async (req, res) => {
 //  GET ALL MATERIALS
 // ─────────────────────────────────────────────
 // GET /api/products/meta/materials
+
 router.get('/meta/materials', async (req, res) => {
   try {
     const [materials] = await db.execute('SELECT MaterialId, MaterialName, MaterialType FROM Material ORDER BY MaterialName');
@@ -298,6 +292,7 @@ router.post('/meta/materials', requireAuth, requireAdmin, async (req, res) => {
 //  GET SINGLE PRODUCT
 // ─────────────────────────────────────────────
 // GET /api/products/:id
+
 router.get('/:id', async (req, res) => {
   try {
     const [rows] = await db.execute(
@@ -357,38 +352,8 @@ router.get('/:id', async (req, res) => {
 // ─────────────────────────────────────────────
 //  ADD PRODUCT (Admin only)
 // ─────────────────────────────────────────────
-// Testing Insert New Product
-// method: POST
-// URL: http://localhost:3000/api/products
-// headers: { "Authorization": "Bearer <admin_token>", "Content-Type": "application/json" }
-// body: raw JSON
-// {
-//   "productName": "Modern Coffee Table",
-//   "categoryId": 4,
-//   "price": 250.00,
-//   "quantityLeft": 15,
-//   "productDescription": "A sleek modern coffee table with glass top",
-//   "productDetail": "Features tempered glass and metal frame. Easy assembly.",
-//   "materialId": 1,
-//   "widthDimension": 120,
-//   "heightDimension": 40,
-//   "lengthDimension": 60,
-//   "weight": 20,
-//   "featured": true
-// }
-// Expected: 201 Created with product ID and details
-
-// Testing Insert Product - Missing Required Field
-// method: POST
-// URL: http://localhost:3000/api/products
-// headers: { "Authorization": "Bearer <admin_token>", "Content-Type": "application/json" }
-// body: raw JSON
-// {
-//   "productName": "Incomplete Product"
-// }
-// Expected: 400 Bad Request - Missing required fields
-
 // POST /api/products
+
 router.post('/', requireAuth, requireAdmin, async (req, res) => {
   const {
     productName, categoryId, materialId, price, quantityLeft = 0,
@@ -465,34 +430,8 @@ router.post('/', requireAuth, requireAdmin, async (req, res) => {
 // ─────────────────────────────────────────────
 //  UPDATE PRODUCT (Admin only)
 // ─────────────────────────────────────────────
-// ─────────────────────────────────────────────
-//  UPDATE PRODUCT (Admin only)
-// ─────────────────────────────────────────────
-// Testing Update Product
-// method: PUT
-// URL: http://localhost:3000/api/products/5
-// headers: { "Authorization": "Bearer <admin_token>", "Content-Type": "application/json" }
-// body: raw JSON
-// {
-//   "productName": "Updated Coffee Table",
-//   "price": 275.00,
-//   "quantityLeft": 20,
-//   "featured": true,
-//   "status": "Active"
-// }
-// Expected: 200 OK with updated product info
-
-// Testing Update Non-existent Product
-// method: PUT
-// URL: http://localhost:3000/api/products/99999
-// headers: { "Authorization": "Bearer <admin_token>", "Content-Type": "application/json" }
-// body: raw JSON
-// {
-//   "price": 300.00
-// }
-// Expected: 404 Not Found - Product does not exist
-
 // PUT /api/products/:id
+
 router.put('/:id', requireAuth, requireAdmin, async (req, res) => {
     const {
       productName, categoryId, materialId, price, quantityLeft,
@@ -604,19 +543,8 @@ router.put('/:id', requireAuth, requireAdmin, async (req, res) => {
 // ─────────────────────────────────────────────
 //  DELETE PRODUCT (Admin only)
 // ─────────────────────────────────────────────
-// Testing Delete Product
-// method: DELETE
-// URL: http://localhost:3000/api/products/5
-// headers: { "Authorization": "Bearer <admin_token>" }
-// Expected: 200 OK with success message
-
-// Testing Delete Non-existent Product
-// method: DELETE
-// URL: http://localhost:3000/api/products/99999
-// headers: { "Authorization": "Bearer <admin_token>" }
-// Expected: 404 Not Found - Product does not exist
-
 // DELETE /api/products/:id
+
 router.delete('/:id', requireAuth, requireAdmin, async (req, res) => {
   try {
     const [check] = await db.execute('SELECT ProductId FROM Product WHERE ProductId = ?', [req.params.id]);

@@ -72,10 +72,10 @@ app.use((err, req, res, next) => {
 // ─────────────────────────────────────────────
 app.listen(PORT, () => {
   console.log('');
-  console.log('╔══════════════════════════════════════════╗');
-  console.log(`║  BoonSonClon API Server running on port ${PORT}  ║`);
-  console.log(`║  API Base: http://localhost:${PORT}/api       ║`);
-  console.log('╚══════════════════════════════════════════╝');
+  console.log('╔═════════════════════════════════════════════════╗');
+  console.log(`║  BoonSonClon API Server running on port ${PORT}    ║`);
+  console.log(`║  API Base: http://localhost:${PORT}/api            ║`);
+  console.log('╚═════════════════════════════════════════════════╝');
   console.log('');
 });
 
