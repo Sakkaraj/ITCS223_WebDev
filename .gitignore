@@ -33,6 +33,7 @@ tools/
 *.postman_collection.json
 *.postman_environment.json
 postman/
+.postman/
 scratch/
 nul
 *.bak
