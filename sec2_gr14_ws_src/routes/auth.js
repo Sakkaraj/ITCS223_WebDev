@@ -100,6 +100,36 @@ router.post('/member/register', async (req, res) => {
 // ─────────────────────────────────────────────
 //  ADMIN REGISTER
 // ─────────────────────────────────────────────
+// Testing Admin Registration
+// method: POST
+// URL: http://localhost:3000/api/auth/admin/register
+// body: raw JSON
+// {
+//   "firstName": "Admin",
+//   "lastName": "User",
+//   "email": "admin.user@email.com",
+//   "password": "SecurePass123",
+//   "address": "123 Main Street, City",
+//   "age": "35",
+//   "phone": "0896604302"
+// }
+// Expected: 201 Created with token and admin info
+
+// Testing Admin Registration - Duplicate Email
+// method: POST
+// URL: http://localhost:3000/api/auth/admin/register
+// body: raw JSON
+// {
+//   "firstName": "Another",
+//   "lastName": "Admin",
+//   "email": "admin.user@email.com",
+//   "password": "AnotherPass123",
+//   "address": "456 Second Avenue",
+//   "age": "40",
+//   "phone": "0896604303"
+// }
+// Expected: 409 Conflict - Admin account with this email already exists
+
 // POST /api/auth/admin/register
 router.post('/admin/register', async (req, res) => {
   const { firstName, lastName, email, password, address, age, phone } = req.body;
@@ -245,6 +275,26 @@ router.post('/member/login', async (req, res) => {
 // ─────────────────────────────────────────────
 //  ADMIN LOGIN
 // ─────────────────────────────────────────────
+// Testing Admin Login - Valid Credentials
+// method: POST
+// URL: http://localhost:3000/api/auth/admin/login
+// body: raw JSON
+// {
+//   "email": "admin@boonsonclon.com",
+//   "password": "Admin@1234"
+// }
+// Expected: 200 OK with token and admin user info
+
+// Testing Admin Login - Invalid Email
+// method: POST
+// URL: http://localhost:3000/api/auth/admin/login
+// body: raw JSON
+// {
+//   "email": "nonexistent@email.com",
+//   "password": "SomePassword123"
+// }
+// Expected: 401 Unauthorized - Invalid email or password
+
 // POST /api/auth/admin/login
 router.post('/admin/login', async (req, res) => {
   const { email, password } = req.body;

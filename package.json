@@ -9,7 +9,9 @@
     "frontend": "node frontend-server.js",
     "frontend:dev": "nodemon frontend-server.js",
     "both": "concurrently \"npm run dev\" \"npm run frontend:dev\"",
-    "seed": "node sec2_gr14_ws_src/seed.js"
+    "seed": "node sec2_gr14_ws_src/seed.js",
+    "test": "node test-all-endpoints.js",
+    "test:watch": "nodemon test-all-endpoints.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -19,6 +21,7 @@
     "express-session": "^1.18.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
+    "node-fetch": "^2.7.0",
     "sqlite": "^5.1.1",
     "sqlite3": "^6.0.1"
   },
