@@ -44,7 +44,9 @@ npm run dev
 # Production Mode
 npm start
 ```
+
 Default Entry: **`http://localhost:3000`**
+The frontend is automatically served by the backend.
 
 ---
 
@@ -68,12 +70,7 @@ taskkill /F /PID <PID>
 lsof -ti:3000 | xargs kill -9
 ```
 
-### 2. SQLite Connection Errors (`SQLITE_CANTOPEN`)
-This usually occurs if the data directory is missing or locked.
-- **Auto-Fix**: The latest code in `db.js` now automatically creates the `/server/data` folder for you.
-- **Manual Fix**: Simply run `npm run seed` again to initialize the database and folders correctly.
-
-### 3. Windows Execution Policy
+### 2. Windows Execution Policy
 If `npm` or `nodemon` fails to run scripts:
 - Open PowerShell as **Administrator**.
 - Run: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
@@ -87,18 +84,19 @@ The project follows a modular "Clean Clean" structure, ensuring separation of co
 ```text
 ITCS223_WebDev/
 ├── sec2_gr14_fe_src/       # 🌐 Frontend Source (Tasks 1 & 4)
-│   ├── assets/             # Shared resources (CSS, JS, Images)
-│   └── pages/              # HTML templates
+│   ├── assets/             # CSS, JS, Images, Partials
+│   └── pages/              # HTML templates (Home, Shop, Admin, Search)
 │
 ├── sec2_gr14_ws_src/       # 🏗️ Web Service Source (Task 3)
-│   ├── data/               # Persistent storage (SQLite)
-│   ├── routes/             # API Endpoints
-│   └── server.js           # Core Express application
+│   ├── data/               # Persistent storage (SQLite .sqlite file)
+│   ├── middleware/         # Auth & validation logic
+│   ├── routes/             # API Endpoints (Auth, Products, Cart, etc.)
+│   └── server.js           # Core Express application entry
 │
 ├── sec2_gr14_database.sql  # 🗄️ Database Export (Task 2)
-├── .env                    # Environment variables
-├── package.json            # Project configuration
-└── README.md               # This documentation
+├── .env                    # Local environment config
+├── package.json            # Base package configuration
+└── README.md               # Main project documentation
 ```
 
 ---
@@ -106,19 +104,20 @@ ITCS223_WebDev/
 ## 🎯 Key Feature Catalog
 
 ### 💎 Smart Inventory
-- **Dynamic Categorization**: The homepage automatically maps furniture to categories with real-time product counts.
+- **Dynamic Categorization**: The homepage automatically maps furniture to categories with real-time product counts via `/api/products/filter-meta`.
 - **Chronological Sorting**: Newer pieces are automatically timestamped and pushed to the top of the "New Products" section.
-- **Smart Search**: Advanced filtering by Category, Material, and Price Range.
+- **Advanced Search**: Advanced filtering by Category, Material, Color, Dimensions, Weight, and Price Range via the `pages/advance-search.html`.
 
 ### 🔐 Secure Administration
-- **Full CRUD**: Admins can Create, Read, Update, and Delete products through a secure dashboard.
-- **Image Management**: Support for multiple product views and thumbnail generation.
-- **JWT Authentication**: Secure, token-based access for Admins and Members.
+- **Full CRUD**: Admins can Create, Read, Update, and Delete products through a secure dashboard (`pages/admin-panel.html`).
+- **Image Management**: Support for multiple product views and automatic thumbnail formatting.
+- **JWT Authentication**: Secure, token-based access for Admins and Members with persistent logic in `middleware/authMiddleware.js`.
 
-### ✉️ Interactive Marketing
+### 🛒 Commerce & Marketing
+- **Shopping Cart**: Session-persistent cart allowing quantity updates and color selection.
+- **Vat-Inclusive Checkout**: Automated calculation of subtotal, 7% VAT, and final amount during order placement.
 - **Functional Newsletter**: Fully integrated sign-up form with database persistence and duplicate prevention.
-- **Contact Integration**: Live connection between the Contact Us form and the administrative inbox.
-- **Live Maps**: Interactive Google Maps integration for physical store discovery.
+- **Contact Integration**: Live connection between the Contact Us form and the administrative records.
 
 ---
 
@@ -143,47 +142,28 @@ The system utilizes 16 integrated tables to manage every aspect of the store.
 ## 🔌 API Reference
 
 ### 🛋️ Products
-- `GET /api/products` — Retrieve all inventory (supports pagination & sorting).
-- `GET /api/products/:id` — Detailed view for a single item.
-- `POST /api/products` — [ADMIN] Create new furniture.
-- `DELETE /api/products/:id` — [ADMIN] Remove inventory.
+- `GET /api/products` — Retrieve inventory with filtering (category, price, search, etc.).
+- `GET /api/products/:id` — Detailed view for a single item (includes images, colors, reviews).
+- `GET /api/products/filter-meta` — Get categories, colors, and price ranges for filters.
+- `POST /api/products` — **[ADMIN]** Create new furniture.
+- `PUT /api/products/:id` — **[ADMIN]** Update existing furniture details.
+- `DELETE /api/products/:id` — **[ADMIN]** Remove inventory.
 
-### 🔑 Authentication
-- `POST /api/auth/member/login` — Customer access.
-- `POST /api/auth/admin/login` — Administrative access.
-- `GET /api/auth/me` — Verify current session/JWT.
+### 🔑 Authentication (`/api/auth`)
+- `POST /member/register` — Register a new customer account.
+- `POST /member/login` — Customer login (JWT).
+- `POST /admin/login` — Administrative login (JWT).
+- `GET /me` — Verify current session and retrieve user data.
 
-### 🛒 Commerce
-- `GET /api/cart` — View current session cart.
+### 🛒 Commerce (`/api/cart` & `/api/orders`)
+- `GET /api/cart` — View current session cart with product details.
 - `POST /api/cart` — Add item to cart.
-- `POST /api/newsletter` — Subscribe to updates.
+- `PATCH /api/cart/:productId` — Update item quantity in cart.
+- `DELETE /api/cart/:productId` — Remove specific item from cart.
+- `POST /api/orders` — **[MEMBER]** Place a final order (Checkout).
+- `GET /api/orders/my` — **[MEMBER]** View personal order history.
 
 ---
 
-## 🛠️ Advanced Troubleshooting
 
-### **Port 3000 Conflict**
-If you see `EADDRINUSE`, the port is already occupied.
-**Fix (Windows):**
-```powershell
-netstat -ano | findstr :3000
-taskkill /F /PID <ActualPID>
-```
-
-### **Windows Script Error (Execution Policy)**
-If `npm` or `nodemon` fails to load:
-**Fix:** Open PowerShell as Administrator and run:
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
-
----
-
-## 👨‍💻 Developer Support
-All development help scripts are located in the `/tools` directory.
-- `tools/db-verify.js` — Audits the current database integrity.
-- `tools/update_products.js` — Batch update utility for inventory.
-
----
-
-*© 2024 BoonSonClon Furniture. Part of the ITCS223 Web Development Course.*
+*© 2026 BoonSonClon Furniture. Part of the ITCS223 Web Development Course.*
