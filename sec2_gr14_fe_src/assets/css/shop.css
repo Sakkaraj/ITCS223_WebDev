@@ -63,6 +63,10 @@ a {
   flex-shrink: 0;
 }
 
+.shop-sidebar__close {
+  display: none; /* Hidden on desktop */
+}
+
 .shop-filter-group + .shop-filter-group {
   margin-top: 2.5rem;
 }

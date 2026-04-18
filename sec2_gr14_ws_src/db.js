@@ -26,6 +26,67 @@ if (isPostgres) {
 }
 
 /**
+ * Case Normalization Map
+ * Maps lowercase PostgreSQL keys to PascalCase keys expected by the app.
+ */
+const NORMALIZE_MAP = {
+  'productid': 'ProductId',
+  'productname': 'ProductName',
+  'price': 'Price',
+  'quantityleft': 'QuantityLeft',
+  'productdescription': 'ProductDescription',
+  'productdetail': 'ProductDetail',
+  'widthdimension': 'WidthDimension',
+  'heightdimension': 'HeightDimension',
+  'lengthdimension': 'LengthDimension',
+  'weight': 'Weight',
+  'featured': 'Featured',
+  'status': 'Status',
+  'createdat': 'CreatedAt',
+  'categoryid': 'CategoryId',
+  'category': 'Category',
+  'materialid': 'MaterialId',
+  'materialname': 'MaterialName',
+  'materialtype': 'MaterialType',
+  'colorid': 'ColorId',
+  'colorname': 'ColorName',
+  'hexcode': 'HexCode',
+  'sortorder': 'SortOrder',
+  'imageid': 'ImageId',
+  'imageurl': 'ImageUrl',
+  'imagecount': 'ImageCount',
+  'total': 'total',
+  'adminid': 'AdminId',
+  'memberid': 'MemberId',
+  'firstname': 'FirstName',
+  'lastname': 'LastName',
+  'email': 'Email',
+  'memberemail': 'MemberEmail',
+  'phonenumber': 'PhoneNumber',
+  'totalamount': 'TotalAmount',
+  'vatamount': 'VatAmount',
+  'orderdate': 'OrderDate',
+  'orderid': 'OrderId',
+  'trackingid': 'TrackingId',
+  'contactemail': 'ContactEmail',
+  'rating': 'Rating',
+  'reviewcomment': 'ReviewComment',
+  'reviewid': 'ReviewId'
+};
+
+function normalizeRows(rows) {
+  if (!rows || !Array.isArray(rows)) return rows;
+  return rows.map(row => {
+    const normalized = {};
+    for (const key in row) {
+      const mappedKey = NORMALIZE_MAP[key.toLowerCase()] || key;
+      normalized[mappedKey] = row[key];
+    }
+    return normalized;
+  });
+}
+
+/**
  * SQLite Implementation (Fallback for Local)
  */
 const initSqlite = async () => {
@@ -77,13 +138,15 @@ const pool = {
                          pgSql.trim().toUpperCase().startsWith('WITH');
 
         if (isSelect) {
-          return [result.rows, result.fields];
+          return [normalizeRows(result.rows), result.fields];
         } else {
+          // Normalize rows for potential RETURNING clauses
+          const rows = normalizeRows(result.rows);
           // Mock mysql2 result interface
           let insertId = null;
-          if (isInsert && result.rows.length > 0) {
+          if (isInsert && rows.length > 0) {
             // Pick the first key that looks like an ID
-            const firstRow = result.rows[0];
+            const firstRow = rows[0];
             const idKey = Object.keys(firstRow).find(k => k.toLowerCase().endsWith('id'));
             insertId = idKey ? firstRow[idKey] : (firstRow.id || null);
           }
