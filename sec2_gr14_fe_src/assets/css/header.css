@@ -43,7 +43,16 @@
 }
 
 body {
-  padding-top: 13rem;
+  padding-top: 10.5rem; /* Base padding for desktop */
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 4.5rem; /* Consolidate height on mobile */
+  }
+  .site-header {
+    top: 1.5rem;
+  }
 }
 
 .site-header__top,
@@ -61,6 +70,12 @@ body {
   gap: 2.5rem;
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .site-header__top {
+    display: none; /* Hide top bar on mobile */
+  }
 }
 
 .site-header__location {
@@ -218,9 +233,74 @@ body {
   letter-spacing: -0.02em;
 }
 
+/* ────── BURGER BUTTON ────── */
+.site-header__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1001;
+}
+
+.site-header__burger span {
+  width: 100%;
+  height: 2px;
+  background-color: var(--text-main);
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .site-header__burger {
+    display: flex;
+  }
+  
+  .site-header__burger.is-active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  .site-header__burger.is-active span:nth-child(2) {
+    opacity: 0;
+  }
+  .site-header__burger.is-active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+}
+
 .site-header__nav {
   display: flex;
   gap: 2.5rem;
+}
+
+@media (max-width: 768px) {
+  .site-header__nav {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 280px;
+    height: 100vh;
+    background: var(--background-white);
+    flex-direction: column;
+    padding: 80px 40px;
+    gap: 2rem;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+  }
+
+  .site-header__nav.is-active {
+    right: 0;
+  }
+
+  .shop-products__result-text {
+    font-size: 0.85rem; /* Increased from 0.7rem for premium readability */
+    font-weight: 600;
+  }
+  width: 100%;
+  }
 }
 
 .site-header__nav-link {
@@ -290,6 +370,7 @@ body {
   height: 1.25rem;
   cursor: pointer;
   transition: color 0.2s ease;
+  color: #000000;
 }
 
 .site-header__action-icon:hover {
@@ -308,10 +389,7 @@ body {
   position: absolute;
   top: -0.5rem;
   right: -0.5rem;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 0.25rem;
-  border-radius: 0;
+  border-radius: 50%;
   background-color: var(--badge-red);
   color: #ffffff;
   font-size: 10px;
@@ -320,6 +398,7 @@ body {
   align-items: center;
   justify-content: center;
   line-height: 1;
+  box-shadow: 0 2px 4px rgba(239, 64, 64, 0.4);
 }
 
 .site-header__cart {
@@ -330,12 +409,12 @@ body {
 
 .site-header__cart-badge {
   position: absolute;
-  top: -0.5rem;
-  right: -0.5rem;
+  top: -6px;
+  right: -8px;
   min-width: 18px;
   height: 18px;
-  padding: 0 0.25rem;
-  border-radius: 0;
+  padding: 0 4px;
+  border-radius: 50%;
   background-color: var(--badge-red);
   color: #ffffff;
   font-size: 10px;
@@ -344,6 +423,7 @@ body {
   align-items: center;
   justify-content: center;
   line-height: 1;
+  box-shadow: 0 2px 4px rgba(239, 64, 64, 0.4);
 }
 
 .site-header__cart-badge.is-hidden {
@@ -495,15 +575,6 @@ body {
 }
 
 @media (max-width: 1024px) {
-  .site-header__top {
-    flex-wrap: wrap;
-  }
-
-  .site-header__bottom {
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-
   .site-header__spacer {
     display: none;
   }
@@ -512,31 +583,77 @@ body {
 @media (max-width: 768px) {
   .site-header__top,
   .site-header__bottom {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  .site-header__search-group {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .site-header__search-button {
-    width: 100%;
-  }
-
-  .site-header__nav {
-    flex-wrap: wrap;
-    gap: 1rem 1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 
   .site-header__bottom {
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .site-header__actions {
+    margin-left: auto; /* Push group to the right */
     border-left: none;
     padding-left: 0;
+    gap: 1.25rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .site-header__burger {
+    margin-left: 1.25rem;
+  }
+
+  /* Hide secondary actions on mobile header bar */
+  .site-header__action-link--desktop {
+    display: none !important;
+  }
+
+  .site-header__mobile-only-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .site-header__mobile-divider {
+    height: 1px;
+    background-color: var(--border-soft);
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+
+  .site-header__mobile-action {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .site-header__mobile-action i {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--brand-brown);
+  }
+
+  .mobile-wishlist-count {
+    background-color: var(--badge-red);
+    color: white;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: auto;
+  }
+}
+
+@media (min-width: 769px) {
+  .site-header__mobile-only-actions {
+    display: none;
   }
 }
 /* ────── WISHLIST HEART STYLES ────── */

@@ -69,6 +69,8 @@ input {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  padding: 0 1rem;
 }
 
 .admin-panel-hero__title {
@@ -328,6 +330,15 @@ input {
   cursor: pointer;
 }
 
+.admin-panel-content__actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.admin-panel__filter-toggle {
+  display: none; /* Desktop hidden */
+}
+
 .admin-panel-table-wrapper {
   overflow-x: auto;
   border: 1px solid var(--border-soft);
@@ -338,7 +349,6 @@ input {
 
 .admin-panel-table {
   width: 100%;
-  min-width: 1300px;
   border-collapse: collapse;
   text-align: left;
 }
@@ -386,8 +396,9 @@ input {
 
 .admin-panel-table__product-cell {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.75rem;
+  min-width: 0; /* Allow content to contain properly */
 }
 
 .admin-panel-table__product-image {
@@ -426,6 +437,21 @@ input {
   text-align: center;
   font-weight: 700;
   color: #111827;
+}
+
+@media (max-width: 768px) {
+  .admin-panel-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -1.5rem;
+    padding: 0 1.5rem;
+    border-left: none;
+    border-right: none;
+  }
+  
+  .admin-panel-table {
+    min-width: 800px; /* Still allow some horizontal scroll but more reasonable */
+  }
 }
 
 .admin-panel-table__actions {
@@ -575,13 +601,91 @@ input {
 @media (max-width: 1024px) {
   .admin-panel-page__layout {
     flex-direction: column;
+    gap: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .admin-panel-content {
+    width: 100%;
+    margin: 0;
+    padding: 0;
   }
 
   .admin-panel-sidebar {
-    width: 100%;
-    min-height: auto;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 300px;
+    height: 100vh;
+    background: #ffffff;
+    z-index: 2000;
+    padding: 2rem;
+    overflow-y: auto;
+    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
     border-right: none;
-    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .admin-panel-sidebar.is-active {
+    left: 0;
+  }
+
+  .admin-panel-sidebar__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: var(--bg-soft);
+    border: none;
+    margin-bottom: 2rem;
+    cursor: pointer;
+  }
+
+  .admin-panel-sidebar__close i {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--text-dark);
+  }
+
+  .admin-panel__filter-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: #ffffff;
+    border: 1px solid #000000;
+    color: #000000;
+    padding: 0.6rem 1.25rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+
+  .admin-panel__filter-toggle i {
+    width: 1rem;
+    height: 1rem;
+    color: #000000;
+  }
+
+  /* Overlay for admin sidebar */
+  .admin-sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(2px);
+  }
+
+  .admin-sidebar-overlay.is-active {
+    opacity: 1;
+    visibility: visible;
   }
 }
 
@@ -590,15 +694,76 @@ input {
     font-size: 1.8rem;
   }
 
-  .admin-panel-hero__add-button {
-    right: 1rem;
-    bottom: 0.75rem;
-    padding: 0.6rem 0.8rem;
+  .admin-panel-content__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    width: 100%;
+    text-align: center;
   }
 
-  .admin-panel-content__header {
+  .admin-panel-content__title {
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .admin-panel-content__actions {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .admin-panel__filter-toggle,
+  .admin-panel-content__add-button {
+    width: fit-content;
+    min-width: 240px; /* Comfortable dynamic width */
+    max-width: 90%; /* Prevent touching screen edges */
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 1.5rem;
+    margin: 0 auto;
+  }
+
+  .admin-panel-table th:nth-child(4),
+  .admin-panel-table td:nth-child(4),
+  .admin-panel-table th:nth-child(5),
+  .admin-panel-table td:nth-child(5),
+  .admin-panel-table th:nth-child(6),
+  .admin-panel-table td:nth-child(6) {
+    display: none; /* Hide CMF, Dimension, Description on small screens to save space */
+  }
+
+  .admin-panel-table {
+    min-width: 750px; /* Force overflow for horizontal scrolling */
+    table-layout: auto;
+  }
+
+  .admin-panel-table-wrapper {
+    overflow-x: auto;
+    display: block;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--border-soft);
+  }
+
+  /* Stabilize cells for scrolling */
+  .admin-panel-table th, 
+  .admin-panel-table td {
+    white-space: nowrap;
+  }
+
+  .admin-panel-table__product-cell {
+    min-width: 300px; /* Keep product info from being squashed */
+    white-space: normal; /* Allow name to wrap within the cell if needed */
   }
 }

@@ -145,7 +145,43 @@ document.addEventListener("DOMContentLoaded", async () => {
   initHeaderSearch();
   // Initialize Global Newsletter
   initNewsletter();
+  // Initialize Mobile Menu
+  initMobileMenu();
+  // Initialize Filter Sidebar (Shop & Admin Page)
+  initFilterSidebar();
 });
+
+function initMobileMenu() {
+  const burger = document.querySelector('.site-header__burger, .admin-header__burger');
+  const nav = document.querySelector('.site-header__nav, .admin-header__nav');
+  
+  if (!burger || !nav) return;
+
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('is-active');
+    nav.classList.toggle('is-active');
+    document.body.classList.toggle('no-scroll');
+  });
+
+  // Close menu when clicking a link
+  const navLinks = nav.querySelectorAll('a');
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      burger.classList.remove('is-active');
+      nav.classList.remove('is-active');
+      document.body.classList.remove('no-scroll');
+    });
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (nav.classList.contains('is-active') && !nav.contains(e.target) && !burger.contains(e.target)) {
+      burger.classList.remove('is-active');
+      nav.classList.remove('is-active');
+      document.body.classList.remove('no-scroll');
+    }
+  });
+}
 
 async function initHeaderSearch() {
   // Selectors for both public and admin headers
@@ -270,30 +306,42 @@ async function initHeaderSearch() {
     });
   }
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const currentCatFromUrl = urlParams.get('category');
+
   // ─── 4. Multi-Mode Search Trigger ────────────────────────
   if (selectNode) {
     selectNode.addEventListener('change', () => {
       const cat = selectNode.value;
       const query = searchInput.value.trim();
       
-      // Mode 1: Category Only (Instant Redirect)
-      // If user picks a category and hasn't started typing, browse that category immediately
-      if (!query && cat !== 'All Categories') {
-        const params = new URLSearchParams({ category: cat });
-        window.location.href = `/pages/shop?${params.toString()}`;
+      // Mode 1: Category Change (Instant Redirect)
+      // If user picks a category (including 'All Categories') and hasn't started typing, update the view
+      if (!query) {
+        const params = new URLSearchParams();
+        if (cat && cat !== 'All Categories') {
+            params.set('category', cat);
+        }
+        // Redirect to shop with new filter (or no filter)
+        const target = `/pages/shop${params.toString() ? '?' + params.toString() : ''}`;
+        window.location.href = target;
       }
-      // Mode 2 & 3 (Text or Hybrid): Do nothing, wait for Enter or Click
     });
   }
 
-  // ─── 4. Categories Initialization ──────────────────────
+  // ─── 5. Categories Initialization ──────────────────────
   if (selectNode) {
     try {
       const bscFetch = window.BSC ? window.BSC.apiFetch : fetch;
       const data = await bscFetch('/api/products/meta/categories').then(r => r.json ? r.json() : r);
       if (Array.isArray(data)) {
-        selectNode.innerHTML = '<option>All Categories</option>' + 
+        selectNode.innerHTML = '<option value="All Categories">All Categories</option>' + 
           data.map(c => `<option value="${c.Category}">${c.Category}</option>`).join('');
+        
+        // Sync dropdown with current URL category if present
+        if (currentCatFromUrl) {
+          selectNode.value = currentCatFromUrl;
+        }
       }
     } catch(e) {
       console.warn("Failed to load categories for header", e);
@@ -359,4 +407,57 @@ async function initNewsletter() {
       }
     }
   });
+}
+
+function initFilterSidebar() {
+  const toggle = document.querySelector('#filterToggle');
+  const sidebar = document.querySelector('.shop-sidebar');
+  if (!toggle || !sidebar) return;
+
+  // Create overlay if it doesn't exist
+  let overlay = document.querySelector('.shop-sidebar-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.className = 'shop-sidebar-overlay';
+    document.body.appendChild(overlay);
+  }
+
+  const toggleSidebar = () => {
+    sidebar.classList.toggle('is-active');
+    overlay.classList.toggle('is-active');
+    document.body.classList.toggle('no-scroll');
+  };
+
+  const closeBtn = document.querySelector('#sidebarClose');
+  if (closeBtn) closeBtn.addEventListener('click', toggleSidebar);
+
+  toggle.addEventListener('click', toggleSidebar);
+  overlay.addEventListener('click', toggleSidebar);
+
+  // --- Admin Panel Sidebar ---
+  const showAdminOverlay = () => {
+    let overlay = document.querySelector('.admin-sidebar-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.className = 'admin-sidebar-overlay';
+      document.body.appendChild(overlay);
+    }
+    return overlay;
+  };
+
+  const adminToggle = document.querySelector('#adminFilterToggle');
+  const adminSidebar = document.querySelector('.admin-panel-sidebar');
+  if (adminToggle && adminSidebar) {
+    const overlay = showAdminOverlay();
+    const toggleAdminSidebar = () => {
+      adminSidebar.classList.toggle('is-active');
+      overlay.classList.toggle('is-active');
+      document.body.classList.toggle('no-scroll');
+    };
+    adminToggle.addEventListener('click', toggleAdminSidebar);
+    overlay.addEventListener('click', toggleAdminSidebar);
+    
+    const adminClose = document.querySelector('#adminSidebarClose');
+    if (adminClose) adminClose.addEventListener('click', toggleAdminSidebar);
+  }
 }

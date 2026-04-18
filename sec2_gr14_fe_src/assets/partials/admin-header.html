@@ -42,10 +42,42 @@
       <a href="../pages/admin-panel" data-page="admin-panel" class="nav-link admin-header__nav-link">Admin Panel</a>
       <a href="../pages/add-product" data-page="add-product" class="nav-link admin-header__nav-link">Add Product</a>
       <a href="../pages/contact-us" data-page="contact" class="nav-link admin-header__nav-link">Contact Us</a>
+
+      <div class="admin-header__mobile-only-actions">
+        <div class="admin-header__mobile-divider"></div>
+        <a href="../pages/sign-in" class="admin-header__mobile-action">
+          <i data-lucide="user"></i>
+          <span>Admin Profile</span>
+        </a>
+        <a href="../pages/advance-search" class="admin-header__mobile-action">
+          <i data-lucide="search"></i>
+          <span>Advanced Search</span>
+        </a>
+        <a href="../pages/home" class="admin-header__mobile-action">
+          <i data-lucide="external-link"></i>
+          <span>View Site</span>
+        </a>
+      </div>
     </nav>
 
     <div class="admin-header__actions">
-      <i data-lucide="user" class="admin-header__action-icon"></i>
+      <a href="../pages/wishlist" class="admin-header__action-link admin-header__action-link--desktop" title="Wishlist">
+        <i data-lucide="heart" class="admin-header__action-icon"></i>
+      </a>
+
+      <a href="../pages/cart" class="admin-header__action-link" title="Cart">
+        <i data-lucide="shopping-bag" class="admin-header__action-icon"></i>
+      </a>
+
+      <a href="../pages/home" class="admin-header__action-link admin-header__action-link--desktop" title="Main Website">
+        <i data-lucide="layout" class="admin-header__action-icon"></i>
+      </a>
     </div>
+
+    <button class="admin-header__burger" id="burgerToggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </div>
 </header>

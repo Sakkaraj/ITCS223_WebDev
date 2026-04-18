@@ -32,6 +32,9 @@
 
         <!-- Sidebar -->
         <aside class="admin-panel-sidebar">
+          <button class="admin-panel-sidebar__close" id="adminSidebarClose">
+            <i data-lucide="x"></i>
+          </button>
 
           <!-- Price Filter -->
           <section class="admin-panel-filter-group">
@@ -120,7 +123,13 @@
         <section class="admin-panel-content">
           <div class="admin-panel-content__header">
             <h2 class="admin-panel-content__title">Admin Panel</h2>
-            <button class="admin-panel-content__add-button">+ Add Product</button>
+            <div class="admin-panel-content__actions">
+              <button class="admin-panel__filter-toggle" id="adminFilterToggle">
+                <i data-lucide="filter"></i>
+                <span>Filter</span>
+              </button>
+              <button class="admin-panel-content__add-button">+ Add Product</button>
+            </div>
           </div>
 
           <div class="admin-panel-table-wrapper">

@@ -23,6 +23,9 @@
       <div class="shop-page__layout">
         <!-- Sidebar -->
         <aside class="shop-sidebar">
+          <button class="shop-sidebar__close" id="sidebarClose">
+            <i data-lucide="x"></i>
+          </button>
           <section class="shop-filter-group">
             <h4 class="shop-filter-group__title">Filter by Price</h4>
             <input type="range" min="99" max="9999" class="shop-filter-group__range" />
@@ -52,6 +55,10 @@
         <section class="shop-products">
           <div class="shop-products__toolbar">
             <p class="shop-products__result-text">Showing 0 results</p>
+            <button class="shop-products__filter-toggle" id="filterToggle">
+              <i data-lucide="filter"></i>
+              <span>Filter</span>
+            </button>
           </div>
           <div class="shop-products__grid">
             <!-- Products will be dynamically loaded here by shop.js -->

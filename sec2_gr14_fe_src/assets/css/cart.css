@@ -124,7 +124,6 @@ select {
 
 .cart-table {
   width: 100%;
-  min-width: 1200px;
   border-collapse: collapse;
   text-align: left;
 }
@@ -387,6 +386,16 @@ select {
 
 /* Responsive */
 @media (max-width: 768px) {
+  .cart-table-wrapper {
+    margin: 0 -1.5rem;
+    padding: 0 1.5rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .cart-table {
+    min-width: 700px;
+  }
+
   .cart-hero__overlay {
     padding: 0 1.5rem;
   }

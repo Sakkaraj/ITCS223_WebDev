@@ -212,6 +212,7 @@ textarea {
 @media (max-width: 1024px) {
   .contact-page__layout {
     grid-template-columns: 1fr;
+    gap: 2.5rem;
   }
 }
 
@@ -230,5 +231,9 @@ textarea {
 
   .contact-page__title {
     font-size: 1.8rem;
+  }
+
+  .contact-page__description {
+    max-width: 100%;
   }
 }
