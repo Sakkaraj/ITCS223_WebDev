@@ -21,12 +21,13 @@ const PORT = process.env.PORT || 3000;
 // ─────────────────────────────────────────────
 //  SESSION STORAGE CONFIGURATION
 // ─────────────────────────────────────────────
+const databaseUrl = process.env.DATABASE_URL || process.env.INTERNAL_DATABASE_URL;
 let sessionStore;
 
-if (process.env.DATABASE_URL) {
+if (databaseUrl) {
   // Production: Use PostgreSQL for sessions
   sessionStore = new PgSession({
-    conString: process.env.DATABASE_URL,
+    conString: databaseUrl,
     tableName: 'session',
     createTableIfMissing: false
   });

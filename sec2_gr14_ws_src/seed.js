@@ -13,7 +13,8 @@ const { Pool } = require('pg');
 const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
 
-const isPostgres = !!process.env.DATABASE_URL;
+const databaseUrl = process.env.DATABASE_URL || process.env.INTERNAL_DATABASE_URL;
+const isPostgres = !!databaseUrl;
 
 /**
  * Translates PostgreSQL specific syntax to SQLite syntax
@@ -52,8 +53,8 @@ async function seed() {
        * PostgreSQL Seeding
        */
       const pool = new Pool({
-        connectionString: process.env.DATABASE_URL,
-        ssl: process.env.DATABASE_URL.includes('render.com') ? { rejectUnauthorized: false } : false
+        connectionString: databaseUrl,
+        ssl: databaseUrl.includes('render.com') ? { rejectUnauthorized: false } : false
       });
 
       console.log('🏗️  Executing Master SQL on PostgreSQL...');

@@ -6,7 +6,8 @@ const { open } = require('sqlite');
 require('dotenv').config();
 
 // Determine which database to use
-const isPostgres = !!process.env.DATABASE_URL;
+const databaseUrl = process.env.DATABASE_URL || process.env.INTERNAL_DATABASE_URL;
+const isPostgres = !!databaseUrl;
 
 let dbInstance = null; // For SQLite
 let pgPool = null;    // For PostgreSQL
@@ -16,8 +17,8 @@ let pgPool = null;    // For PostgreSQL
  */
 if (isPostgres) {
   pgPool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: process.env.DATABASE_URL.includes('render.com') ? { rejectUnauthorized: false } : false
+    connectionString: databaseUrl,
+    ssl: databaseUrl.includes('render.com') ? { rejectUnauthorized: false } : false
   });
   console.log('🐘 PostgreSQL connected successfully (Production Mode)');
 }
