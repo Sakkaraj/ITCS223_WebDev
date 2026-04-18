@@ -60,7 +60,9 @@ async function seed() {
       });
 
       console.log('🏗️  Executing Master SQL on PostgreSQL...');
-      await pool.query(masterSql);
+      // Ensure DROP TABLE commands use CASCADE for PostgreSQL to clear dependencies
+      const pgSql = masterSql.replace(/DROP TABLE IF EXISTS ([a-z0-9_"]+);/gi, 'DROP TABLE IF EXISTS $1 CASCADE;');
+      await pool.query(pgSql);
       console.log('✅ PostgreSQL database initialized successfully');
       await pool.end();
 
