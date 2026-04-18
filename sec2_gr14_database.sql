@@ -22,6 +22,7 @@ DROP TABLE IF EXISTS AdminToken;
 DROP TABLE IF EXISTS AdminLoginLog;
 DROP TABLE IF EXISTS AdminLoginInformation;
 DROP TABLE IF EXISTS AdminInformation;
+DROP TABLE IF EXISTS "session";
 
 CREATE TABLE AdminInformation (
     AdminId SERIAL PRIMARY KEY,
@@ -32,6 +33,15 @@ CREATE TABLE AdminInformation (
     Email VARCHAR(50) NOT NULL,
     TelephoneNumber VARCHAR(15) NOT NULL
 );
+
+-- For express-session (connect-pg-simple)
+CREATE TABLE "session" (
+  "sid" varchar NOT NULL PRIMARY KEY,
+  "sess" json NOT NULL,
+  "expire" timestamp(6) NOT NULL
+);
+
+CREATE INDEX "IDX_session_expire" ON "session" ("expire");
 
 CREATE TABLE AdminLoginInformation (
     AdminId INT NOT NULL,

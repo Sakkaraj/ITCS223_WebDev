@@ -1,8 +1,11 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
+const PgSession = require('connect-pg-simple')(session);
+const SQLiteStore = require('connect-sqlite3')(session);
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 
 // Route imports
 const authRoutes = require('./routes/auth');
@@ -14,6 +17,34 @@ const newsletterRoutes = require('./routes/newsletter');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// ─────────────────────────────────────────────
+//  SESSION STORAGE CONFIGURATION
+// ─────────────────────────────────────────────
+let sessionStore;
+
+if (process.env.DATABASE_URL) {
+  // Production: Use PostgreSQL for sessions
+  sessionStore = new PgSession({
+    conString: process.env.DATABASE_URL,
+    tableName: 'session',
+    createTableIfMissing: false
+  });
+  console.log('💾 Session Store: PostgreSQL');
+} else {
+  // Local: Use SQLite for sessions
+  const sessionDir = path.resolve(__dirname, './data');
+  if (!fs.existsSync(sessionDir)) {
+    fs.mkdirSync(sessionDir, { recursive: true });
+  }
+  
+  sessionStore = new SQLiteStore({
+    db: 'sec2_gr14_sessions.sqlite',
+    dir: sessionDir,
+    table: 'sessions'
+  });
+  console.log('💾 Session Store: SQLite');
+}
 
 // ─────────────────────────────────────────────
 //  MIDDLEWARE
@@ -34,13 +65,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
+  store: sessionStore,
   secret: process.env.SESSION_SECRET || 'boonsonclon_session',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
-    secure: false, // Set to true in production with HTTPS
+    secure: process.env.NODE_ENV === 'production', // true in production with HTTPS
+    httpOnly: true,
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // Required for cross-site cookies on Render
   },
+  proxy: process.env.NODE_ENV === 'production', // Trust Render's proxy
 }));
 
 // ─────────────────────────────────────────────

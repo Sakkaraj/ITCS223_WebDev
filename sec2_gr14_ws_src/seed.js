@@ -29,7 +29,12 @@ function translatePostgresToSqlite(sql) {
     .replace(/BOOLEAN DEFAULT FALSE/gi, 'BOOLEAN DEFAULT 0')
     .replace(/TRUE/g, '1')
     .replace(/FALSE/g, '0')
-    .replace(/DROP TABLE IF EXISTS ([a-z0-9_]+) CASCADE/gi, 'DROP TABLE IF EXISTS $1');
+    .replace(/COLLATE "default"/gi, '')
+    .replace(/json/gi, 'TEXT')
+    .replace(/TIMESTAMP\(\d+\)/gi, 'DATETIME')
+    .replace(/DROP TABLE IF EXISTS ([a-z0-9_]+) CASCADE/gi, 'DROP TABLE IF EXISTS $1')
+    .replace(/DROP TABLE IF EXISTS "([a-z0-9_]+)"/gi, 'DROP TABLE IF EXISTS $1')
+    .replace(/CREATE TABLE "([a-z0-9_]+)"/gi, 'CREATE TABLE $1');
 }
 
 async function seed() {
@@ -74,6 +79,8 @@ async function seed() {
       
       console.log('🏗️  Translating Master SQL for SQLite...');
       const localSql = translatePostgresToSqlite(masterSql);
+      
+      // DEBUG: console.log(localSql);
       
       console.log('🏗️  Executing Translated SQL on SQLite...');
       await sqliteDb.exec(localSql);
