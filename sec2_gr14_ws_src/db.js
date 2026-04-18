@@ -6,8 +6,10 @@ const { open } = require('sqlite');
 require('dotenv').config();
 
 // Determine which database to use
-const databaseUrl = process.env.DATABASE_URL || process.env.INTERNAL_DATABASE_URL;
-const isPostgres = !!databaseUrl;
+const databaseUrl = process.env.DATABASE_URL || 
+                    process.env.INTERNAL_DATABASE_URL || 
+                    process.env.DATABASE_PATH;
+const isPostgres = !!databaseUrl && databaseUrl.startsWith('postgres');
 
 let dbInstance = null; // For SQLite
 let pgPool = null;    // For PostgreSQL

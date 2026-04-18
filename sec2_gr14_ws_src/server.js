@@ -19,12 +19,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ─────────────────────────────────────────────
-//  SESSION STORAGE CONFIGURATION
-// ─────────────────────────────────────────────
-const databaseUrl = process.env.DATABASE_URL || process.env.INTERNAL_DATABASE_URL;
+const databaseUrl = process.env.DATABASE_URL || 
+                    process.env.INTERNAL_DATABASE_URL || 
+                    process.env.DATABASE_PATH;
+const isPostgres = !!databaseUrl && databaseUrl.startsWith('postgres');
 let sessionStore;
 
-if (databaseUrl) {
+if (isPostgres) {
   // Production: Use PostgreSQL for sessions
   sessionStore = new PgSession({
     conString: databaseUrl,
