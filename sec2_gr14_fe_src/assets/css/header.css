@@ -213,6 +213,7 @@ body {
   font-weight: 700;
   color: #000000;
   text-decoration: none;
+  flex: 1; /* Allow logo to take equal space with actions */
 }
 
 .site-header__brand:visited {
@@ -273,6 +274,8 @@ body {
 .site-header__nav {
   display: flex;
   gap: 2.5rem;
+  justify-content: center;
+  flex: 0 0 auto; /* Don't grow, stay in center */
 }
 
 @media (max-width: 768px) {
@@ -316,7 +319,7 @@ body {
 }
 
 .site-header__spacer {
-  width: 180px;
+  display: none; /* Removed in favor of flex logic */
 }
 
 .site-header__actions {
@@ -325,6 +328,8 @@ body {
   gap: 1rem;
   padding-left: 1.5rem;
   border-left: 1px solid var(--border-soft);
+  flex: 1; /* Match brand width */
+  justify-content: flex-end; /* Align icons to the right */
 }
 
 .site-header__user-menu {
