@@ -129,6 +129,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // ─── ADMIN LOGIN FORM (admin-login) ─────────────────
   const adminForm = document.querySelector('.admin-login-form');
   if (adminForm) {
+    // If already logged in as admin, redirect to admin-panel
+    if (BSC.isLoggedIn('admin')) {
+      window.location.href = '/pages/admin-panel';
+      return;
+    }
     adminForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = adminForm.querySelector('.admin-login-form__button');

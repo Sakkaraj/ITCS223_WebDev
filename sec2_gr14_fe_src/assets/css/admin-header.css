@@ -378,3 +378,64 @@
     display: none;
   }
 }
+
+/* ────── ADMIN USER STATUS ────── */
+.admin-header__user-status {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-left: 1.5rem;
+  padding-left: 1.5rem;
+  border-left: 1px solid var(--border-soft);
+}
+
+.admin-header__user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-header__user-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--brand-brown);
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.admin-header__user-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dark);
+  line-height: 1.2;
+}
+
+.admin-header__logout-btn {
+  background: none;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-header__logout-btn:hover {
+  color: #ef4444; 
+  background-color: #fef2f2;
+}
+
+.admin-header__logout-btn i {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+@media (max-width: 768px) {
+  .admin-header__user-status {
+    display: none; 
+  }
+}

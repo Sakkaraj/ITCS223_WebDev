@@ -204,37 +204,38 @@ function showToast(message, type = 'success') {
 // ─── Update Nav based on login state ────────────────────────
 
 function updateNavAuth() {
-  const user = getUser();
+  const member = getUser('member');
+  const admin = getUser('admin');
+  
+  // ─── 1. Member UI (Storefront Header) ───
   const loginBtns = document.querySelectorAll('.js-login-btn');
   const userMenus = document.querySelectorAll('.js-user-menu');
   const userNames = document.querySelectorAll('.js-user-name');
-  const adminAccess = document.querySelectorAll('.js-admin-access');
 
-  if (user) {
-    // Logged in
+  if (member) {
     loginBtns.forEach(el => el.style.display = 'none');
     userMenus.forEach(el => el.style.display = 'flex');
-    userNames.forEach(el => el.textContent = user.firstName || user.email);
-    
-    // Admin Panel: Only show if the user is an admin
-    adminAccess.forEach(el => {
-      el.style.display = (user.role === 'admin') ? 'flex' : 'none';
-      if (user.role === 'admin') {
-         const span = el.querySelector('span');
-         if (span) span.textContent = 'Admin Dashboard';
-      }
-    });
+    userNames.forEach(el => el.textContent = member.firstName || member.email);
   } else {
-    // Guest
     loginBtns.forEach(el => el.style.display = 'flex');
     userMenus.forEach(el => el.style.display = 'none');
-    
-    // Guests can see "Admin Panel" (which links to admin-login)
-    adminAccess.forEach(el => {
-      el.style.display = 'flex';
-      const span = el.querySelector('span');
-      if (span) span.textContent = 'Admin Panel';
-    });
+  }
+
+  // ─── 2. Admin Awareness on Storefront ───
+  const adminAccess = document.querySelectorAll('.js-admin-access');
+  adminAccess.forEach(el => {
+    // ALWAYS show the admin access link on the storefront
+    el.style.display = 'flex';
+    const span = el.querySelector('span');
+    if (span) {
+      span.textContent = admin ? 'Admin Dashboard' : 'Admin Panel';
+    }
+  });
+
+  // ─── 3. Admin identity on Admin Header ───
+  const adminNameEl = document.querySelector('.js-admin-name');
+  if (adminNameEl && admin) {
+    adminNameEl.textContent = admin.firstName || admin.email;
   }
 }
 

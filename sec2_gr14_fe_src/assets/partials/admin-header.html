@@ -25,21 +25,29 @@
           <i data-lucide="external-link"></i>
           <span>View Site</span>
         </a>
+        <div class="admin-header__mobile-divider"></div>
+        <button class="js-logout-btn admin-header__mobile-action" style="background:none; border:none; width:100%; text-align:left; cursor:pointer;">
+          <i data-lucide="log-out" style="color:#ef4444;"></i>
+          <span style="color:#ef4444;">Logout Admin</span>
+        </button>
       </div>
     </nav>
 
     <div class="admin-header__actions">
-      <a href="../pages/wishlist" class="admin-header__action-link admin-header__action-link--desktop" title="Wishlist">
-        <i data-lucide="heart" class="admin-header__action-icon"></i>
-      </a>
-
-      <a href="../pages/cart" class="admin-header__action-link" title="Cart">
-        <i data-lucide="shopping-bag" class="admin-header__action-icon"></i>
-      </a>
-
       <a href="../pages/home" class="admin-header__action-link admin-header__action-link--desktop" title="Main Website">
         <i data-lucide="layout" class="admin-header__action-icon"></i>
       </a>
+
+      <!-- Admin Identity Section -->
+      <div class="admin-header__user-status">
+        <div class="admin-header__user-info">
+          <span class="admin-header__user-label">Admin</span>
+          <span class="admin-header__user-name js-admin-name">Administrator</span>
+        </div>
+        <button class="js-logout-btn admin-header__logout-btn" title="Logout Admin">
+          <i data-lucide="log-out"></i>
+        </button>
+      </div>
     </div>
 
     <button class="admin-header__burger" id="burgerToggle" aria-label="Toggle menu">
