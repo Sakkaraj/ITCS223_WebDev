@@ -57,11 +57,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function renderOrderDetails(data) {
   // Metadata
-  document.getElementById('detail-order-id').textContent = `#${data.OrderId}`;
-  document.getElementById('detail-customer-name').textContent = `${data.FirstName} ${data.LastName}`;
-  document.getElementById('detail-customer-email').textContent = data.ContactEmail;
-  document.getElementById('detail-customer-phone').textContent = data.PhoneNumber || 'N/A';
-  document.getElementById('detail-address').textContent = data.AddressDetail;
+  const orderIdVal = data.OrderId || data.orderid || 'N/A';
+  const firstName = data.FirstName || data.firstname || '';
+  const lastName = data.LastName || data.lastname || '';
+  const contactEmail = data.ContactEmail || data.contactemail || 'N/A';
+  const phoneNumber = data.PhoneNumber || data.phonenumber || 'N/A';
+  const addressDetail = data.AddressDetail || data.addressdetail || 'N/A';
+
+  document.getElementById('detail-order-id').textContent = `#${orderIdVal}`;
+  document.getElementById('detail-customer-name').textContent = `${firstName} ${lastName}`.trim() || 'Guest';
+  document.getElementById('detail-customer-email').textContent = contactEmail;
+  document.getElementById('detail-customer-phone').textContent = phoneNumber;
+  document.getElementById('detail-address').textContent = addressDetail;
   
   const orderDate = new Date(data.OrderDate);
   document.getElementById('detail-order-date').textContent = orderDate.toLocaleString('en-US', {
