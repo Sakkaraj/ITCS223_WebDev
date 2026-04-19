@@ -1,6 +1,6 @@
 # BoonSonClon API Master Guide
 
-This guide follows the exact structure of your Postman collection. Use these JSON payloads at `http://localhost:3000/api`.
+This guide follows the exact folder and request sequence of your API collection. 
 
 ---
 
@@ -27,7 +27,7 @@ This guide follows the exact structure of your Postman collection. Use these JSO
   "email": "admin@example.com",
   "password": "adminpassword",
   "address": "Admin HQ, Bangkok",
-  "age": 35,
+  "age": "35",
   "phone": "0998887776"
 }
 ```
@@ -52,17 +52,17 @@ This guide follows the exact structure of your Postman collection. Use these JSO
 
 ### Get Current User
 **`GET /api/auth/me`**
-*(Requires Login Cookie)*
+*(Requires Bearer Token in Header or Session Cookie)*
 
 ---
 
 ## 📂 Products
 
 ### Get Products
-**`GET /api/products?page=1&limit=9&sort=latest`**
+**`GET /api/products?page=1&limit=12&sort=latest`**
 
 ### Get Filter Meta
-**`GET /api/products/meta/filters`**
+**`GET /api/products/filter-meta`**
 
 ### Get Categories
 **`GET /api/products/meta/categories`**
@@ -76,19 +76,19 @@ This guide follows the exact structure of your Postman collection. Use these JSO
 ### Create Category
 **`POST /api/products/meta/categories`**
 ```json
-{ "name": "Office Furniture" }
+{ "category": "Office Furniture" }
 ```
 
 ### Create Color
 **`POST /api/products/meta/colors`**
 ```json
-{ "name": "Midnight Blue", "hex": "#191970" }
+{ "colorName": "Midnight Blue", "hexCode": "#191970" }
 ```
 
 ### Create Material
 **`POST /api/products/meta/materials`**
 ```json
-{ "name": "Solid Teak" }
+{ "materialName": "Solid Teak", "materialType": "Natural Wood" }
 ```
 
 ### Get Product By ID
@@ -96,7 +96,6 @@ This guide follows the exact structure of your Postman collection. Use these JSO
 
 ### Create Product
 **`POST /api/products`**
-*(Requires Admin Login)*
 ```json
 {
   "productName": "Ergonomic Desk",
@@ -104,8 +103,9 @@ This guide follows the exact structure of your Postman collection. Use these JSO
   "price": 450.00,
   "quantityLeft": 15,
   "productDescription": "Adjustable height standing desk.",
+  "productDetail": "Premium wood finish with electric motor.",
   "featured": true,
-  "imageUrls": ["https://example.com/desk.jpg"],
+  "imageUrls": ["assets/images/chair.avif"],
   "colorIds": [1, 2]
 }
 ```
@@ -135,40 +135,41 @@ This guide follows the exact structure of your Postman collection. Use these JSO
 {
   "productId": 1,
   "quantity": 2,
-  "colorId": 1
+  "colorId": 1,
+  "colorName": "White"
 }
 ```
 
 ### Update Cart Item Quantity
-**`PATCH /api/cart/update`**
+**`PATCH /api/cart/1`**
 ```json
 {
-  "cartId": 10,
   "quantity": 5
 }
 ```
 
 ### Remove Cart Item
-**`DELETE /api/cart/remove`**
-```json
-{
-  "cartId": 10
-}
-```
+**`DELETE /api/cart/1`**
 
 ### Clear Cart
-**`DELETE /api/cart/clear`**
+**`DELETE /api/cart`**
 
 ---
 
 ## 📂 Orders
 
 ### Create Order
-**`POST /api/orders/checkout`**
+**`POST /api/orders`**
 ```json
 {
-  "shippingAddress": "123 Test St, Bangkok",
-  "paymentMethod": "Credit Card"
+  "contactEmail": "customer@example.com",
+  "addressDetail": "123 Test St, Bangkok",
+  "totalAmount": 450.00,
+  "vatAmount": 31.50,
+  "shippingAmount": 0,
+  "items": [
+    { "ProductId": 1, "ItemQuantity": 1, "Price": 450.00 }
+  ]
 }
 ```
 
@@ -186,7 +187,8 @@ This guide follows the exact structure of your Postman collection. Use these JSO
 **`POST /api/contact`**
 ```json
 {
-  "name": "Jane User",
+  "firstName": "Jane",
+  "lastName": "User",
   "email": "jane@example.com",
   "message": "I love your furniture!"
 }
@@ -215,6 +217,14 @@ This guide follows the exact structure of your Postman collection. Use these JSO
 
 ### Get Members
 **`GET /api/admin/members`**
+
+### Update Order Status
+**`PATCH /api/admin/orders/:id/status`**
+```json
+{
+  "status": "Shipped"
+}
+```
 
 ---
 

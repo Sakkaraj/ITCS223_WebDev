@@ -48,6 +48,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const data = await BSC.apiFetch(endpoint);
     renderOrderDetails(data);
+
+    // 3. Admin-only functionality
+    if (!fromUser && BSC.isAdmin()) {
+        initAdminControls(orderId, data.DeliveryStatus || data.deliverystatus || 'Pending');
+    }
+
   } catch (err) {
     console.error('Error loading order details:', err);
     alert('Error loading order details: ' + err.message);
@@ -137,4 +143,51 @@ function renderOrderDetails(data) {
   document.getElementById('detail-vat').textContent = `$${vatAmount.toFixed(2)}`;
   document.getElementById('detail-shipping').textContent = `$${shippingAmount.toFixed(2)}`;
   document.getElementById('detail-total').textContent = `$${summaryTotal.toFixed(2)}`;
+}
+
+/**
+ * Admin Status Control Logic
+ */
+function initAdminControls(orderId, currentStatus) {
+  const adminPanel = document.getElementById('admin-status-control');
+  const statusSelect = document.getElementById('admin-status-select');
+  const updateBtn = document.getElementById('admin-update-status-btn');
+
+  if (!adminPanel) return;
+
+  // Reveal the panel for admins
+  adminPanel.style.display = 'block';
+  statusSelect.value = currentStatus;
+
+  updateBtn.addEventListener('click', async () => {
+    const newStatus = statusSelect.value;
+    updateBtn.disabled = true;
+    updateBtn.textContent = 'Updating...';
+
+    try {
+      await BSC.apiFetch(`/api/admin/orders/${orderId}/status`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status: newStatus })
+      });
+      
+      BSC.showToast(`Order #${orderId} set to "${newStatus}"`, 'success');
+      
+      // Hot-update the UI status badge
+      const statusEl = document.getElementById('detail-order-status');
+      if (statusEl) {
+        statusEl.className = `status-badge status-badge--${newStatus.toLowerCase()}`;
+        statusEl.textContent = newStatus;
+      }
+      
+    } catch (err) {
+      console.error('Status update failed:', err);
+      BSC.showToast(err.message || 'Failed to update status', 'error');
+    } finally {
+      updateBtn.disabled = false;
+      updateBtn.textContent = 'Update Status';
+    }
+  });
+
+  // Re-init lucide icons for the newly shown panel
+  if (window.lucide) lucide.createIcons();
 }

@@ -131,4 +131,48 @@ router.get('/members', requireAuth, requireAdmin, async (req, res) => {
   }
 });
 
+/**
+ * PATCH /api/admin/orders/:id/status
+ * Updates the delivery status for a specific order.
+ */
+router.patch('/orders/:id/status', requireAuth, requireAdmin, async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  if (!status) {
+    return res.status(400).json({ error: 'Status is required.' });
+  }
+
+  try {
+    // 1. Get the associated TrackingId for the order
+    const [orders] = await db.execute('SELECT TrackingId FROM Orders WHERE OrderId = ?', [id]);
+    
+    if (orders.length === 0) {
+      return res.status(404).json({ error: 'Order not found.' });
+    }
+
+    // Defensive check for case variations (PostgreSQL fallback)
+    const trackingId = orders[0].TrackingId || orders[0].trackingid;
+
+    if (!trackingId) {
+      return res.status(400).json({ error: 'No delivery record found for this order.' });
+    }
+
+    // 2. Update the status in the Delivery table
+    await db.execute(
+      'UPDATE Delivery SET Status = ? WHERE TrackingId = ?',
+      [status, trackingId]
+    );
+
+    return res.json({ 
+      message: 'Order status updated successfully!',
+      orderId: id,
+      newStatus: status
+    });
+  } catch (err) {
+    console.error('[PATCH /admin/orders/:id/status]', err);
+    return res.status(500).json({ error: 'Failed to update order status.' });
+  }
+});
+
 module.exports = router;
