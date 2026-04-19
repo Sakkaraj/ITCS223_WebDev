@@ -163,10 +163,15 @@ app.use((err, req, res, next) => {
 //  START SERVER
 // ─────────────────────────────────────────────
 app.listen(PORT, () => {
+  const isProd = process.env.NODE_ENV === 'production';
   console.log('');
   console.log('╔═════════════════════════════════════════════════╗');
   console.log(`║  BoonSonClon API Server running on port ${PORT}    ║`);
-  console.log(`║  API Base: http://localhost:${PORT}/api            ║`);
+  if (!isProd) {
+    console.log(`║  API Base: http://localhost:${PORT}/api            ║`);
+  } else {
+    console.log(`║  Mode: Production (Unified Deployment)          ║`);
+  }
   console.log('╚═════════════════════════════════════════════════╝');
   console.log('');
 });
