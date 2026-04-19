@@ -13,7 +13,7 @@
     "test": "node test-all-endpoints.js",
     "test:watch": "nodemon test-all-endpoints.js",
     "build": "npm install --no-fund --no-audit",
-    "render:start": "npm run seed && node sec2_gr14_ws_src/server.js --no-fund --no-audit"
+    "render:start": "npm run seed && node sec2_gr14_ws_src/server.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
