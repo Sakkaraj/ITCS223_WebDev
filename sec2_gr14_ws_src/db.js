@@ -81,7 +81,9 @@ const NORMALIZE_MAP = {
   'totalrevenue': 'TotalRevenue',
   'membercount': 'MemberCount',
   'ordercount': 'OrderCount',
-  'productcount': 'ProductCount'
+  'productcount': 'ProductCount',
+  'itemquantity': 'ItemQuantity',
+  'subtotal': 'SubTotal'
 };
 
 function normalizeRows(rows) {
