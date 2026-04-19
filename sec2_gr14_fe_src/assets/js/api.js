@@ -29,13 +29,32 @@ const getApiBase = () => {
 const API_BASE = getApiBase();
 
 /**
+ * Helper to detect if the current page is an admin-context page
+ */
+function detectRoleContext() {
+  const currentFile = window.location.pathname.split("/").pop() || "home";
+  const urlParams = new URLSearchParams(window.location.search);
+  const adminPages = ["admin-panel", "add-product", "admin-products", "admin-login", "admin-signup"];
+  
+  let isAd = adminPages.some(p => currentFile.includes(p));
+  // Special case: order-details is admin only if 'from' is NOT 'user'
+  if (currentFile.includes('order-details')) {
+    isAd = urlParams.get('from') !== 'user';
+  }
+  return isAd ? 'admin' : 'member';
+}
+
+/**
  * Core fetch wrapper. Automatically attaches:
  *  - Content-Type: application/json
- *  - Authorization: Bearer <token> from localStorage (if present)
+ *  - Authorization: Bearer <token>
  *  - credentials: 'include' for session cookie
  */
 async function apiFetch(endpoint, options = {}) {
-  const token = localStorage.getItem('bsc_token');
+  // Select the correct token based on context (Admin pages vs Store pages)
+  const role = detectRoleContext();
+  const tokenKey = role === 'admin' ? 'bsc_admin_token' : 'bsc_member_token';
+  const token = localStorage.getItem(tokenKey);
 
   const headers = {
     'Content-Type': 'application/json',
@@ -43,7 +62,7 @@ async function apiFetch(endpoint, options = {}) {
     ...(options.headers || {}),
   };
 
-  console.log(`API Call: ${API_BASE}${endpoint}`, { headers, options });
+  console.log(`API Call [${tokenKey}]: ${API_BASE}${endpoint}`, { headers, options });
 
   const response = await fetch(`${API_BASE}${endpoint}`, {
     credentials: 'include',
@@ -58,8 +77,7 @@ async function apiFetch(endpoint, options = {}) {
     responseText = await response.text();
     data = JSON.parse(responseText);
   } catch (parseErr) {
-    console.error('JSON Parse Error:', parseErr);
-    console.error('Response text:', responseText.substring(0, 500));
+    console.warn('JSON Parse Warning:', parseErr);
     data = { error: 'Invalid JSON response' };
   }
 
@@ -67,7 +85,6 @@ async function apiFetch(endpoint, options = {}) {
     const error = new Error(data.error || `Request failed: ${response.status}`);
     error.status = response.status;
     error.data = data;
-    error.responseText = responseText;
     throw error;
   }
 
@@ -76,31 +93,46 @@ async function apiFetch(endpoint, options = {}) {
 
 // ─── Auth Helpers ────────────────────────────────────────────
 
-function saveSession(token, user) {
-  localStorage.setItem('bsc_token', token);
-  localStorage.setItem('bsc_user', JSON.stringify(user));
+function saveSession(role, token, user) {
+  const prefix = role === 'admin' ? 'bsc_admin_' : 'bsc_member_';
+  localStorage.setItem(prefix + 'token', token);
+  localStorage.setItem(prefix + 'user', JSON.stringify(user));
 }
 
-function clearSession() {
-  localStorage.removeItem('bsc_token');
-  localStorage.removeItem('bsc_user');
+function clearSession(role) {
+  if (!role) {
+    role = detectRoleContext();
+  }
+  const prefix = role === 'admin' ? 'bsc_admin_' : 'bsc_member_';
+  localStorage.removeItem(prefix + 'token');
+  localStorage.removeItem(prefix + 'user');
 }
 
-function getUser() {
+function getUser(role) {
+  // If role is not provided, detect based on current page
+  if (!role) {
+    role = detectRoleContext();
+  }
+
+  const prefix = role === 'admin' ? 'bsc_admin_' : 'bsc_member_';
   try {
-    return JSON.parse(localStorage.getItem('bsc_user'));
+    return JSON.parse(localStorage.getItem(prefix + 'user'));
   } catch {
     return null;
   }
 }
 
-function isLoggedIn() {
-  return !!localStorage.getItem('bsc_token');
+
+function isLoggedIn(role) {
+  if (!role) {
+    return !!localStorage.getItem('bsc_member_token') || !!localStorage.getItem('bsc_admin_token');
+  }
+  const prefix = role === 'admin' ? 'bsc_admin_' : 'bsc_member_';
+  return !!localStorage.getItem(prefix + 'token');
 }
 
 function isAdmin() {
-  const user = getUser();
-  return user && user.role === 'admin';
+  return isLoggedIn('admin');
 }
 
 // ─── Cart Count Badge ────────────────────────────────────────
@@ -214,10 +246,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Global logout handler
   document.addEventListener('click', (e) => {
     if (e.target.closest('.js-logout-btn')) {
-      clearSession();
+      const role = detectRoleContext();
+      clearSession(role);
       showToast('Logged out successfully', 'success');
       setTimeout(() => {
-        window.location.href = '/pages/home';
+        window.location.href = (role === 'admin') ? '/pages/admin-login' : '/pages/home';
       }, 800);
     }
   });

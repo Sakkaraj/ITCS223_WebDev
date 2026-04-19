@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }),
           });
 
-          BSC.saveSession(data.token, data.user);
+          BSC.saveSession('member', data.token, data.user);
           BSC.showToast(`Welcome back, ${data.user.firstName}!`, 'success');
           setTimeout(() => { window.location.href = 'home'; }, 1000);
         }
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }),
         });
 
-        BSC.saveSession(data.token, data.user);
+        BSC.saveSession('admin', data.token, data.user);
         BSC.showToast('Welcome, Admin!', 'success');
         setTimeout(() => { window.location.href = 'admin-panel'; }, 1000);
       } catch (err) {
@@ -203,12 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ─── LOGOUT (anywhere a logout button exists) ─────────────
-  document.querySelectorAll('.js-logout-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      BSC.clearSession();
-      window.location.href = '/index';
-    });
-  });
+  // Note: Global logout handler moved to api.js for unified multi-session support.
 
 });
