@@ -195,8 +195,8 @@ CREATE TABLE Contactors (
     ContactorId SERIAL PRIMARY KEY,
     FirstName VARCHAR(50),
     LastName VARCHAR(50),
-    Email VARCHAR(50),
-    Message VARCHAR(255)
+    Email VARCHAR(100),
+    Message TEXT
 );
 
 CREATE TABLE NewsLetterSubscriber (

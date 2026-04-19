@@ -1079,18 +1079,24 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       tableBody.innerHTML = contacts.map(c => {
-        const date = new Date(c.CreatedAt);
-        const dateStr = date.toLocaleString('en-US', {
-          year: 'numeric', month: 'short', day: 'numeric',
-          hour: '2-digit', minute: '2-digit'
-        });
+        // Handle cases where CreatedAt might be missing in local SQLite
+        let dateStr = 'New Request';
+        if (c.CreatedAt) {
+          const date = new Date(c.CreatedAt);
+          if (!isNaN(date.getTime())) {
+            dateStr = date.toLocaleString('en-US', {
+              year: 'numeric', month: 'short', day: 'numeric',
+              hour: '2-digit', minute: '2-digit'
+            });
+          }
+        }
 
         return `
           <tr class="admin-panel-table__row">
-            <td><strong>#${c.ContactorId}</strong></td>
-            <td>${c.FirstName} ${c.LastName || ''}</td>
-            <td style="font-size:11px;color:#666;">${c.Email}</td>
-            <td style="font-size:11px;color:#333;max-width:300px;white-space:normal;line-height:1.4;">${c.Message}</td>
+            <td><strong>#${c.ContactorId || c.contactorid || '?'}</strong></td>
+            <td>${c.FirstName || ''} ${c.LastName || ''}</td>
+            <td style="font-size:11px;color:#666;">${c.Email || 'No Email'}</td>
+            <td style="font-size:11px;color:#333;max-width:300px;white-space:normal;line-height:1.4;">${c.Message || ''}</td>
             <td style="font-size:11px;">${dateStr}</td>
           </tr>
         `;

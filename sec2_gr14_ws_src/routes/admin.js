@@ -181,10 +181,10 @@ router.patch('/orders/:id/status', requireAuth, requireAdmin, async (req, res) =
  */
 router.get('/contacts', requireAuth, requireAdmin, async (req, res) => {
   try {
+    // Using SELECT * and ordering by ContactorId to be resilient against missing CreatedAt column in some environments
     const [contacts] = await db.execute(`
-      SELECT ContactorId, FirstName, LastName, Email, Message, CreatedAt
-      FROM Contactors
-      ORDER BY CreatedAt DESC
+      SELECT * FROM Contactors
+      ORDER BY ContactorId DESC
     `);
     return res.json(contacts);
   } catch (err) {
