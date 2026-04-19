@@ -173,7 +173,7 @@ router.get('/my/:id', requireAuth, async (req, res) => {
     // 1. Fetch Order with Delivery Info (Ensure it belongs to this user)
     const [orderRows] = await db.execute(`
       SELECT o.OrderId, o.TotalAmount, o.VatAmount, o.ShippingAmount, 
-             strftime('%Y-%m-%dT%H:%M:%SZ', o.OrderDate) as OrderDate, 
+             o.OrderDate, 
              o.ContactEmail,
              m.FirstName, m.LastName, m.PhoneNumber,
              d.Status as DeliveryStatus,

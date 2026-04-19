@@ -46,7 +46,7 @@ router.get('/orders', requireAuth, requireAdmin, async (req, res) => {
   try {
     const [orders] = await db.execute(`
       SELECT o.OrderId, o.TotalAmount, 
-             strftime('%Y-%m-%dT%H:%M:%SZ', o.OrderDate) as OrderDate, 
+             o.OrderDate, 
              o.ContactEmail,
              m.FirstName, m.LastName,
              d.Status as DeliveryStatus,
@@ -74,7 +74,7 @@ router.get('/orders/:id', requireAuth, requireAdmin, async (req, res) => {
     // 1. Fetch Order with Customer & Delivery Info
     const [orderRows] = await db.execute(`
       SELECT o.OrderId, o.TotalAmount, o.VatAmount, o.ShippingAmount, 
-             strftime('%Y-%m-%dT%H:%M:%SZ', o.OrderDate) as OrderDate, 
+             o.OrderDate, 
              o.ContactEmail,
              m.FirstName, m.LastName, m.PhoneNumber,
              d.Status as DeliveryStatus,
