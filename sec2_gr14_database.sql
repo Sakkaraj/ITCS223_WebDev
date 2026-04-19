@@ -196,7 +196,8 @@ CREATE TABLE Contactors (
     FirstName VARCHAR(50),
     LastName VARCHAR(50),
     Email VARCHAR(100),
-    Message TEXT
+    Message TEXT,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE NewsLetterSubscriber (

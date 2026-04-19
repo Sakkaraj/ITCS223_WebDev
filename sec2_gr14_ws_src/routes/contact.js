@@ -13,8 +13,8 @@ router.post('/', async (req, res) => {
 
   try {
     await db.execute(
-      'INSERT INTO Contactors (FirstName, LastName, Email, Message, CreatedAt) VALUES (?, ?, ?, ?, ?)',
-      [firstName, lastName || null, email, message, new Date().toISOString()]
+      'INSERT INTO Contactors (FirstName, LastName, Email, Message) VALUES (?, ?, ?, ?)',
+      [firstName, lastName || null, email, message]
     );
     return res.status(201).json({ message: 'Your message has been sent! We will get back to you soon.' });
   } catch (err) {
