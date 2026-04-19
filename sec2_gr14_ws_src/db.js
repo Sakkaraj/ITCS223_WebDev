@@ -88,7 +88,8 @@ const NORMALIZE_MAP = {
   'totalsold': 'TotalSold',
   'minprice': 'MinPrice',
   'maxprice': 'MaxPrice',
-  'contactorid': 'ContactorId'
+  'contactorid': 'ContactorId',
+  'message': 'Message'
 };
 
 function normalizeRows(rows) {
