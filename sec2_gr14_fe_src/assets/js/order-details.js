@@ -85,6 +85,11 @@ function renderOrderDetails(data) {
       let imgSrc = item.ImageUrl || '../assets/images/chair.avif';
       if (imgSrc.startsWith('assets/')) imgSrc = '../' + imgSrc;
 
+      // Resilient field retrieval for production compatibility
+      const qty = item.ItemQuantity || item.itemquantity || item.quantity || 0;
+      const price = parseFloat(item.Price || item.price || 0);
+      const subtotal = item.SubTotal || item.subtotal || (qty * price);
+
       return `
         <tr class="order-item-row">
           <td class="order-item-cell--image">
@@ -94,15 +99,15 @@ function renderOrderDetails(data) {
           </td>
           <td class="order-item-cell--info">
             <div class="order-item-info">
-              <strong class="order-item-name">${item.ProductName}</strong>
+              <strong class="order-item-name">${item.ProductName || item.productname}</strong>
               <div class="order-item-meta">
-                ID: #${item.ProductId} | Material: ${item.MaterialName || 'Standard'} | Color: ${item.ColorName || 'Standard'}
+                ID: #${item.ProductId || item.productid} | Material: ${item.MaterialName || item.materialname || 'Standard'} | Color: ${item.ColorName || item.colorname || 'Standard'}
               </div>
             </div>
           </td>
-          <td class="order-item-cell--qty" data-label="Qty">${item.ItemQuantity}</td>
-          <td class="order-item-cell--price" data-label="Price">$${parseFloat(item.Price).toFixed(2)}</td>
-          <td class="order-item-cell--total" data-label="Total">$${parseFloat(item.SubTotal).toFixed(2)}</td>
+          <td class="order-item-cell--qty" data-label="Qty">${qty}</td>
+          <td class="order-item-cell--price" data-label="Price">$${price.toFixed(2)}</td>
+          <td class="order-item-cell--total" data-label="Total">$${parseFloat(subtotal || 0).toFixed(2)}</td>
         </tr>
       `;
     }).join('');
@@ -111,10 +116,18 @@ function renderOrderDetails(data) {
   }
 
   // Summary Totals
-  const subtotal = data.items.reduce((sum, item) => sum + item.SubTotal, 0);
-  document.getElementById('summary-total').textContent = `$${parseFloat(data.TotalAmount).toFixed(2)}`;
-  document.getElementById('detail-subtotal').textContent = `$${subtotal.toFixed(2)}`;
-  document.getElementById('detail-vat').textContent = `$${parseFloat(data.VatAmount).toFixed(2)}`;
-  document.getElementById('detail-shipping').textContent = `$${parseFloat(data.ShippingAmount || 0).toFixed(2)}`;
-  document.getElementById('detail-total').textContent = `$${parseFloat(data.TotalAmount).toFixed(2)}`;
+  const summaryTotal = parseFloat(data.TotalAmount || data.totalamount || 0);
+  const vatAmount = parseFloat(data.VatAmount || data.vatamount || 0);
+  const shippingAmount = parseFloat(data.ShippingAmount || data.shippingamount || 0);
+  const calculatedSubtotal = data.items.reduce((sum, item) => {
+     const q = item.ItemQuantity || item.itemquantity || item.quantity || 0;
+     const p = parseFloat(item.Price || item.price || 0);
+     return sum + (q * p);
+  }, 0);
+
+  document.getElementById('summary-total').textContent = `$${summaryTotal.toFixed(2)}`;
+  document.getElementById('detail-subtotal').textContent = `$${calculatedSubtotal.toFixed(2)}`;
+  document.getElementById('detail-vat').textContent = `$${vatAmount.toFixed(2)}`;
+  document.getElementById('detail-shipping').textContent = `$${shippingAmount.toFixed(2)}`;
+  document.getElementById('detail-total').textContent = `$${summaryTotal.toFixed(2)}`;
 }
