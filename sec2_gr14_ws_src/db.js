@@ -84,7 +84,10 @@ const NORMALIZE_MAP = {
   'productcount': 'ProductCount',
   'itemquantity': 'ItemQuantity',
   'subtotal': 'SubTotal',
-  'addressdetail': 'AddressDetail'
+  'addressdetail': 'AddressDetail',
+  'totalsold': 'TotalSold',
+  'minprice': 'MinPrice',
+  'maxprice': 'MaxPrice'
 };
 
 function normalizeRows(rows) {

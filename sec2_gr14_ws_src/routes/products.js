@@ -48,7 +48,7 @@ router.get('/', async (req, res) => {
       params.push(parseFloat(maxPrice));
     }
     if (featured === 'true' || featured === '1') {
-      whereClauses.push('p.Featured = 1');
+      whereClauses.push('p.Featured = true');
     }
     if (req.query.colors || req.query.colorId) {
       const colorVal = req.query.colors || req.query.colorId;
@@ -406,7 +406,7 @@ router.post('/', requireAuth, requireAdmin, async (req, res) => {
         parseFloat(heightDimension) || 0,
         parseFloat(lengthDimension) || 0,
         parseFloat(weight) || 0,
-        featured ? 1 : 0,
+        featured ? true : false,
         status || 'Active'
       ]
     );
@@ -517,7 +517,7 @@ router.put('/:id', requireAuth, requireAdmin, async (req, res) => {
           !isNaN(numHeight) ? numHeight : 0,
           !isNaN(numLength) ? numLength : 0,
           !isNaN(numWeight) ? numWeight : 0,
-          featured ? 1 : 0,
+          featured ? true : false,
           status || null,
           pid
         ]
