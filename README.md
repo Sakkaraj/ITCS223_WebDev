@@ -57,7 +57,8 @@ This project is pre-configured for **Render.com** with a silent build process an
     - **Environment Variables**:
         - `DATABASE_URL`: (Your Internal Database URL)
         - `NODE_ENV`: `production`
-        - `SESSION_SECRET`: (Any random string)
+        - `SESSION_SECRET`: (Any random string for session security)
+        - `JWT_SECRET`: (A long random string for token security)
 
 ---
 

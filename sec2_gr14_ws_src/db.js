@@ -72,7 +72,11 @@ const NORMALIZE_MAP = {
   'rating': 'Rating',
   'shippingamount': 'ShippingAmount',
   'reviewcomment': 'ReviewComment',
-  'reviewid': 'ReviewId'
+  'reviewid': 'ReviewId',
+  'memberpassword': 'MemberPassword',
+  'adminpassword': 'AdminPassword',
+  'adminusername': 'AdminUserName',
+  'role': 'Role'
 };
 
 function normalizeRows(rows) {
