@@ -3,15 +3,25 @@
 
 🚀 **Live Production URL**: [https://boonsonclon-furniture.onrender.com](https://boonsonclon-furniture.onrender.com)
 
-BoonSonClon is a high-performance, full-stack e-commerce platform designed for premium furniture retail. This project features a robust **Hybrid Database System** optimized for both easy local development and reliable production hosting.
+BoonSonClon is a high-performance, full-stack e-commerce platform designed for premium furniture retail. This project features a robust **Hybrid Database System** and a fully responsive **Mobile-First Design**.
+
+---
+
+## 🔑 Testing & Grading (Admin Access)
+For easier evaluation, use the following credentials to access the Admin Panel and Order Management:
+
+- **Admin Page**: Accessible via the 🛡️ icon in the header or `/pages/admin-panel`
+- **Email**: `admin@boonsonclon.com`
+- **Password**: `Admin@1234`
 
 ---
 
 ## 📝 Submission Checklist
-- **[x] Task 1 & 4 (Front-end)**: Located in `sec2_gr14_fe_src/`
-- **[x] Task 2 (Database Export)**: Single master file `sec2_gr14_database.sql` (Postgres & SQLite compatible).
-- **[x] Task 3 (Web Service)**: Located in `sec2_gr14_ws_src/`
-- **[x] Team Page**: Accessible via `/pages/about-us`
+- [x] **Task 1 & 4 (Front-end)**: Located in `sec2_gr14_fe_src/`
+- [x] **Task 2 (Database Export)**: Master file `sec2_gr14_database.sql` (compatible with both PostgreSQL and SQLite).
+- [x] **Task 3 (Web Service)**: Located in `sec2_gr14_ws_src/`
+- [x] **Mobile Optimization**: Card-based responsive layout for all viewports (iPhone SE through Desktop).
+- [x] **Clean URLs**: Server-side support for clean paths (e.g., `/pages/shop` instead of `shop.html`).
 
 ---
 
@@ -22,13 +32,7 @@ BoonSonClon is a high-performance, full-stack e-commerce platform designed for p
 npm install
 ```
 
-### 2. Initialize Local Database
-This script automatically detects your environment. Locally, it will use **SQLite** and translate the master SQL schema on-the-fly.
-```bash
-npm run seed
-```
-
-### 3. Run Development Servers
+### 2. Run Development Servers
 ```bash
 # Runs both API (Port 3000) and Frontend (Port 5000) simultaneously
 npm run both
@@ -36,28 +40,31 @@ npm run both
 - **Storefront**: [http://localhost:5000](http://localhost:5000)
 - **API Reference**: [http://localhost:3000/api](http://localhost:3000/api)
 
+> [!TIP]
+> **Mobile Testing**: You can test the site on your physical phone by visiting your computer's IP address (e.g. `http://192.168.1.5:5000`). The API will automatically route correctly!
+
 ---
 
 ## ☁️ Deployment Guide (Render.com)
 
-This project is pre-configured for **Render.com** with support for PostgreSQL.
+This project is pre-configured for **Render.com** with a silent build process and production-ready sessions.
 
-1.  **Create a PostgreSQL Database**: Create a **New -> PostgreSQL** database on Render and copy the **Internal Database URL**.
-2.  **Create a Web Service**: Create a **New -> Web Service** and connect this GitHub repository.
-3.  **Configure Environment**:
+1.  **Database**: Create a **New -> PostgreSQL** database on Render and copy the **Internal Database URL**.
+2.  **Web Service**: Create a **New -> Web Service** and connect this repository.
+3.  **Environment Settings**:
     - **Build Command**: `npm run build`
     - **Start Command**: `npm run render:start`
-    - **Add Environment Variables**:
-        - `DATABASE_URL`: (Paste your Internal Database URL here)
-        - `SERVE_FRONTEND`: `true`
+    - **Environment Variables**:
+        - `DATABASE_URL`: (Your Internal Database URL)
+        - `NODE_ENV`: `production`
         - `SESSION_SECRET`: (Any random string)
 
 ---
 
-## 🛡️ Hybrid Database Strategy
-To ensure the best experience for both developers and users, we utilize a dual-database approach:
-- **Local (Offline)**: Uses **SQLite**. This allows the project to run immediately on any computer with zero configuration. No database installation is required for grading.
-- **Cloud (Production)**: Uses **PostgreSQL**. When deployed to Render, the app automatically connects to a professional cloud database to ensure your orders and account data are **permanently saved**.
+## 🛡️ Database Architecture
+We utilize a dual-database approach to ensure zero-config grading while providing production persistence:
+- **Local (SQLite)**: The app translates the master SQL schema on-the-fly. No DB installation is required for local testing.
+- **Production (PostgreSQL)**: Connected via Render. Our seeding engine is **Idempotent**; it will skip re-seeding if data exists, keeping your production orders and users safe across restarts.
 
 ---
 
@@ -65,26 +72,24 @@ To ensure the best experience for both developers and users, we utilize a dual-d
 ```text
 ITCS223_WebDev/
 ├── sec2_gr14_fe_src/       # 🌐 Frontend Source (HTML/CSS/JS)
-│   └── frontend-server.js  # 🖥️ Local Dev Server (Port 5000)
 ├── sec2_gr14_ws_src/       # 🏗️ Backend Web Service 
-│   ├── routes/             # API Endpoints (with Postman Test Cases)
+│   ├── routes/             # API Endpoints
 │   ├── db.js               # Universal DB Bridge (SQLite <-> Postgres)
-│   ├── seed.js             # Smart Seeding (with SQL translation engine)
-│   └── server.js           # Production Server
-├── sec2_gr14_database.sql  # 🗄️ Master Database Schema
-├── package.json            # Scripts & Dependencies
-└── .env                    # Environment Config (Local)
+│   ├── seed.js             # Safe Idempotent Seeding Engine
+│   └── server.js           # Production Unified Server
+├── sec2_gr14_database.sql   # 🗄️ Master Database Schema (Postgres Format)
+└── package.json            # Deployment Scripts & Dependencies
 ```
 
 ---
 
 ## 👥 The Team
 **Section 2 — Group 14**
-- **Sakkarat Tuvajit** (6788140) — Backend & Database
-- **Jirathiwat Sun** (6788122) — Frontend & Architecture  
-- **Radhabhumi Pang** (6788077) — UI/UX Design
-- **Pipat Suphat** (6788221) — Backend Development
-- **Pannakarn Sing** (6788212) — Frontend Development
+- **Sakkarat Tuvajit** (6788140)
+- **Jirathiwat Sun** (6788122)
+- **Radhabhumi Pang** (6788077)
+- **Pipat Suphat** (6788221)
+- **Pannakarn Sing** (6788212)
 
 ---
 
