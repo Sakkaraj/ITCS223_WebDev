@@ -70,9 +70,10 @@ function renderOrderDetails(data) {
     timeZone: 'Asia/Bangkok'
   });
 
+  const status = data.DeliveryStatus || 'Pending';
   const statusEl = document.getElementById('detail-order-status');
-  statusEl.className = `status-badge status-badge--${data.DeliveryStatus.toLowerCase()}`;
-  statusEl.textContent = data.DeliveryStatus;
+  statusEl.className = `status-badge status-badge--${status.toLowerCase()}`;
+  statusEl.textContent = status;
 
   // Items Table
   const itemsBody = document.getElementById('detail-items-body');
