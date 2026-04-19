@@ -175,4 +175,22 @@ router.patch('/orders/:id/status', requireAuth, requireAdmin, async (req, res) =
   }
 });
 
+/**
+ * GET /api/admin/contacts
+ * Returns all user inquiries from the contact form.
+ */
+router.get('/contacts', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const [contacts] = await db.execute(`
+      SELECT ContactorId, FirstName, LastName, Email, Message, CreatedAt
+      FROM Contactors
+      ORDER BY CreatedAt DESC
+    `);
+    return res.json(contacts);
+  } catch (err) {
+    console.error('[GET /admin/contacts]', err);
+    return res.status(500).json({ error: 'Failed to fetch messages.' });
+  }
+});
+
 module.exports = router;

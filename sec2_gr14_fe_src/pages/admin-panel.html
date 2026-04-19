@@ -143,6 +143,7 @@
             <button class="admin-tab is-active" data-tab="products">Manage Products</button>
             <button class="admin-tab" data-tab="orders">Manage Orders</button>
             <button class="admin-tab" data-tab="members">Manage Members</button>
+            <button class="admin-tab" data-tab="contacts">Manage Messages</button>
           </div>
 
           <!-- Content Sections -->
@@ -190,25 +191,44 @@
             </div>
           </div>
 
-          <div id="members-view" class="admin-view is-hidden">
-            <div class="admin-panel-table-wrapper">
-              <table class="admin-panel-table">
-                <thead class="admin-panel-table__head">
-                  <tr>
-                    <th>Member ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                  </tr>
-                </thead>
-                <tbody id="members-table-body">
-                  <!-- Members loaded dynamically -->
-                </tbody>
-              </table>
+            <div id="members-view" class="admin-view is-hidden">
+              <div class="admin-panel-table-wrapper">
+                <table class="admin-panel-table">
+                  <thead class="admin-panel-table__head">
+                    <tr>
+                      <th>Member ID</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                    </tr>
+                  </thead>
+                  <tbody id="members-table-body">
+                    <!-- Members loaded dynamically -->
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-        </section>
+
+            <div id="contacts-view" class="admin-view is-hidden">
+              <div class="admin-panel-table-wrapper">
+                <table class="admin-panel-table">
+                  <thead class="admin-panel-table__head">
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Message</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody id="contacts-table-body">
+                    <!-- Contact messages loaded dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
 
       </div>
     </div>

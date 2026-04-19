@@ -1,6 +1,6 @@
 # BoonSonClon API Master Guide
 
-This guide follows the exact folder and request sequence of your API collection. 
+This guide follows the exact folder and request sequence of the project's API collection.
 
 ---
 
@@ -52,7 +52,7 @@ This guide follows the exact folder and request sequence of your API collection.
 
 ### Get Current User
 **`GET /api/auth/me`**
-*(Requires Bearer Token in Header or Session Cookie)*
+*(Requires Bearer Token or Session Cookie)*
 
 ---
 
@@ -160,16 +160,11 @@ This guide follows the exact folder and request sequence of your API collection.
 
 ### Create Order
 **`POST /api/orders`**
+*(Note: Items are pulled from your session cart. Use `POST /api/cart` first.)*
 ```json
 {
   "contactEmail": "customer@example.com",
-  "addressDetail": "123 Test St, Bangkok",
-  "totalAmount": 450.00,
-  "vatAmount": 31.50,
-  "shippingAmount": 0,
-  "items": [
-    { "ProductId": 1, "ItemQuantity": 1, "Price": 450.00 }
-  ]
+  "addressDetail": "123 Test St, Bangkok"
 }
 ```
 
@@ -178,6 +173,14 @@ This guide follows the exact folder and request sequence of your API collection.
 
 ### Get My Order By ID
 **`GET /api/orders/my-orders/1`**
+
+### Update Status
+**`PATCH /api/admin/orders/:id/status`**
+```json
+{
+  "status": "Shipped"
+}
+```
 
 ---
 
@@ -218,13 +221,8 @@ This guide follows the exact folder and request sequence of your API collection.
 ### Get Members
 **`GET /api/admin/members`**
 
-### Update Order Status
-**`PATCH /api/admin/orders/:id/status`**
-```json
-{
-  "status": "Shipped"
-}
-```
+### Get Contact Messages
+**`GET /api/admin/contacts`**
 
 ---
 
