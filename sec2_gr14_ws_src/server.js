@@ -155,6 +155,15 @@ if (process.env.SERVE_FRONTEND === 'true' || process.env.NODE_ENV === 'productio
 //  GLOBAL ERROR HANDLER
 // ─────────────────────────────────────────────
 app.use((err, req, res, next) => {
+  // Handle JSON parsing errors (common with Postman/invalid payloads)
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    console.warn('⚠️ Bad JSON Payload received:', err.message);
+    return res.status(400).json({ 
+      error: 'Invalid JSON payload. Please check your request formatting.',
+      details: err.message
+    });
+  }
+
   console.error('Unhandled error:', err);
   res.status(500).json({ error: 'An unexpected server error occurred.' });
 });
