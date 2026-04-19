@@ -9,7 +9,24 @@
 // - Backend: http://localhost:3000
 // - Frontend: http://localhost:5000 (or other port)
 // Set this to the backend server URL
-const API_BASE = localStorage.getItem('api_base') || (window.location.hostname === 'localhost' ? 'http://localhost:3000' : '');
+// ── API Configuration ──
+// Auto-detect environment: 
+// 1. If hostname is localhost/127.0.0.1 or a local network IP (192.168.x.x, 10.x.x.x), use explicit port 3000.
+// 2. Otherwise (Production/Render), use relative paths (unified mode).
+const getApiBase = () => {
+  if (localStorage.getItem('api_base')) return localStorage.getItem('api_base');
+  
+  const host = window.location.hostname;
+  const isLocal = host === 'localhost' || 
+                  host === '127.0.0.1' || 
+                  host.startsWith('192.168.') || 
+                  host.startsWith('10.') || 
+                  host.startsWith('172.');
+                  
+  return isLocal ? 'http://' + host + ':3000' : '';
+};
+
+const API_BASE = getApiBase();
 
 /**
  * Core fetch wrapper. Automatically attaches:
@@ -159,14 +176,33 @@ function updateNavAuth() {
   const loginBtns = document.querySelectorAll('.js-login-btn');
   const userMenus = document.querySelectorAll('.js-user-menu');
   const userNames = document.querySelectorAll('.js-user-name');
+  const adminAccess = document.querySelectorAll('.js-admin-access');
 
   if (user) {
+    // Logged in
     loginBtns.forEach(el => el.style.display = 'none');
     userMenus.forEach(el => el.style.display = 'flex');
     userNames.forEach(el => el.textContent = user.firstName || user.email);
+    
+    // Admin Panel: Only show if the user is an admin
+    adminAccess.forEach(el => {
+      el.style.display = (user.role === 'admin') ? 'flex' : 'none';
+      if (user.role === 'admin') {
+         const span = el.querySelector('span');
+         if (span) span.textContent = 'Admin Dashboard';
+      }
+    });
   } else {
+    // Guest
     loginBtns.forEach(el => el.style.display = 'flex');
     userMenus.forEach(el => el.style.display = 'none');
+    
+    // Guests can see "Admin Panel" (which links to admin-login)
+    adminAccess.forEach(el => {
+      el.style.display = 'flex';
+      const span = el.querySelector('span');
+      if (span) span.textContent = 'Admin Panel';
+    });
   }
 }
 

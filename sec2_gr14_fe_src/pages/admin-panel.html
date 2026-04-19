@@ -32,7 +32,7 @@
 
         <!-- Sidebar -->
         <aside class="admin-panel-sidebar">
-          <button class="admin-panel-sidebar__close" id="adminSidebarClose">
+          <button id="adminSidebarClose" class="admin-panel-sidebar__close">
             <i data-lucide="x"></i>
           </button>
 
@@ -86,34 +86,8 @@
           <!-- Best Sellers -->
           <section class="admin-panel-best-sellers">
             <h3 class="admin-panel-best-sellers__title">Best Sellers</h3>
-            <div class="admin-panel-best-sellers__list">
-              <article class="admin-panel-best-seller-card">
-                <div class="admin-panel-best-seller-card__image-wrap">
-                  <img src="../assets/images/best-seller/img.avif" alt="Classic Chair" class="admin-panel-best-seller-card__image" />
-                </div>
-                <div class="admin-panel-best-seller-card__content">
-                  <h4 class="admin-panel-best-seller-card__name">Classic Chair</h4>
-                  <p class="admin-panel-best-seller-card__price">$99</p>
-                </div>
-              </article>
-              <article class="admin-panel-best-seller-card">
-                <div class="admin-panel-best-seller-card__image-wrap">
-                  <img src="../assets/images/best-seller/img1.avif" alt="Coffee Table" class="admin-panel-best-seller-card__image" />
-                </div>
-                <div class="admin-panel-best-seller-card__content">
-                  <h4 class="admin-panel-best-seller-card__name">Coffee Table</h4>
-                  <p class="admin-panel-best-seller-card__price">$1800</p>
-                </div>
-              </article>
-              <article class="admin-panel-best-seller-card">
-                <div class="admin-panel-best-seller-card__image-wrap">
-                  <img src="../assets/images/best-seller/img3.avif" alt="Papasan Chair" class="admin-panel-best-seller-card__image" />
-                </div>
-                <div class="admin-panel-best-seller-card__content">
-                  <h4 class="admin-panel-best-seller-card__name">Papasan Chair</h4>
-                  <p class="admin-panel-best-seller-card__price">$1000</p>
-                </div>
-              </article>
+            <div class="admin-panel-best-sellers__list" id="adminBestsellerList">
+              <div style="padding:10px;color:#aaa;font-size:12px;text-align:center;">Loading...</div>
             </div>
           </section>
 
@@ -122,34 +96,117 @@
         <!-- Main content -->
         <section class="admin-panel-content">
           <div class="admin-panel-content__header">
-            <h2 class="admin-panel-content__title">Admin Panel</h2>
-            <div class="admin-panel-content__actions">
-              <button class="admin-panel__filter-toggle" id="adminFilterToggle">
-                <i data-lucide="filter"></i>
-                <span>Filter</span>
+            <h2 class="admin-panel-content__title">Dashboard Overview</h2>
+            <div class="admin-panel-content__actions" style="display:flex; align-items:center; gap:12px;">
+              <span id="syncStatus" style="font-size:10px; color:#166534; font-weight:600; display:flex; align-items:center; gap:4px;">
+                <span style="width:6px; height:6px; background:#166534; border-radius:50%;"></span>
+                LIVE: <span id="lastUpdated">Just now</span>
+              </span>
+              <button id="manualSync" style="padding:8px 12px; background:#f3f4f6; color:#374151; border:1px solid #d1d5db; font-size:10px; font-weight:700; text-transform:uppercase; cursor:pointer; display:flex; align-items:center; gap:6px;">
+                <i data-lucide="refresh-cw" style="width:12px; height:12px;"></i>
+                Sync Data
               </button>
-              <button class="admin-panel-content__add-button">+ Add Product</button>
+              <button id="adminFilterToggle" class="admin-panel__filter-toggle">
+                <i data-lucide="sliders-horizontal"></i> Filter
+              </button>
+              <button class="admin-panel-content__add-button" style="margin:0;">+ Add Product</button>
             </div>
           </div>
 
-          <div class="admin-panel-table-wrapper">
-            <table class="admin-panel-table">
-              <thead class="admin-panel-table__head">
-                <tr>
-                  <th>Product</th>
-                  <th>Category</th>
-                  <th>Price</th>
-                  <th>CMF</th>
-                  <th>Dimension</th>
-                  <th>Description</th>
-                  <th>Featured</th>
-                  <th class="admin-panel-table__actions-header">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="admin-panel-table__body">
-                <!-- Products loaded dynamically by admin.js -->
-              </tbody>
-            </table>
+          <!-- Dashboard Stats -->
+          <div class="admin-dashboard-stats">
+            <div class="stat-card">
+              <div class="stat-card__icon stat-card__icon--revenue"><i data-lucide="dollar-sign"></i></div>
+              <div class="stat-card__info">
+                <span class="stat-card__label">Total Revenue</span>
+                <span class="stat-card__value js-stat-revenue">$0.00</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__icon stat-card__icon--members"><i data-lucide="users"></i></div>
+              <div class="stat-card__info">
+                <span class="stat-card__label">Total Members</span>
+                <span class="stat-card__value js-stat-members">0</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__icon stat-card__icon--orders"><i data-lucide="shopping-bag"></i></div>
+              <div class="stat-card__info">
+                <span class="stat-card__label">Total Orders</span>
+                <span class="stat-card__value js-stat-orders">0</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabs Navigation -->
+          <div class="admin-panel-tabs">
+            <button class="admin-tab is-active" data-tab="products">Manage Products</button>
+            <button class="admin-tab" data-tab="orders">Manage Orders</button>
+            <button class="admin-tab" data-tab="members">Manage Members</button>
+          </div>
+
+          <!-- Content Sections -->
+          <div id="products-view" class="admin-view">
+            <div class="admin-panel-table-wrapper">
+              <table class="admin-panel-table">
+                <thead class="admin-panel-table__head">
+                  <tr>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>CMF</th>
+                    <th>Dimension</th>
+                    <th>Description</th>
+                    <th>Featured</th>
+                    <th class="admin-panel-table__actions-header">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="admin-panel-table__body">
+                  <!-- Products loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="orders-view" class="admin-view is-hidden">
+            <div class="admin-panel-table-wrapper">
+              <table class="admin-panel-table">
+                <thead class="admin-panel-table__head">
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Contact</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Address</th>
+                    <th>Date</th>
+                    <th class="u-text-center">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="orders-table-body">
+                  <!-- Orders loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="members-view" class="admin-view is-hidden">
+            <div class="admin-panel-table-wrapper">
+              <table class="admin-panel-table">
+                <thead class="admin-panel-table__head">
+                  <tr>
+                    <th>Member ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                  </tr>
+                </thead>
+                <tbody id="members-table-body">
+                  <!-- Members loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
           </div>
         </section>
 
@@ -174,7 +231,6 @@
       </div>
     </div>
   </div>
-
   <div id="footer-placeholder"></div>
 
   <script src="../assets/js/api.js"></script>

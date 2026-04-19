@@ -50,9 +50,14 @@ router.get('/', async (req, res) => {
     if (featured === 'true' || featured === '1') {
       whereClauses.push('p.Featured = 1');
     }
-    if (req.query.colorId) {
-      whereClauses.push('EXISTS (SELECT 1 FROM ProductColor pc WHERE pc.ProductId = p.ProductId AND pc.ColorId = ?)');
-      params.push(parseInt(req.query.colorId));
+    if (req.query.colors || req.query.colorId) {
+      const colorVal = req.query.colors || req.query.colorId;
+      const colorList = Array.isArray(colorVal) ? colorVal : colorVal.toString().split(',').filter(Boolean);
+      if (colorList.length > 0) {
+        const placeholders = colorList.map(() => '?').join(',');
+        whereClauses.push(`EXISTS (SELECT 1 FROM ProductColor pc WHERE pc.ProductId = p.ProductId AND pc.ColorId IN (${placeholders}))`);
+        params.push(...colorList.map(id => parseInt(id)));
+      }
     }
     if (req.query.materialId) {
       whereClauses.push('p.MaterialId = ?');
@@ -80,11 +85,22 @@ router.get('/', async (req, res) => {
       params.push(searchTerm, searchTerm);
     }
 
+    // Filter Out-of-Stock by default (unless showAll=true for admin)
+    if (req.query.showAll !== 'true') {
+      whereClauses.push('p.QuantityLeft > 0');
+    }
+
     const whereSQL = whereClauses.length ? 'WHERE ' + whereClauses.join(' AND ') : '';
 
     let orderSQL = 'ORDER BY p.CreatedAt DESC, p.ProductId DESC';
+    let additionalSelect = '';
+
     if (sort === 'price_asc') orderSQL = 'ORDER BY p.Price ASC';
     else if (sort === 'price_desc') orderSQL = 'ORDER BY p.Price DESC';
+    else if (sort === 'bestsellers') {
+      additionalSelect = ', COALESCE((SELECT SUM(ItemQuantity) FROM OrderItem WHERE ProductId = p.ProductId), 0) AS TotalSold';
+      orderSQL = 'ORDER BY TotalSold DESC, p.ProductId DESC';
+    }
 
     const offset = (parseInt(page) - 1) * parseInt(limit);
 
@@ -105,6 +121,7 @@ router.get('/', async (req, res) => {
               p.WidthDimension, p.HeightDimension, p.LengthDimension, p.Weight,
               (SELECT ImageUrl FROM Image WHERE ProductId = p.ProductId ORDER BY SortOrder ASC LIMIT 1) AS ImageUrl,
               (SELECT COUNT(*) FROM Image WHERE ProductId = p.ProductId) AS ImageCount
+              ${additionalSelect}
        FROM Product p
        JOIN Category c ON p.CategoryId = c.CategoryId
        LEFT JOIN Material m ON p.MaterialId = m.MaterialId

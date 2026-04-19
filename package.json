@@ -13,11 +13,10 @@
     "test": "node test-all-endpoints.js",
     "test:watch": "nodemon test-all-endpoints.js",
     "build": "npm install",
-    "render:start": "npm run seed && node sec2_gr14_ws_src/server.js",
-    "postinstall": "npm rebuild sqlite3 --build-from-source"
+    "render:start": "npm run seed && node sec2_gr14_ws_src/server.js"
   },
   "dependencies": {
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.3",
     "connect-pg-simple": "^10.0.0",
     "connect-sqlite3": "^0.9.16",
     "cors": "^2.8.5",

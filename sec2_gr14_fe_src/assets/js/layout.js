@@ -77,6 +77,7 @@ function setActiveNavLink() {
       "sign-in": "account",
       "admin-panel": "admin-panel",
       "add-product": "add-product",
+      "order-details": "admin-panel",
       "admin-login": "admin-panel",
       "admin-signup": "admin-panel"
     };
@@ -101,9 +102,27 @@ function setActiveNavLink() {
 document.addEventListener("DOMContentLoaded", async () => {
   const currentFile = getCurrentFile();
 
-  const headerFile = isAdminPage(currentFile)
+  // For order-details, choose header based on who is viewing
+  let isAdmin = isAdminPage(currentFile);
+  if (currentFile === 'order-details') {
+    const urlParams = new URLSearchParams(window.location.search);
+    isAdmin = urlParams.get('from') !== 'user';
+  }
+  const headerFile = isAdmin
     ? "../assets/partials/admin-header"
     : "../assets/partials/header";
+
+  // For order-details page: dynamically inject the correct header CSS
+  // so we never load both admin and user header stylesheets simultaneously.
+  if (currentFile === 'order-details') {
+    const cssHref = isAdmin
+      ? '../assets/css/admin-header.css'
+      : '../assets/css/header.css';
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = cssHref;
+    document.head.appendChild(link);
+  }
 
   const wishlistScript = document.createElement('script');
   wishlistScript.src = '../assets/js/wishlist.js';
@@ -237,7 +256,7 @@ async function initHeaderSearch() {
       dropdown.querySelectorAll('.search-results-dropdown__item').forEach(item => {
         item.addEventListener('mousedown', () => { // Use mousedown to fire before blur
           const id = item.dataset.id;
-          window.location.href = `/pages/product?id=${id}`;
+          window.location.href = `../pages/product?id=${id}`;
         });
       });
     }
@@ -278,7 +297,7 @@ async function initHeaderSearch() {
     const query = searchInput.value.trim();
     const cat = selectNode ? selectNode.value : '';
     
-    const url = '/pages/shop';
+    const url = '../pages/shop';
     const params = new URLSearchParams();
     if (cat && cat !== 'All Categories') params.set('category', cat);
     if (query) params.set('search', query);
@@ -302,7 +321,7 @@ async function initHeaderSearch() {
   if (advBtn) {
     advBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      window.location.href = '/pages/advance-search';
+      window.location.href = '../pages/advance-search';
     });
   }
 
@@ -323,7 +342,7 @@ async function initHeaderSearch() {
             params.set('category', cat);
         }
         // Redirect to shop with new filter (or no filter)
-        const target = `/pages/shop${params.toString() ? '?' + params.toString() : ''}`;
+        const target = `../pages/shop${params.toString() ? '?' + params.toString() : ''}`;
         window.location.href = target;
       }
     });
@@ -410,52 +429,51 @@ async function initNewsletter() {
 }
 
 function initFilterSidebar() {
-  const toggle = document.querySelector('#filterToggle');
-  const sidebar = document.querySelector('.shop-sidebar');
-  if (!toggle || !sidebar) return;
-
-  // Create overlay if it doesn't exist
-  let overlay = document.querySelector('.shop-sidebar-overlay');
-  if (!overlay) {
-    overlay = document.createElement('div');
-    overlay.className = 'shop-sidebar-overlay';
-    document.body.appendChild(overlay);
-  }
-
-  const toggleSidebar = () => {
-    sidebar.classList.toggle('is-active');
-    overlay.classList.toggle('is-active');
-    document.body.classList.toggle('no-scroll');
-  };
-
-  const closeBtn = document.querySelector('#sidebarClose');
-  if (closeBtn) closeBtn.addEventListener('click', toggleSidebar);
-
-  toggle.addEventListener('click', toggleSidebar);
-  overlay.addEventListener('click', toggleSidebar);
-
-  // --- Admin Panel Sidebar ---
-  const showAdminOverlay = () => {
-    let overlay = document.querySelector('.admin-sidebar-overlay');
+  // --- Shop Page Sidebar ---
+  const shopToggle = document.querySelector('#filterToggle');
+  const shopSidebar = document.querySelector('.shop-sidebar');
+  
+  if (shopToggle && shopSidebar) {
+    let overlay = document.querySelector('.shop-sidebar-overlay');
     if (!overlay) {
       overlay = document.createElement('div');
-      overlay.className = 'admin-sidebar-overlay';
+      overlay.className = 'shop-sidebar-overlay';
       document.body.appendChild(overlay);
     }
-    return overlay;
-  };
 
-  const adminToggle = document.querySelector('#adminFilterToggle');
-  const adminSidebar = document.querySelector('.admin-panel-sidebar');
-  if (adminToggle && adminSidebar) {
-    const overlay = showAdminOverlay();
-    const toggleAdminSidebar = () => {
-      adminSidebar.classList.toggle('is-active');
+    const toggleSidebar = () => {
+      shopSidebar.classList.toggle('is-active');
       overlay.classList.toggle('is-active');
       document.body.classList.toggle('no-scroll');
     };
+
+    const closeBtn = document.querySelector('#sidebarClose');
+    if (closeBtn) closeBtn.addEventListener('click', toggleSidebar);
+
+    shopToggle.addEventListener('click', toggleSidebar);
+    overlay.addEventListener('click', toggleSidebar);
+  }
+
+  // --- Admin Panel Sidebar ---
+  const adminToggle = document.querySelector('#adminFilterToggle');
+  const adminSidebar = document.querySelector('.admin-panel-sidebar');
+  
+  if (adminToggle && adminSidebar) {
+    let adminOverlay = document.querySelector('.admin-sidebar-overlay');
+    if (!adminOverlay) {
+      adminOverlay = document.createElement('div');
+      adminOverlay.className = 'admin-sidebar-overlay';
+      document.body.appendChild(adminOverlay);
+    }
+    
+    const toggleAdminSidebar = () => {
+      adminSidebar.classList.toggle('is-active');
+      adminOverlay.classList.toggle('is-active');
+      document.body.classList.toggle('no-scroll');
+    };
+    
     adminToggle.addEventListener('click', toggleAdminSidebar);
-    overlay.addEventListener('click', toggleAdminSidebar);
+    adminOverlay.addEventListener('click', toggleAdminSidebar);
     
     const adminClose = document.querySelector('#adminSidebarClose');
     if (adminClose) adminClose.addEventListener('click', toggleAdminSidebar);

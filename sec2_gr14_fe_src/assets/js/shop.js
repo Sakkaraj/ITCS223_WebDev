@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let currentSort        = 'latest';
   let currentSearch      = urlParams.get('search') || '';
   let selectedCategories = urlParams.getAll('category');
+  let selectedColors     = [];
   let maxPriceFilter     = 9999;
   let totalPages         = 1;
 
@@ -21,7 +22,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const sortSelect     = document.querySelector('.shop-products__sort');
   const priceRange     = document.querySelector('.shop-filter-group__range');
   const paginationWrap = document.querySelector('.shop-pagination');
-  const categoryList   = document.querySelector('.shop-filter-list');
+  const categoryList   = document.querySelector('#categoryFilterList');
+  const colorFilterList = document.querySelector('#colorFilterList');
   const categoryStrip  = document.querySelector('.shop-category-strip__grid');
 
   // ─── Load Categories into Sidebar & Strip ─────────────────
@@ -56,6 +58,35 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (typeof lucide !== 'undefined') lucide.createIcons();
     } catch (err) {
       console.error('Failed to load categories:', err.message);
+    }
+  }
+
+  // ─── Load Colors into Sidebar ─────────────────────────────
+  async function loadColors() {
+    try {
+      const colors = await BSC.apiFetch('/api/products/meta/colors');
+      if (colorFilterList) {
+        colorFilterList.innerHTML = colors.map(col => `
+          <li class="shop-color-filter-item">
+            <label class="shop-color-filter-label" title="${col.ColorName}">
+              <input type="checkbox" class="shop-color-checkbox" value="${col.ColorId}" />
+              <span class="shop-color-swatch-circle" style="background-color: ${col.HexCode}; border: 1px solid #eee;"></span>
+              <span class="shop-color-name">${col.ColorName}</span>
+            </label>
+          </li>
+        `).join('');
+
+        colorFilterList.querySelectorAll('.shop-color-checkbox').forEach(cb => {
+          cb.addEventListener('change', () => {
+            selectedColors = [...colorFilterList.querySelectorAll('.shop-color-checkbox:checked')]
+              .map(el => el.value);
+            currentPage = 1;
+            loadProducts();
+          });
+        });
+      }
+    } catch (err) {
+      console.error('Failed to load colors:', err.message);
     }
   }
 
@@ -121,6 +152,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         ...(currentSearch ? { search: currentSearch } : {}),
       });
       selectedCategories.forEach(cat => params.append('category', cat));
+      if (selectedColors.length > 0) {
+        params.append('colors', selectedColors.join(','));
+      }
 
       const data = await BSC.apiFetch(`/api/products?${params}`);
       const { products, pagination } = data;
@@ -336,6 +370,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (sortSelect) {
     sortSelect.innerHTML = `
       <option value="latest">Sort by latest</option>
+      <option value="bestsellers">Best Sellers</option>
       <option value="price_asc">Price: Low to High</option>
       <option value="price_desc">Price: High to Low</option>
     `;
@@ -361,6 +396,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // ─── Initialise ────────────────────────────────────────────
   await loadCategories();
+  await loadColors();
   await loadProducts();
 
   // Inject spin animation

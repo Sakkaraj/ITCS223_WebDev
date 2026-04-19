@@ -1,0 +1,134 @@
+const express = require('express');
+const db = require('../db');
+const { requireAuth, requireAdmin } = require('../middleware/authMiddleware');
+
+const router = express.Router();
+
+/**
+ * GET /api/admin/stats
+ * Returns top-level business metrics.
+ */
+router.get('/stats', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    // 1. Total Revenue
+    const [revenueRows] = await db.execute('SELECT SUM(TotalAmount) as TotalRevenue FROM Orders');
+    const totalRevenue = revenueRows[0]?.TotalRevenue || 0;
+
+    // 2. Member Count
+    const [memberRows] = await db.execute('SELECT COUNT(*) as MemberCount FROM Member');
+    const memberCount = memberRows[0]?.MemberCount || 0;
+
+    // 3. Order Count
+    const [orderRows] = await db.execute('SELECT COUNT(*) as OrderCount FROM Orders');
+    const orderCount = orderRows[0]?.OrderCount || 0;
+
+    // 4. Product Count
+    const [productRows] = await db.execute('SELECT COUNT(*) as ProductCount FROM Product');
+    const productCount = productRows[0]?.ProductCount || 0;
+
+    return res.json({
+      totalRevenue: parseFloat(totalRevenue).toFixed(2),
+      memberCount,
+      orderCount,
+      productCount
+    });
+  } catch (err) {
+    console.error('[GET /admin/stats]', err);
+    return res.status(500).json({ error: 'Failed to fetch statistics.' });
+  }
+});
+
+/**
+ * GET /api/admin/orders
+ * Returns all orders with customer details.
+ */
+router.get('/orders', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const [orders] = await db.execute(`
+      SELECT o.OrderId, o.TotalAmount, 
+             strftime('%Y-%m-%dT%H:%M:%SZ', o.OrderDate) as OrderDate, 
+             o.ContactEmail,
+             m.FirstName, m.LastName,
+             d.Status as DeliveryStatus,
+             a.AddressDetail
+      FROM Orders o
+      JOIN Member m ON o.MemberId = m.MemberId
+      JOIN Delivery d ON o.TrackingId = d.TrackingId
+      JOIN Address a ON d.AddressId = a.AddressId
+      ORDER BY o.OrderDate DESC
+    `);
+    return res.json(orders);
+  } catch (err) {
+    console.error('[GET /admin/orders]', err);
+    return res.status(500).json({ error: 'Failed to fetch global orders.' });
+  }
+});
+
+/**
+ * GET /api/admin/orders/:id
+ * Returns details for a specific order including items.
+ */
+router.get('/orders/:id', requireAuth, requireAdmin, async (req, res) => {
+  const { id } = req.params;
+  try {
+    // 1. Fetch Order with Customer & Delivery Info
+    const [orderRows] = await db.execute(`
+      SELECT o.OrderId, o.TotalAmount, o.VatAmount, o.ShippingAmount, 
+             strftime('%Y-%m-%dT%H:%M:%SZ', o.OrderDate) as OrderDate, 
+             o.ContactEmail,
+             m.FirstName, m.LastName, m.PhoneNumber,
+             d.Status as DeliveryStatus,
+             a.AddressDetail
+      FROM Orders o
+      JOIN Member m ON o.MemberId = m.MemberId
+      JOIN Delivery d ON o.TrackingId = d.TrackingId
+      JOIN Address a ON d.AddressId = a.AddressId
+      WHERE o.OrderId = ?
+    `, [id]);
+
+    if (orderRows.length === 0) {
+      return res.status(404).json({ error: 'Order not found.' });
+    }
+
+    const order = orderRows[0];
+
+    // 2. Fetch Order Items with rich metadata
+    const [items] = await db.execute(`
+      SELECT oi.ItemQuantity, oi.ColorName, oi.MaterialName,
+             p.ProductId, p.ProductName, p.Price,
+             (SELECT ImageUrl FROM Image WHERE ProductId = p.ProductId ORDER BY SortOrder ASC LIMIT 1) as ImageUrl,
+             (oi.ItemQuantity * p.Price) as SubTotal
+      FROM OrderItem oi
+      JOIN Product p ON oi.ProductId = p.ProductId
+      WHERE oi.OrderId = ?
+    `, [id]);
+
+    return res.json({
+      ...order,
+      items
+    });
+  } catch (err) {
+    console.error(`[GET /admin/orders/${id}]`, err);
+    return res.status(500).json({ error: 'Failed to fetch order details.' });
+  }
+});
+
+/**
+ * GET /api/admin/members
+ * Returns a list of all registered members.
+ */
+router.get('/members', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const [members] = await db.execute(`
+      SELECT MemberId, FirstName, LastName, MemberEmail, PhoneNumber
+      FROM Member
+      ORDER BY MemberId DESC
+    `);
+    return res.json(members);
+  } catch (err) {
+    console.error('[GET /admin/members]', err);
+    return res.status(500).json({ error: 'Failed to fetch members.' });
+  }
+});
+
+module.exports = router;

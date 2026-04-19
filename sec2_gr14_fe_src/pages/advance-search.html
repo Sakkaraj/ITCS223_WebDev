@@ -57,6 +57,24 @@
             </select>
           </div>
 
+          <div class="advanced-search-panel__group">
+            <label class="advanced-search-panel__label">Color Palette</label>
+            <div class="advanced-search-panel__color-grid" id="as-color-palette" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px;">
+              <!-- Color swatches will be loaded here -->
+            </div>
+            <input type="hidden" id="as-color" value="" />
+          </div>
+
+          <div class="advanced-search-panel__group">
+            <label class="advanced-search-panel__label">Sort By</label>
+            <select class="advanced-search-panel__select" id="as-sort">
+              <option value="latest">Sort by latest</option>
+              <option value="bestsellers">Best Sellers</option>
+              <option value="price_asc">Price: Low to High</option>
+              <option value="price_desc">Price: High to Low</option>
+            </select>
+          </div>
+
           <div class="advanced-search-panel__dimension-grid">
             <div class="advanced-search-panel__dimension-field">
               <label class="advanced-search-panel__mini-label">Width (max cm)</label>
@@ -184,6 +202,43 @@
             matSel.appendChild(opt);
           });
         }
+
+        // Colors
+        const cols = await BSC.apiFetch('/api/products/meta/colors');
+        const palette = document.getElementById('as-color-palette');
+        const hiddenInput = document.getElementById('as-color');
+        if (palette && Array.isArray(cols)) {
+          palette.innerHTML = cols.map(c => `
+            <div class="advanced-search-color-swatch tooltip-trigger" 
+                 data-id="${c.ColorId}" 
+                 style="background-color:${c.HexCode || '#ccc'}; width:22px; height:22px; border-radius:3px; border:1px solid #e5e7eb; cursor:pointer;"
+                 title="${c.ColorName}">
+            </div>
+          `).join('');
+
+          palette.querySelectorAll('.advanced-search-color-swatch').forEach(swatch => {
+            swatch.addEventListener('click', () => {
+              // Deselect if already selected
+              if (hiddenInput.value === swatch.dataset.id) {
+                hiddenInput.value = '';
+                swatch.style.border = '1px solid #e5e7eb';
+                swatch.style.transform = 'scale(1)';
+                swatch.style.boxShadow = 'none';
+              } else {
+                // Select new color
+                palette.querySelectorAll('.advanced-search-color-swatch').forEach(s => {
+                  s.style.border = '1px solid #e5e7eb';
+                  s.style.transform = 'scale(1)';
+                  s.style.boxShadow = 'none';
+                });
+                hiddenInput.value = swatch.dataset.id;
+                swatch.style.border = '2px solid #a6866a';
+                swatch.style.transform = 'scale(1.15)';
+                swatch.style.boxShadow = '0 2px 4px rgba(166,134,106,0.3)';
+              }
+            });
+          });
+        }
       } catch (e) { console.error("Failed to load metadata", e); }
     })();
 
@@ -192,17 +247,20 @@
       const category = document.getElementById('as-category')?.value || '';
       const maxPrice = document.getElementById('as-price')?.value || '';
       const materialId = document.getElementById('as-material')?.value || '';
+      const colorId = document.getElementById('as-color')?.value || '';
       const featured = document.getElementById('featured')?.checked || false;
       
       const width = document.getElementById('as-width')?.value || '';
       const length = document.getElementById('as-length')?.value || '';
       const height = document.getElementById('as-height')?.value || '';
       const weight = document.getElementById('as-weight')?.value || '';
+      const sort = document.getElementById('as-sort')?.value || 'latest';
 
-      const params = new URLSearchParams({ limit: 12, sort: 'latest' });
+      const params = new URLSearchParams({ limit: 12, sort });
       if (category) params.set('category', category);
       if (maxPrice) params.set('maxPrice', maxPrice);
       if (materialId) params.set('materialId', materialId);
+      if (colorId) params.set('colorId', colorId);
       if (featured) params.set('featured', '1');
       
       if (width) params.set('maxWidth', width);
@@ -232,7 +290,7 @@
 
           return `
             <article class="advanced-search-result-card" style="cursor:pointer;"
-              onclick="window.location.href='product?id=${p.ProductId}'">
+              onclick="window.location.href='../pages/product?id=${p.ProductId}'">
               <div class="advanced-search-result-card__img-wrap">
                 <img src="${img}" alt="${p.ProductName}"
                      class="advanced-search-result-card__image"
@@ -240,6 +298,14 @@
               </div>
               <h3 class="advanced-search-result-card__title" style="margin-top:10px;">${p.ProductName}</h3>
               <p class="advanced-search-result-card__price">$${parseFloat(p.Price).toFixed(2)}</p>
+              
+              ${p.colors && p.colors.length ? `
+              <div class="advanced-search-result-card__swatches">
+                ${p.colors.slice(0, 4).map(c => `
+                  <span style="background-color: ${c.HexCode || '#ccc'}"></span>
+                `).join('')}
+              </div>` : ''}
+
               <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
                 <span style="font-size:11px;color:#888;text-transform:uppercase;">${p.Category}</span>
                 <span style="font-size:11px;color:#a6866a;font-weight:600;">${p.MaterialName || ''}</span>
@@ -259,18 +325,37 @@
       document.getElementById('as-category').value = '';
       document.getElementById('as-price').value = '';
       document.getElementById('as-material').value = '';
+      document.getElementById('as-color').value = '';
+      document.getElementById('as-sort').value = 'latest';
       document.getElementById('featured').checked = false;
       document.getElementById('as-width').value = '';
       document.getElementById('as-length').value = '';
       document.getElementById('as-height').value = '';
       document.getElementById('as-weight').value = '';
       
-      const grid = document.querySelector('.advanced-search-results__grid');
-      if (grid) grid.innerHTML = `
-        <article class="advanced-search-skeleton-card">
-          <div class="advanced-search-skeleton-card__image skeleton"></div>
-        </article>
-      `;
+      // Reset color palette visuals
+      const palette = document.getElementById('as-color-palette');
+      if (palette) {
+        palette.querySelectorAll('.advanced-search-color-swatch').forEach(swatch => {
+          swatch.style.border = '1px solid #e5e7eb';
+          swatch.style.transform = 'scale(1)';
+          swatch.style.boxShadow = 'none';
+        });
+      }
+
+      // Auto-trigger clean search
+      document.getElementById('as-search-btn')?.click();
+    });
+
+    // ── Pre-fill from URL and Auto-Run ──────────────────────
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('category')) {
+        document.getElementById('as-category').value = urlParams.get('category');
+      }
+      setTimeout(() => {
+        document.getElementById('as-search-btn')?.click();
+      }, 500); // Wait for options to populate
     });
   </script>
 </body>

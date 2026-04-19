@@ -70,6 +70,7 @@ const NORMALIZE_MAP = {
   'trackingid': 'TrackingId',
   'contactemail': 'ContactEmail',
   'rating': 'Rating',
+  'shippingamount': 'ShippingAmount',
   'reviewcomment': 'ReviewComment',
   'reviewid': 'ReviewId'
 };

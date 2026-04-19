@@ -365,10 +365,37 @@ a {
 }
 
 .about-team__member-name {
-  margin: 0;
+  margin: 0 0 1rem;
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-main);
+}
+
+.about-team__member-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-soft);
+}
+
+.about-team__link {
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.about-team__link:hover {
+  color: var(--brand-brown);
+  transform: translateY(-3px);
+}
+
+.about-team__link-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  stroke-width: 1.5;
 }
 
 /* Video banner */

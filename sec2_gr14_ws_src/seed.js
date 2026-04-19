@@ -26,7 +26,7 @@ function translatePostgresToSqlite(sql) {
   return sql
     .replace(/SERIAL PRIMARY KEY/gi, 'INTEGER PRIMARY KEY AUTOINCREMENT')
     .replace(/TIMESTAMP DEFAULT CURRENT_TIMESTAMP/gi, 'DATETIME DEFAULT CURRENT_TIMESTAMP')
-    .replace(/TIMESTAMP/gi, 'DATETIME')
+    .replace(/\bTIMESTAMP\b/gi, 'DATETIME') // Use word boundaries to avoid affecting CURRENT_TIMESTAMP
     .replace(/SMALLINT/gi, 'TINYINT')
     .replace(/BOOLEAN DEFAULT TRUE/gi, 'BOOLEAN DEFAULT 1')
     .replace(/BOOLEAN DEFAULT FALSE/gi, 'BOOLEAN DEFAULT 0')
@@ -41,7 +41,7 @@ function translatePostgresToSqlite(sql) {
 }
 
 async function seed() {
-  console.log(`\n🌱 Starting unified database seed (${isPostgres ? 'PostgreSQL' : 'SQLite'})...\n`);
+  console.log(`\n🌱 Unified database seed (${isPostgres ? 'PostgreSQL' : 'SQLite'})...`);
 
   try {
     const sqlPath = path.resolve(__dirname, '../sec2_gr14_database.sql');
@@ -59,7 +59,21 @@ async function seed() {
         ssl: databaseUrl.includes('render.com') ? { rejectUnauthorized: false } : false
       });
 
-      console.log('🏗️  Executing Master SQL on PostgreSQL...');
+      // --- NEW IDEMPOTENT CHECK ---
+      console.log('🔍 Checking if database already contains data...');
+      try {
+        const checkResult = await pool.query("SELECT COUNT(*) FROM information_schema.tables WHERE table_name = 'Products'");
+        if (checkResult.rows[0].count > 0 && process.env.FORCE_SEED !== 'true') {
+          console.log('⏭️  Database already initialized. Skipping seed to prevent data loss.');
+          console.log('💡 Tip: Set FORCE_SEED=true to force a complete wipe and re-seed.');
+          await pool.end();
+          return;
+        }
+      } catch (checkErr) {
+        // Table doesn't exist, proceed with seed
+      }
+
+      console.log('🏗️  Executing Master SQL on PostgreSQL (Wipe and Initialize)...');
       // Ensure DROP TABLE commands use CASCADE for PostgreSQL to clear dependencies
       const pgSql = masterSql.replace(/DROP TABLE IF EXISTS ([a-z0-9_"]+);/gi, 'DROP TABLE IF EXISTS $1 CASCADE;');
       await pool.query(pgSql);
@@ -75,9 +89,10 @@ async function seed() {
       const dir = path.dirname(dbPath);
       if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
-      if (fs.existsSync(dbPath)) {
-        console.log('🗑️  Removing existing SQLite database...');
-        fs.unlinkSync(dbPath);
+      if (fs.existsSync(dbPath) && process.env.FORCE_SEED !== 'true') {
+        // On local sqlite, we usually just skip if the file exists to preserve testing data
+        console.log('⏭️  Local SQLite database file exists. Skipping redundant seed.');
+        return;
       }
 
       const sqliteDb = await open({ filename: dbPath, driver: sqlite3.Database });
@@ -85,9 +100,7 @@ async function seed() {
       console.log('🏗️  Translating Master SQL for SQLite...');
       const localSql = translatePostgresToSqlite(masterSql);
       
-      // DEBUG: console.log(localSql);
-      
-      console.log('🏗️  Executing Translated SQL on SQLite...');
+      console.log('🏗️  Executing Translated SQL on SQLite (Wipe and Initialize)...');
       await sqliteDb.exec(localSql);
       console.log('✅ SQLite database initialized successfully');
       

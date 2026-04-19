@@ -38,37 +38,81 @@
           </div>
         </div>
 
-        <div class="cart-table-wrapper no-scrollbar" id="cart-table-container">
-          <table class="cart-table">
-            <thead class="cart-table__head">
-              <tr>
-                <th>Product</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>CMF</th>
-                <th>Dimension</th>
-                <th>Description</th>
-                <th class="cart-table__actions-column">Actions</th>
-              </tr>
-            </thead>
-
-            <tbody class="cart-table__body">
-              <!-- Cart items loaded dynamically by cart-api.js -->
-            </tbody>
-          </table>
-        </div>
-
-        <section class="cart-summary">
-          <p class="cart-summary__line">Item Total: <span class="js-subtotal">$0.00</span></p>
-          <p class="cart-summary__line">Vat + Tax: <span class="js-vat">$0.00 (7%)</span></p>
-          <p class="cart-summary__line">Logistic cost: <span>$500.00</span></p>
-
-          <div class="cart-summary__total">
-            <p>Total: <span class="js-grand-total">$0.00</span></p>
+        <div class="cart-grid">
+          <div class="cart-main">
+            <div id="cart-items-container" class="cart-items-list">
+              <!-- Dynamically populated by cart-page.js -->
+            </div>
           </div>
 
-          <button class="cart-summary__checkout-button">Check Out</button>
-        </section>
+          <aside class="cart-sidebar">
+            <section class="cart-summary">
+              <div class="cart-summary__section">
+                <p class="cart-summary__line">Item Total <span><span class="js-subtotal">$0.00</span></span></p>
+                <p class="cart-summary__line">Vat + Tax (7%) <span><span class="js-vat">$0.00</span></span></p>
+                <p class="cart-summary__line">Logistic cost <span><span class="js-logistic">$0.00</span></span></p>
+              </div>
+              
+              <div class="shipping-status-card">
+                <div class="shipping-status-title">
+                  <i data-lucide="truck" style="width: 14px; height: 14px;"></i>
+                  <span>Shipping Status</span>
+                </div>
+                
+                <div id="shipping-message" class="shipping-status-message">
+                  Checking your delivery costs...
+                </div>
+
+                <div class="shipping-progress">
+                  <div id="shipping-bar" class="shipping-progress__bar"></div>
+                  
+                  <!-- $500 Marker -->
+                  <div class="shipping-progress__marker" style="left: 50%;">
+                    <span class="shipping-progress__marker-label">$500</span>
+                  </div>
+                  
+                  <!-- $1,000 Marker -->
+                  <div class="shipping-progress__marker" style="left: 100%;">
+                    <span class="shipping-progress__marker-label">$1,000</span>
+                  </div>
+                </div>
+
+                <div class="shipping-legend">
+                  <div class="shipping-legend__item">
+                    <span class="shipping-legend__label">Standard</span>
+                    <span class="shipping-legend__value">$15.00</span>
+                  </div>
+                  <div class="shipping-legend__item">
+                    <span class="shipping-legend__label">Orders $500+</span>
+                    <span class="shipping-legend__value">$10.00</span>
+                  </div>
+                  <div class="shipping-legend__item">
+                    <span class="shipping-legend__label">Orders $1k+</span>
+                    <span class="shipping-legend__value" style="color: #16a34a;">FREE</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="cart-summary__total">
+                <p>Grand Total</p>
+                <span class="js-grand-total">$0.00</span>
+              </div>
+
+              <div class="cart-summary__address">
+                <label for="delivery-address" class="cart-summary__address-label">Delivery Address</label>
+                <textarea
+                  id="delivery-address"
+                  class="cart-summary__address-input"
+                  placeholder="Enter your full shipping address..."
+                  rows="3"
+                ></textarea>
+                <p id="address-error" class="cart-summary__error is-hidden">Please enter a delivery address.</p>
+              </div>
+
+              <button class="cart-summary__checkout-button">Check Out</button>
+            </section>
+          </aside>
+        </div>
       </section>
     </div>
   </main>

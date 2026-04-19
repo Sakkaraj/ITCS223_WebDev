@@ -65,10 +65,17 @@
           <i data-lucide="shield"></i>
           <span>Admin Panel</span>
         </a>
-        <div class="js-user-menu" style="display:none;">
-          <button class="site-header__mobile-action js-logout-btn" style="width:100%; border:none; background:none; text-align:left; padding:0;">
+        <div class="site-header__mobile-user-menu js-user-menu" style="display:none;">
+          <a href="../pages/my-orders" class="site-header__mobile-action">
+            <i data-lucide="package"></i>
+            <span>My Orders</span>
+          </a>
+          <button class="site-header__mobile-action js-logout-btn" style="width:100%; border:none; background:none; text-align:left; padding:0; cursor:pointer;">
             <i data-lucide="log-out"></i>
-            <span>Logout <span class="js-user-name" style="font-weight:normal; opacity:0.7; font-size:12px;"></span></span>
+            <div style="display:flex; flex-direction:column; gap:2px;">
+              <span>Logout</span>
+              <span class="js-user-name" style="font-weight:normal; opacity:0.6; font-size:12px; letter-spacing:0.02em;"></span>
+            </div>
           </button>
         </div>
       </div>
@@ -83,7 +90,12 @@
       </a>
 
       <!-- Logged-in View: User Menu (hidden by default) -->
-      <div class="site-header__user-menu site-header__action-link--desktop js-user-menu" style="display:none; align-items:center; gap:8px;">
+      <div class="site-header__user-menu site-header__action-link--desktop js-user-menu" style="display:none; align-items:center; gap:16px;">
+        <a href="../pages/my-orders" class="site-header__action-link" title="My Orders" style="display:flex;align-items:center;color:inherit;text-decoration:none;gap:6px;">
+          <i data-lucide="package" style="width:20px; height:20px;"></i>
+          <span style="font-size:14px; font-weight:500;">My Orders</span>
+        </a>
+        <div style="width:1px; height:16px; background:#ddd;"></div>
         <span class="site-header__user-name js-user-name" style="font-size:14px; font-weight:500;"></span>
         <button class="site-header__logout-btn js-logout-btn" title="Logout" style="background:none; border:none; cursor:pointer; padding:4px; display:flex; align-items:center; color:inherit;">
           <i data-lucide="log-out" class="site-header__action-icon" style="width:20px; height:20px;"></i>

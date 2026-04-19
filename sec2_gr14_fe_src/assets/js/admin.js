@@ -17,6 +17,48 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (adminTableBody) {
     loadAdminProducts();
     initAdminFilters();
+    loadDashboardStats();
+    initAdminBestsellers();
+    initAdminTabs();
+    bindSyncButton();
+
+    // POLLED UPDATES: Keep stock and stats fresh every 10s (Faster for testing)
+    setInterval(() => {
+      refreshAdminData();
+    }, 10000);
+  }
+
+  function bindSyncButton() {
+    const syncBtn = document.getElementById('manualSync');
+    if (syncBtn) {
+      syncBtn.addEventListener('click', async () => {
+        const icon = syncBtn.querySelector('i');
+        if (icon) icon.style.animation = 'spin 1s linear infinite';
+        await refreshAdminData();
+        if (icon) icon.style.animation = '';
+        BSC.showToast('Inventory Synced', 'success');
+      });
+    }
+  }
+
+  async function refreshAdminData() {
+    const activeTab = document.querySelector('.admin-tab.is-active');
+    const updateTimeEl = document.getElementById('lastUpdated');
+    
+    try {
+      if (activeTab && activeTab.dataset.tab === 'products') {
+        await loadAdminProducts(collectFilters());
+      }
+      await loadDashboardStats();
+      await initAdminBestsellers();
+      
+      if (updateTimeEl) {
+        const now = new Date();
+        updateTimeEl.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      }
+    } catch (err) {
+      console.error('Refresh failed:', err);
+    }
   }
 
   // ─── Add Product Page (add-product) ─────────────────
@@ -42,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     `;
 
     try {
-      const params = new URLSearchParams({ limit: 50, ...filters });
+      const params = new URLSearchParams({ limit: 50, showAll: true, ...filters });
       const data = await BSC.apiFetch(`/api/products?${params}`);
       const { products } = data;
 
@@ -79,6 +121,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div style="color:#888; margin-top:2px;">${p.Weight || p.weight || 0} kg</div>
           </div>
         `;
+        const stockVal = parseInt(p.QuantityLeft) || 0;
+        const stockColor = stockVal < 5 ? '#e11d48' : '#6b7280'; // Red if low
+        const stockWeight = stockVal < 5 ? '800' : '600';
         
         return `
           <tr class="admin-panel-table__row" data-id="${p.ProductId}">
@@ -87,7 +132,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                    onerror="this.src='../assets/images/chair.avif'" />
               <div style="display:flex; flex-direction:column; gap:2px;">
                 <span class="admin-panel-table__product-name" style="font-weight:600;">${p.ProductName}</span>
-                <span style="font-size:11px; color:#888;">ID: #${p.ProductId} | Stock: ${p.QuantityLeft} | Status: <span style="font-weight:700; color:${p.Status === 'Active' ? '#166534' : p.Status === 'Draft' ? '#854d0e' : '#991b1b'}">${p.Status || 'Active'}</span></span>
+                <span style="font-size:11px; color:#888;">
+                  ID: #${p.ProductId} | 
+                  <span style="color:${stockColor}; font-weight:${stockWeight};">Stock: ${stockVal}</span> | 
+                  Status: <span style="font-weight:700; color:${p.Status === 'Active' ? '#166534' : p.Status === 'Draft' ? '#854d0e' : '#991b1b'}">${p.Status || 'Active'}</span>
+                </span>
               </div>
             </td>
             <td class="admin-panel-table__muted">${p.Category}</td>
@@ -464,6 +513,45 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // ══════════════════════════════════════════════════════════
+  //  SIDEBAR BEST SELLERS
+  // ══════════════════════════════════════════════════════════
+  async function initAdminBestsellers() {
+    const listContainer = document.getElementById('adminBestsellerList');
+    if (!listContainer) return;
+
+    try {
+      const data = await BSC.apiFetch('/api/products?sort=bestsellers&limit=3');
+      const { products } = data;
+
+      if (!products || products.length === 0) {
+        listContainer.innerHTML = '<div style="padding:10px;color:#aaa;font-size:12px;text-align:center;">No best sellers found.</div>';
+        return;
+      }
+
+      listContainer.innerHTML = products.map(p => {
+        let imgSrc = p.ImageUrl || 'assets/images/chair.avif';
+        if (imgSrc.startsWith('assets/')) {
+           imgSrc = '../' + imgSrc;
+        }
+        return `
+          <article class="admin-panel-best-seller-card">
+            <div class="admin-panel-best-seller-card__image-wrap">
+              <img src="${imgSrc}" alt="${p.ProductName}" class="admin-panel-best-seller-card__image" onerror="this.src='../assets/images/chair.avif'" />
+            </div>
+            <div class="admin-panel-best-seller-card__content">
+              <h4 class="admin-panel-best-seller-card__name" style="margin-bottom:2px; font-weight:600; font-size:14px; color:#1f2937;">${p.ProductName}</h4>
+              <p class="admin-panel-best-seller-card__price" style="font-weight:700; color:#a6866a; font-size:13px;">$${parseFloat(p.Price).toFixed(2)}</p>
+            </div>
+          </article>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error('Error loading admin best sellers:', err);
+      listContainer.innerHTML = '<div style="padding:10px;color:#e44;font-size:12px;text-align:center;">Failed to load.</div>';
+    }
+  }
+
+  // ══════════════════════════════════════════════════════════
   //  ADD / EDIT PRODUCT FORM
   // ══════════════════════════════════════════════════════════
 
@@ -827,4 +915,151 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // ══════════════════════════════════════════════════════════
+  //  ADMIN DASHBOARD: Stats & Global Management
+  // ══════════════════════════════════════════════════════════
+
+  async function loadDashboardStats() {
+    try {
+      const stats = await BSC.apiFetch('/api/admin/stats');
+      const revenueEl = document.querySelector('.js-stat-revenue');
+      const membersEl = document.querySelector('.js-stat-members');
+      const ordersEl = document.querySelector('.js-stat-orders');
+
+      if (revenueEl) revenueEl.textContent = `$${parseFloat(stats.totalRevenue).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+      if (membersEl) membersEl.textContent = stats.memberCount.toLocaleString();
+      if (ordersEl) ordersEl.textContent = stats.orderCount.toLocaleString();
+    } catch (err) {
+      console.error('Error loading dashboard stats:', err);
+    }
+  }
+
+  function initAdminTabs() {
+    const tabs = document.querySelectorAll('.admin-tab');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const targetView = tab.dataset.tab;
+        
+        // Update tab active state
+        tabs.forEach(t => t.classList.remove('is-active'));
+        tab.classList.add('is-active');
+
+        // Show/Hide views
+        document.querySelectorAll('.admin-view').forEach(view => {
+          view.classList.add('is-hidden');
+        });
+        document.getElementById(`${targetView}-view`)?.classList.remove('is-hidden');
+
+        // Hide sidebar and actions if not on products
+        const sidebar = document.querySelector('.admin-panel-sidebar');
+        const actions = document.querySelector('.admin-panel-content__actions');
+        const headerTitle = document.querySelector('.admin-panel-content__title');
+
+        if (targetView === 'products') {
+          if (sidebar) sidebar.style.display = '';
+          if (actions) actions.style.display = '';
+          if (headerTitle) headerTitle.textContent = 'Products Management';
+          loadAdminProducts();
+        } else if (targetView === 'orders') {
+          if (sidebar) sidebar.style.display = 'none';
+          if (actions) actions.style.display = 'none';
+          if (headerTitle) headerTitle.textContent = 'Global Orders History';
+          loadGlobalOrders();
+        } else if (targetView === 'members') {
+          if (sidebar) sidebar.style.display = 'none';
+          if (actions) actions.style.display = 'none';
+          if (headerTitle) headerTitle.textContent = 'Registered Members';
+          loadAdminMembers();
+        }
+      });
+    });
+
+    // Handle URL parameter ?tab=orders
+    const urlParams = new URLSearchParams(window.location.search);
+    const requestedTab = urlParams.get('tab');
+    if (requestedTab) {
+      const tabToClick = document.querySelector(`.admin-tab[data-tab="${requestedTab}"]`);
+      if (tabToClick) tabToClick.click();
+    }
+  }
+
+  async function loadGlobalOrders() {
+    const tableBody = document.getElementById('orders-table-body');
+    if (!tableBody) return;
+
+    tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;">Loading orders...</td></tr>';
+    
+    try {
+      const orders = await BSC.apiFetch('/api/admin/orders');
+      if (orders.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;">No orders found.</td></tr>';
+        return;
+      }
+
+      tableBody.innerHTML = orders.map(o => {
+        const orderDate = new Date(o.OrderDate);
+        const isValidDate = !isNaN(orderDate.getTime());
+        
+        const dateStr = isValidDate 
+          ? orderDate.toLocaleString('en-US', {
+              year: 'numeric', month: 'short', day: 'numeric',
+              hour: '2-digit', minute: '2-digit',
+              timeZone: 'Asia/Bangkok'
+            })
+          : '—';
+        
+        const statusClass = o.DeliveryStatus?.toLowerCase() || 'pending';
+        
+        return `
+          <tr class="admin-panel-table__row">
+            <td><strong>#${o.OrderId}</strong></td>
+            <td>${o.FirstName} ${o.LastName}</td>
+            <td style="font-size:11px;color:#666;">${o.ContactEmail}</td>
+            <td class="admin-panel-table__price">$${parseFloat(o.TotalAmount).toFixed(2)}</td>
+            <td><span class="status-badge status-badge--${statusClass}">${o.DeliveryStatus}</span></td>
+            <td style="font-size:11px;color:#666;max-width:200px;white-space:normal;">${o.AddressDetail}</td>
+            <td style="font-size:11px;">${dateStr}</td>
+            <td class="u-text-center">
+              <button class="order-view-btn" onclick="window.location.href='order-details.html?id=${o.OrderId}'">
+                View
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error('Error loading global orders:', err);
+      tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:20px;color:red;">Error: ${err.message}</td></tr>`;
+    }
+  }
+
+  async function loadAdminMembers() {
+    const tableBody = document.getElementById('members-table-body');
+    if (!tableBody) return;
+
+    tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;">Loading members...</td></tr>';
+
+    try {
+      const members = await BSC.apiFetch('/api/admin/members');
+      if (members.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;">No members registered.</td></tr>';
+        return;
+      }
+
+      tableBody.innerHTML = members.map(m => `
+        <tr class="admin-panel-table__row">
+          <td><strong>#${m.MemberId}</strong></td>
+          <td>${m.FirstName}</td>
+          <td>${m.LastName}</td>
+          <td>${m.MemberEmail}</td>
+          <td>${m.PhoneNumber}</td>
+        </tr>
+      `).join('');
+    } catch (err) {
+      console.error('Error loading members:', err);
+      tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:20px;color:red;">Error: ${err.message}</td></tr>`;
+    }
+  }
+
+  // Legacy modal logic removed in favor of dedicated order-details.html redirection.
+
 });

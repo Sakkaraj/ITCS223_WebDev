@@ -158,6 +158,55 @@ a {
   color: var(--brand-brown);
 }
 
+/* Color Filter Sidebar Styles */
+.shop-color-filter-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.shop-color-filter-item {
+  display: flex;
+  align-items: center;
+}
+
+.shop-color-filter-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  width: 100%;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  transition: color 0.2s ease;
+}
+
+.shop-color-filter-label:hover {
+  color: var(--text-main);
+}
+
+.shop-color-checkbox {
+  width: 1.125rem;
+  height: 1.125rem;
+  accent-color: var(--brand-brown);
+  cursor: pointer;
+}
+
+.shop-color-swatch-circle {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.shop-color-name {
+  font-weight: 500;
+}
+
 /* Products */
 .shop-products {
   flex: 1;
@@ -195,7 +244,7 @@ a {
 
 .shop-products__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 3rem 2rem;
 }
 

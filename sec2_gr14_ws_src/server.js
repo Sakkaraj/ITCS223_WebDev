@@ -83,12 +83,15 @@ app.use(session({
 // ─────────────────────────────────────────────
 //  API ROUTES (Backend only - no static files)
 // ─────────────────────────────────────────────
+const adminRoutes = require('./routes/admin');
+
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/newsletter', newsletterRoutes);
+app.use('/api/admin', adminRoutes);
 
 // ─────────────────────────────────────────────
 //  HEALTH CHECK ENDPOINT

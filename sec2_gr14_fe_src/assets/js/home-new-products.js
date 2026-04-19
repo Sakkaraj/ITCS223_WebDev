@@ -13,9 +13,22 @@ document.addEventListener('DOMContentLoaded', async () => {
   let allProducts = [];
   let currentCategory = 'All';
 
-  // ─── Load all new products ─────────────────────────────────
+  // ─── Load categories & all new products ────────────────────
   async function loadAllProducts() {
     try {
+      // 1. Load Categories
+      try {
+        const categories = await BSC.apiFetch('/api/products/meta/categories');
+        if (categories && categories.length > 0) {
+          const catHtml = categories.map(c => `<a href="#" class="product-tabs__link">${c.Category}</a>`).join('');
+          tabsContainer.innerHTML = `<a href="#" class="product-tabs__link product-tabs__link--active">All</a>` + catHtml;
+        }
+      } catch (catErr) {
+        console.error('Failed to load categories:', catErr);
+        tabsContainer.innerHTML = `<a href="#" class="product-tabs__link product-tabs__link--active">All</a>`;
+      }
+
+      // 2. Load Products
       const data = await BSC.apiFetch('/api/products?limit=100&sort=latest');
       const { products } = data;
       allProducts = products || [];
@@ -50,6 +63,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     productGrid.innerHTML = filtered.map(renderProductCard).join('');
+
+    // If there are 1 or 2 products, center them and lock their widths to match the 3-grid column width.
+    if (filtered.length > 0 && filtered.length < 3) {
+      productGrid.style.display = 'flex';
+      productGrid.style.justifyContent = 'center';
+      
+      productGrid.querySelectorAll('.product-card').forEach(card => {
+        card.style.width = 'calc((100% - 4rem) / 3)';
+        card.style.minWidth = '280px';
+      });
+    } else {
+      // Reset grid styles for regular 3 product rows
+      productGrid.style.display = '';
+      productGrid.style.justifyContent = '';
+    }
 
     // Add color swatch event listeners
     productGrid.querySelectorAll('.product-color-swatch').forEach(swatch => {

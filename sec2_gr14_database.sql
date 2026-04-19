@@ -109,7 +109,7 @@ CREATE TABLE MemberLoginLog (
 CREATE TABLE Address (
     AddressId SERIAL PRIMARY KEY,
     MemberId INT NOT NULL,
-    AddressDetail VARCHAR(100) NOT NULL,
+    AddressDetail VARCHAR(255) NOT NULL,
     CONSTRAINT Addr_Fk FOREIGN KEY (MemberId) REFERENCES Member (MemberId) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -117,7 +117,7 @@ CREATE TABLE Delivery (
     TrackingId SERIAL PRIMARY KEY,
     AddressId INT NOT NULL,
     Status VARCHAR(50) NOT NULL,
-    CONSTRAINT Del_Fk FOREIGN KEY (AddressId) REFERENCES Address (AddressId)
+    CONSTRAINT Del_Fk FOREIGN KEY (AddressId) REFERENCES Address (AddressId) ON DELETE CASCADE
 );
 
 CREATE TABLE Orders (
@@ -127,9 +127,10 @@ CREATE TABLE Orders (
     ContactEmail VARCHAR(50),
     TotalAmount DECIMAL(10, 2) NOT NULL,
     VatAmount DECIMAL(10, 2) NOT NULL,
+    ShippingAmount DECIMAL(10, 2) DEFAULT 0,
     OrderDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT OrdMem_Fk FOREIGN KEY (MemberId) REFERENCES Member (MemberId),
-    CONSTRAINT OrdTrk_Fk FOREIGN KEY (TrackingId) REFERENCES Delivery (TrackingId)
+    CONSTRAINT OrdMem_Fk FOREIGN KEY (MemberId) REFERENCES Member (MemberId) ON DELETE RESTRICT,
+    CONSTRAINT OrdTrk_Fk FOREIGN KEY (TrackingId) REFERENCES Delivery (TrackingId) ON DELETE CASCADE
 );
 
 CREATE TABLE Product (
@@ -148,8 +149,8 @@ CREATE TABLE Product (
     Status VARCHAR(20) DEFAULT 'Active',
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     MaterialId INT,
-    CONSTRAINT ProdCate_Fk FOREIGN KEY (CategoryId) REFERENCES Category (CategoryId),
-    CONSTRAINT ProdMat_Fk FOREIGN KEY (MaterialId) REFERENCES Material (MaterialId)
+    CONSTRAINT ProdCate_Fk FOREIGN KEY (CategoryId) REFERENCES Category (CategoryId) ON DELETE RESTRICT,
+    CONSTRAINT ProdMat_Fk FOREIGN KEY (MaterialId) REFERENCES Material (MaterialId) ON DELETE SET NULL
 );
 
 CREATE TABLE Review (
@@ -158,8 +159,8 @@ CREATE TABLE Review (
     MemberId INT NOT NULL,
     Rating SMALLINT NOT NULL,
     ReviewComment VARCHAR(255),
-    CONSTRAINT ReviewProd_Fk FOREIGN KEY (ProductId) REFERENCES Product (ProductId),
-    CONSTRAINT ReviewMem_Fk FOREIGN KEY (MemberId) REFERENCES Member (MemberId)
+    CONSTRAINT ReviewProd_Fk FOREIGN KEY (ProductId) REFERENCES Product (ProductId) ON DELETE CASCADE,
+    CONSTRAINT ReviewMem_Fk FOREIGN KEY (MemberId) REFERENCES Member (MemberId) ON DELETE CASCADE
 );
 
 CREATE TABLE Image (
@@ -167,21 +168,27 @@ CREATE TABLE Image (
     ProductId INT NOT NULL,
     ImageUrl VARCHAR(255),
     SortOrder INTEGER DEFAULT 0,
-    CONSTRAINT ImgProd_Fk FOREIGN KEY (ProductId) REFERENCES Product (ProductId)
+    CONSTRAINT ImgProd_Fk FOREIGN KEY (ProductId) REFERENCES Product (ProductId) ON DELETE CASCADE
 );
 
 CREATE TABLE OrderItem (
+    OrderItemId SERIAL PRIMARY KEY,
     ProductId INT NOT NULL,
     OrderId INT NOT NULL,
     ItemQuantity INT NOT NULL,
-    PRIMARY KEY (ProductId, OrderId)
+    ColorName VARCHAR(50),
+    MaterialName VARCHAR(50),
+    CONSTRAINT OrdItmProd_Fk FOREIGN KEY (ProductId) REFERENCES Product (ProductId) ON DELETE RESTRICT,
+    CONSTRAINT OrdItmOrd_Fk FOREIGN KEY (OrderId) REFERENCES Orders (OrderId) ON DELETE CASCADE
 );
 
 CREATE TABLE ProductColor (
     ProductId INT NOT NULL,
     ColorId INT NOT NULL,
     SortOrder INTEGER DEFAULT 0,
-    PRIMARY KEY (ProductId, ColorId)
+    PRIMARY KEY (ProductId, ColorId),
+    CONSTRAINT ProdColProd_Fk FOREIGN KEY (ProductId) REFERENCES Product (ProductId) ON DELETE CASCADE,
+    CONSTRAINT ProdColCol_Fk FOREIGN KEY (ColorId) REFERENCES Color (ColorId) ON DELETE CASCADE
 );
 
 CREATE TABLE Contactors (
@@ -201,6 +208,10 @@ CREATE TABLE NewsLetterSubscriber (
 
 INSERT INTO AdminInformation (FirstName, LastName, Address, Age, Email, TelephoneNumber) VALUES ('Admin', 'BoonSon', '999 Phutthamonthon 4 Road, Nakhon Pathom', 30, 'admin@boonsonclon.com', '0696304272');
 INSERT INTO AdminLoginInformation (AdminId, AdminUserName, AdminPassword, Role) VALUES (1, 'admin', '$2b$10$qeGhmRLLjsv4X45cC/kSBeEuHyAwPsT72NMXeHmZ3DHSlmIpjGRKW', 'admin');
+
+-- Sample Member
+INSERT INTO Member (FirstName, LastName, PhoneNumber, MemberEmail) VALUES ('John', 'Doe', '0812345678', 'john.doe@example.com');
+INSERT INTO MemberLoginInformation (MemberId, MemberPassword) VALUES (1, '$2b$10$7Z2Gq7kX2kO9K7kX2kO9Ke2kO9K7kX2kO9K7kX2kO9K7kX2kO9K'); -- password: password123
 
 INSERT INTO Category (Category) VALUES ('Chairs');
 INSERT INTO Category (Category) VALUES ('Armchairs');

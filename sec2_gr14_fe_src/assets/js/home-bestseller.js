@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   try {
     // Fetch top 4 bestsellers (by rating count or sales, fallback to latest)
-    const data = await BSC.apiFetch('/api/products?sort=latest&limit=4');
+    const data = await BSC.apiFetch('/api/products?sort=bestsellers&limit=4');
     const { products } = data;
     bestsellerGrid.innerHTML = products.map(renderBestsellerCard).join('');
     if (typeof lucide !== 'undefined') lucide.createIcons();

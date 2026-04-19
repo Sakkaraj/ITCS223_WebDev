@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders | Furniture Store</title>
+    <meta name="description" content="View and track your furniture orders.">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/admin-panel.css" />
+    <link rel="stylesheet" href="../assets/css/footer.css" />
+    <link rel="stylesheet" href="../assets/css/header.css" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* ── Hero Banner ── */
+        .orders-hero {
+            position: relative;
+            width: 100%;
+            height: 260px;
+            overflow: hidden;
+        }
+        .orders-hero__image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.45);
+        }
+        .orders-hero__content {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 1.5rem;
+        }
+        .orders-hero__eyebrow {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 12px;
+        }
+        .orders-hero__title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 400;
+            color: #ffffff;
+            margin: 0 0 12px;
+            line-height: 1.1;
+        }
+        .orders-hero__subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            color: rgba(255,255,255,0.75);
+            font-weight: 400;
+            max-width: 480px;
+        }
+
+        /* ── Page Layout ── */
+        .orders-page {
+            background-color: #f9fafb;
+            min-height: 60vh;
+            padding: 48px 0 80px;
+        }
+        .orders-container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .orders-page__heading {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #9ca3af;
+            margin-bottom: 20px;
+        }
+
+        /* ── Order Card ── */
+        .orders-list {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .order-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr auto;
+            padding: 22px 28px;
+            border-bottom: 1px solid #f3f4f6;
+            align-items: center;
+            gap: 16px;
+            transition: background 0.15s;
+        }
+        .order-row:last-child { border-bottom: none; }
+        .order-row:hover { background: #fafafa; }
+        .order-row__label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 5px;
+        }
+        .order-row__value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #111827;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* ── Status Pills ── */
+        .status-pill {
+            display: inline-flex;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+        }
+        .status-pill--pending   { background: #fef3c7; color: #92400e; }
+        .status-pill--shipped   { background: #dcfce7; color: #166534; }
+        .status-pill--delivered { background: #dbeafe; color: #1e40af; }
+        .status-pill--cancelled { background: #fee2e2; color: #991b1b; }
+
+        /* ── Button ── */
+        .view-btn {
+            padding: 9px 20px;
+            background: #a6866a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+        .view-btn:hover { background: #8e735b; }
+
+        /* ── Empty State ── */
+        .empty-state {
+            padding: 80px 20px;
+            text-align: center;
+        }
+        .empty-state svg { color: #d1d5db; margin: 0 auto 16px; display: block; }
+        .empty-state h3 {
+            font-size: 18px;
+            font-family: 'Inter', sans-serif;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+        .empty-state p {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .order-row {
+                grid-template-columns: 1fr 1fr;
+                gap: 14px;
+            }
+            .order-row > div:last-child {
+                grid-column: span 2;
+            }
+            .view-btn { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <!-- Hero Banner -->
+    <section class="orders-hero">
+        <img src="../assets/images/table.avif" alt="My Orders" class="orders-hero__image" />
+        <div class="orders-hero__content">
+            <span class="orders-hero__eyebrow">Customer Account</span>
+            <h1 class="orders-hero__title">My Orders</h1>
+            <p class="orders-hero__subtitle">Track and manage your furniture purchases</p>
+        </div>
+    </section>
+
+    <!-- Orders List -->
+    <main class="orders-page">
+        <div class="orders-container">
+            <p class="orders-page__heading">Order History</p>
+            <div id="orders-list-container" class="orders-list">
+                <div style="padding: 40px; text-align: center; color: #9ca3af; font-family: 'Inter', sans-serif;">Loading your orders…</div>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/layout.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const container = document.getElementById('orders-list-container');
+
+            try {
+                const orders = await BSC.apiFetch('/api/orders/my');
+
+                if (!orders || orders.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i data-lucide="shopping-bag" style="width:48px;height:48px;"></i>
+                            <h3>No orders yet</h3>
+                            <p>Looks like you haven't placed any orders with us yet.</p>
+                            <a href="shop" class="view-btn">Go Shopping</a>
+                        </div>
+                    `;
+                    lucide.createIcons();
+                    return;
+                }
+
+                container.innerHTML = orders.map(order => {
+                    const date = new Date(order.OrderDate).toLocaleDateString('en-US', {
+                        year: 'numeric', month: 'short', day: 'numeric'
+                    });
+                    const statusClass = (order.Status || 'pending').toLowerCase();
+
+                    return `
+                        <div class="order-row">
+                            <div>
+                                <div class="order-row__label">Order ID</div>
+                                <div class="order-row__value">#${order.OrderId}</div>
+                            </div>
+                            <div>
+                                <div class="order-row__label">Date Placed</div>
+                                <div class="order-row__value">${date}</div>
+                            </div>
+                            <div>
+                                <div class="order-row__label">Total Amount</div>
+                                <div class="order-row__value">$${parseFloat(order.TotalAmount).toFixed(2)}</div>
+                            </div>
+                            <div>
+                                <div class="order-row__label">Status</div>
+                                <span class="status-pill status-pill--${statusClass}">${order.Status || 'Pending'}</span>
+                            </div>
+                            <div>
+                                <a href="order-details?id=${order.OrderId}&from=user" class="view-btn">View Details</a>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (err) {
+                console.error('Error fetching orders:', err);
+                container.innerHTML = `
+                    <div style="padding: 40px; text-align: center; color: #ef4444; font-family: 'Inter', sans-serif;">
+                        Failed to load orders. Please make sure you are logged in.
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
