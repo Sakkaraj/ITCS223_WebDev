@@ -1096,7 +1096,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <td><strong>#${c.ContactorId || c.contactorid || '?'}</strong></td>
             <td>${c.FirstName || ''} ${c.LastName || ''}</td>
             <td style="font-size:11px;color:#666;">${c.Email || 'No Email'}</td>
-            <td style="font-size:11px;color:#333;max-width:300px;white-space:normal;line-height:1.4;">${c.Message || ''}</td>
+            <td style="font-size:11px;color:#333;max-width:300px;white-space:normal;line-height:1.4;word-break:break-all;word-wrap:break-word;">${c.Message || ''}</td>
             <td style="font-size:11px;">${dateStr}</td>
           </tr>
         `;

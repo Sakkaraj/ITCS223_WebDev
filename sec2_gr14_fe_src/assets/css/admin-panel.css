@@ -770,6 +770,11 @@ input {
     min-width: 300px; /* Keep product info from being squashed */
     white-space: normal; /* Allow name to wrap within the cell if needed */
   }
+
+  .admin-panel-table td {
+    white-space: normal !important; /* Allow wrapping on mobile for all cells to prevent massive horizontal scroll */
+    word-break: break-word;
+  }
 }
 
 /* Dashboard Stats */
