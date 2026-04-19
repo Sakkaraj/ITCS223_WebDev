@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let currentSearch      = urlParams.get('search') || '';
   let selectedCategories = urlParams.getAll('category');
   let selectedColors     = [];
-  let maxPriceFilter     = 9999;
+  let maxPriceFilter     = 9999; // Will be updated dynamically
   let totalPages         = 1;
 
 
@@ -87,6 +87,37 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     } catch (err) {
       console.error('Failed to load colors:', err.message);
+    }
+  }
+
+  // ─── Load Price Range ─────────────────────────────────────
+  async function loadPriceRange() {
+    try {
+      const data = await BSC.apiFetch('/api/products/filter-meta');
+      const metaRange = data.priceRange;
+      
+      if (priceRange && metaRange) {
+        // Ensure values are numbers and have sensible defaults if DB is empty
+        const minVal = Math.floor(metaRange.MinPrice || 0);
+        const maxVal = Math.ceil(metaRange.MaxPrice || 1000);
+        
+        // Update range input attributes
+        priceRange.min = minVal;
+        priceRange.max = maxVal;
+        priceRange.value = maxVal;
+        
+        // Update state
+        maxPriceFilter = maxVal;
+
+        // Update UI labels
+        const rangeLabels = document.querySelectorAll('.shop-filter-group__range-values span');
+        if (rangeLabels[0]) rangeLabels[0].textContent = `$${minVal.toLocaleString()}`;
+        if (rangeLabels[1]) rangeLabels[1].textContent = `$${maxVal.toLocaleString()}`;
+        
+        console.log(`Price range updated: ${minVal} - ${maxVal}`);
+      }
+    } catch (err) {
+      console.error('Failed to load price range:', err.message);
     }
   }
 
@@ -397,6 +428,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ─── Initialise ────────────────────────────────────────────
   await loadCategories();
   await loadColors();
+  await loadPriceRange();
   await loadProducts();
 
   // Inject spin animation
