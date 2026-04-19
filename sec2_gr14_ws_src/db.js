@@ -77,7 +77,11 @@ const NORMALIZE_MAP = {
   'adminpassword': 'AdminPassword',
   'adminusername': 'AdminUserName',
   'role': 'Role',
-  'deliverystatus': 'DeliveryStatus'
+  'deliverystatus': 'DeliveryStatus',
+  'totalrevenue': 'TotalRevenue',
+  'membercount': 'MemberCount',
+  'ordercount': 'OrderCount',
+  'productcount': 'ProductCount'
 };
 
 function normalizeRows(rows) {
