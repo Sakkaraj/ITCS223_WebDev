@@ -62,15 +62,24 @@ async function seed() {
       // --- NEW IDEMPOTENT CHECK ---
       console.log('🔍 Checking if database already contains data...');
       try {
-        const checkResult = await pool.query("SELECT COUNT(*) FROM information_schema.tables WHERE table_name = 'Products'");
-        if (checkResult.rows[0].count > 0 && process.env.FORCE_SEED !== 'true') {
+        // PostgreSQL unquoted table names are lowercase in information_schema.
+        // We check for 'product' (singular) as defined in our schema.
+        const checkResult = await pool.query(`
+          SELECT COUNT(*) 
+          FROM information_schema.tables 
+          WHERE table_schema = 'public' 
+          AND table_name IN ('product', 'admininformation')
+        `);
+        
+        if (parseInt(checkResult.rows[0].count) > 0 && process.env.FORCE_SEED !== 'true') {
           console.log('⏭️  Database already initialized. Skipping seed to prevent data loss.');
           console.log('💡 Tip: Set FORCE_SEED=true to force a complete wipe and re-seed.');
           await pool.end();
           return;
         }
       } catch (checkErr) {
-        // Table doesn't exist, proceed with seed
+        console.log('⚠️  Idempotent check failed (treating as empty):', checkErr.message);
+        // Table doesn't exist or other error, proceed with seed
       }
 
       console.log('🏗️  Executing Master SQL on PostgreSQL (Wipe and Initialize)...');
