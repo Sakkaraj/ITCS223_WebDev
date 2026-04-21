@@ -1,5 +1,9 @@
--- PostgreSQL Schema for BoonSonClon Furniture Store
--- Generated from SQLite Schema
+/*
+  sec2_gr14_database.sql — BoonSonClon Master Relational Schema
+  Purpose: Defines the comprehensive PostgreSQL database architecture, 
+           including optimized transactional tables for product management, 
+           authentication logs, and order fulfillment.
+*/
 
 -- Drop tables in reverse order of dependencies
 DROP TABLE IF EXISTS NewsLetterSubscriber;

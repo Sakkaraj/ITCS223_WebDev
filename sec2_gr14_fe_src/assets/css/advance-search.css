@@ -1,354 +1,367 @@
+/*
+  advance-search.css — BoonSonClon Parametric Search Interface
+  Purpose: Orchestrates the visual aesthetic of the refined furniture search,
+           featuring faceted filtering, dimension inputs, and animated loading states.
+*/
+
 :root {
-  --brand-brown: #a6866a;
-  --text-main: #111827;
-  --text-muted: #6b7280;
-  --text-light: #9ca3af;
-  --border-light: #e5e7eb;
-  --border-soft: #f3f4f6;
-  --bg-panel: #f9fafb;
-  --white: #ffffff;
-  --container-width: 80rem;
+    --brand-brown: #a6866a;
+    --text-main: #111827;
+    --text-muted: #6b7280;
+    --text-light: #9ca3af;
+    --border-light: #e5e7eb;
+    --border-soft: #f3f4f6;
+    --bg-panel: #f9fafb;
+    --white: #ffffff;
+    --container-width: 80rem;
 }
 
+/* ── Global Setup ──────────────────────────────────────────── */
+
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  font-family: "Inter", sans-serif;
-  background: #ffffff;
-  color: var(--text-main);
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    background: #ffffff;
+    color: var(--text-main);
 }
 
 img {
-  display: block;
-  max-width: 100%;
+    display: block;
+    max-width: 100%;
 }
 
 button,
 input,
 select {
-  font: inherit;
+    font: inherit;
 }
 
 .page-container {
-  max-width: var(--container-width);
-  margin: 0 auto;
-  padding: 0 1.5rem;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 1.5rem;
 }
 
-/* Hero */
+/* ── Search Hero ───────────────────────────────────────────── */
+
 .advanced-search-hero {
-  position: relative;
-  width: 100%;
-  height: 16rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 16rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
 .advanced-search-hero__image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .advanced-search-hero__overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
 }
 
 .advanced-search-hero__title {
-  position: relative;
-  margin: 0;
-  color: #ffffff;
-  font-size: 3rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
+    position: relative;
+    margin: 0;
+    color: #ffffff;
+    font-size: 3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
 }
 
-/* Page */
+/* ── Search Panel ─────────────────────────────────────────── */
+
 .advanced-search-page {
-  padding: 3rem 0;
+    padding: 3rem 0;
 }
 
 .advanced-search-page__layout {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-}
-
-@media (min-width: 1024px) {
-  .advanced-search-page__layout {
-    flex-direction: row;
+    display: flex;
+    flex-direction: column;
     gap: 3rem;
-  }
-}
-
-/* Search panel */
-.advanced-search-panel {
-  background: var(--bg-panel);
-  border-radius: 0;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
 }
 
 @media (min-width: 1024px) {
-  .advanced-search-panel {
-    width: 33.3333%;
-  }
+    .advanced-search-page__layout {
+        flex-direction: row;
+        gap: 3rem;
+    }
+}
+
+.advanced-search-panel {
+    background: var(--bg-panel);
+    border-radius: 0;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+    .advanced-search-panel {
+        width: 33.3333%;
+    }
 }
 
 .advanced-search-panel__group {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .advanced-search-panel__label {
-  margin-bottom: 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
+    margin-bottom: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
 }
 
 .advanced-search-panel__select,
 .advanced-search-panel__input {
-  width: 100%;
-  border: 1px solid var(--border-light);
-  background: #ffffff;
-  padding: 0.85rem 1rem;
-  font-size: 0.9rem;
-  outline: none;
+    width: 100%;
+    border: 1px solid var(--border-light);
+    background: #ffffff;
+    padding: 0.85rem 1rem;
+    font-size: 0.9rem;
+    outline: none;
 }
 
 .advanced-search-panel__select:focus,
 .advanced-search-panel__input:focus,
 .advanced-search-panel__unit-input-field:focus {
-  border-color: var(--brand-brown);
+    border-color: var(--brand-brown);
 }
 
 .advanced-search-panel__dimension-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
 }
 
 .advanced-search-panel__mini-label {
-  display: block;
-  margin-bottom: 0.25rem;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
 .advanced-search-panel__unit-input {
-  display: flex;
+    display: flex;
 }
 
 .advanced-search-panel__unit-input-field {
-  width: 100%;
-  border: 1px solid var(--border-light);
-  border-right: none;
-  padding: 0.65rem 0.75rem;
-  font-size: 0.75rem;
-  outline: none;
+    width: 100%;
+    border: 1px solid var(--border-light);
+    border-right: none;
+    padding: 0.65rem 0.75rem;
+    font-size: 0.75rem;
+    outline: none;
 }
 
 .advanced-search-panel__unit-label {
-  background: #e5e7eb;
-  padding: 0.65rem 0.75rem;
-  font-size: 10px;
-  display: flex;
-  align-items: center;
+    background: #e5e7eb;
+    padding: 0.65rem 0.75rem;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
 }
 
 .advanced-search-panel__checkbox-row {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
 .advanced-search-panel__checkbox {
-  width: 1rem;
-  height: 1rem;
-  accent-color: var(--brand-brown);
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--brand-brown);
 }
 
 .advanced-search-panel__checkbox-label {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
 }
 
 .advanced-search-panel__actions {
-  display: flex;
-  gap: 1rem;
-  padding-top: 1rem;
+    display: flex;
+    gap: 1rem;
+    padding-top: 1rem;
 }
 
 .advanced-search-panel__button {
-  flex: 1;
-  padding: 0.9rem 1rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  cursor: pointer;
-  border: 1px solid transparent;
+    flex: 1;
+    padding: 0.9rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    cursor: pointer;
+    border: 1px solid transparent;
 }
 
 .advanced-search-panel__button--primary {
-  background: var(--brand-brown);
-  color: #ffffff;
+    background: var(--brand-brown);
+    color: #ffffff;
 }
 
 .advanced-search-panel__button--secondary {
-  background: transparent;
-  color: var(--brand-brown);
-  border-color: var(--brand-brown);
+    background: transparent;
+    color: var(--brand-brown);
+    border-color: var(--brand-brown);
 }
 
-/* Results */
+/* ── Search Results ────────────────────────────────────────── */
+
 .advanced-search-results {
-  flex: 1;
+    flex: 1;
 }
 
 @media (min-width: 1024px) {
-  .advanced-search-results {
-    width: 66.6667%;
-  }
+    .advanced-search-results {
+        width: 66.6667%;
+    }
 }
 
 .advanced-search-results__header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
 }
 
 .advanced-search-results__title {
-  margin: 0;
-  font-size: 0.9rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  line-height: 1.6;
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    line-height: 1.6;
 }
 
 .advanced-search-results__spinner {
-  display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  border: 2px solid var(--brand-brown);
-  border-top-color: transparent;
-  border-radius: 0;
-  animation: advanced-search-spin 0.8s linear infinite;
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid var(--brand-brown);
+    border-top-color: transparent;
+    border-radius: 0;
+    animation: advanced-search-spin 0.8s linear infinite;
 }
 
 @keyframes advanced-search-spin {
-  to {
-    transform: rotate(360deg);
-  }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
+/* ── Result Cards ─────────────────────────────────────────── */
+
 .advanced-search-results__grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
 }
 
 @media (min-width: 768px) {
-  .advanced-search-results__grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+    .advanced-search-results__grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 .advanced-search-result-card__image {
-  width: 100%;
-  height: 16rem;
-  object-fit: cover;
-  margin-bottom: 1rem;
+    width: 100%;
+    height: 16rem;
+    object-fit: cover;
+    margin-bottom: 1rem;
 }
 
 .advanced-search-result-card__title {
-  margin: 0 0 0.25rem;
-  font-size: 0.9rem;
-  font-weight: 500;
+    margin: 0 0 0.25rem;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
 .advanced-search-result-card__price {
-  margin: 0;
-  font-size: 0.75rem;
-  color: var(--text-muted);
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--text-muted);
 }
 
 .advanced-search-result-card__swatches {
-  display: flex;
-  gap: 0.25rem;
-  margin-top: 0.5rem;
+    display: flex;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
 }
 
 .advanced-search-result-card__swatches span {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 0;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 0;
 }
 
 .advanced-search-result-card__swatches span:nth-child(1) {
-  background: #9ca3af;
+    background: #9ca3af;
 }
 
 .advanced-search-result-card__swatches span:nth-child(2) {
-  background: #d1d5db;
+    background: #d1d5db;
 }
 
 .advanced-search-result-card__swatches span:nth-child(3) {
-  background: #e5e7eb;
+    background: #e5e7eb;
 }
 
-/* Skeleton */
+/* ── Skeletons ─────────────────────────────────────────────── */
+
 .skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: advanced-search-loading 1.5s infinite;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: advanced-search-loading 1.5s infinite;
 }
 
 @keyframes advanced-search-loading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
 }
 
 .advanced-search-skeleton-card {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .advanced-search-skeleton-card__image {
-  width: 100%;
-  height: 16rem;
+    width: 100%;
+    height: 16rem;
 }
 
 .advanced-search-skeleton-card__title {
-  width: 75%;
-  height: 1rem;
+    width: 75%;
+    height: 1rem;
 }
 
 .advanced-search-skeleton-card__price {
-  width: 50%;
-  height: 0.75rem;
+    width: 50%;
+    height: 0.75rem;
 }

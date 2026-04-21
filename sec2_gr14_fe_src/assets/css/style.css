@@ -1,3 +1,9 @@
+/*
+  style.css — BoonSonClon Design System Core
+  Purpose: Defines the central visual identity, including premium typography 
+           tokens, motion curves, and global reset logic for the entire store.
+*/
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -27,7 +33,8 @@
     --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.12);
 }
 
-/* Global Transitions */
+/* ── Core Components ───────────────────────────────────────── */
+
 a, button, input, select, .card, .product-img, .category-card, .item img {
     transition: all var(--transition-base);
 }
@@ -191,6 +198,8 @@ main {
     color: black;
 }
 
+/* ── Categories ────────────────────────────────────────────── */
+
 .categories {
     padding: 3rem 5vw;
 }
@@ -253,15 +262,12 @@ main {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
+/* ── New Products ─────────────────────────────────────────── */
+
 .new-product {
     padding: 20px 20px;
     text-align: center;
     background: var(--light-gray);
-}
-
-.section-title {
-    font-size: 28px;
-    font-weight: 600;
 }
 
 .product-list ul {
@@ -332,13 +338,11 @@ main {
     position: absolute;
     top: 12px;
     right: 12px;
-
     background: rgba(255,255,255,0.9);
     border: none;
     border-radius: 0;
     width: 34px;
     height: 34px;
-
     cursor: pointer;
     font-size: 16px;
 }
@@ -396,6 +400,8 @@ main {
     border: 2px solid black;
 }
 
+/* ── Best Sellers ─────────────────────────────────────────── */
+
 .best-seller {
     margin-top: 60px;
     margin-bottom: 30px;
@@ -435,6 +441,8 @@ main {
     margin-top: 10px;
     font-size: 14px;
 }
+
+/* ── Reviews ──────────────────────────────────────────────── */
 
 .reviews-section {
     padding: 0 5vw;
@@ -522,6 +530,8 @@ main {
 }
 
 
+/* ── Footer ────────────────────────────────────────────────── */
+
 footer {
     padding: 4rem 5vw;
 }
@@ -588,7 +598,8 @@ footer {
     opacity: 0.6;
 }
 
-/* css for admin page */
+/* ── Admin Login ───────────────────────────────────────────── */
+
 .login-section {
     min-height: 70vh; 
     display: flex;
@@ -692,7 +703,8 @@ footer {
     background-color: #766555;
 }
 
-/* user log in*/
+/* ── User Login Modal ─────────────────────────────────────── */
+
 .modal {
     display: none; 
     position: fixed; 
@@ -703,18 +715,6 @@ footer {
     height: 100%; 
     background-color: rgba(0,0,0,0.6);
     backdrop-filter: blur(5px);
-}
-
-.modal {
-    display: none; 
-    position: fixed;
-    z-index: 2000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px); 
 }
 
 .modal-content {
@@ -766,7 +766,8 @@ footer {
 }
 
 
-/* about us page */
+/* ── About Us ──────────────────────────────────────────────── */
+
 .about-hero {
     width: 100%;
     padding: 0;
@@ -796,16 +797,13 @@ footer {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    
     text-align: center;
     color: white;
-    
     background: rgba(0, 0, 0, 0.4); 
     padding: 50px;
     width: 90%; 
     max-width: 800px; 
     border-radius: 0; 
-    
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -932,7 +930,8 @@ footer {
     color: var(--text) !important;
 }
 
-/* contact page */
+/* ── Contact Us ───────────────────────────────────────────── */
+
 .contact-page {
     background-color: #f9f8f6; 
 }
@@ -964,7 +963,6 @@ footer {
     border-radius: 0;
     overflow: hidden;
 }
-
 
 .contact-info {
     flex: 1;
@@ -1073,7 +1071,8 @@ footer {
     overflow: hidden;         
 }
 
-/* shop.html */
+/* ── Shop ─────────────────────────────────────────────────── */
+
 .shop-container {
     display: flex;
     gap: 40px;
@@ -1183,7 +1182,8 @@ footer {
     border-color: #8B6F47;
 }
 
-/* product details */
+/* ── Product Details ────────────────────────────────────────── */
+
 .details-container {
     display: grid;
     grid-template-columns: 1.2fr 1fr; 
@@ -1222,12 +1222,13 @@ footer {
     border-radius: 0;
     opacity: 0.6;
     border: 2px solid transparent;
-    transition: 0.3s;
+    transition: all 0.3s ease;
 }
 
 .thumbnails-grid img.active {
     opacity: 1;
     border-color: var(--brown);
+    transform: translateY(-2px);
 }
 
 .purchase-box {
@@ -1368,7 +1369,8 @@ footer {
     display: block;
 }
 
-/* similar product */
+/* ── Similar Products ───────────────────────────────────────── */
+
 .similar-products {
     padding: 80px;
     border-top: 1px solid #eee;
@@ -1424,34 +1426,4 @@ footer {
     text-transform: uppercase;
     text-decoration: underline;
     color: #000;
-}
-
-.filter-sidebar {
-    position: sticky;
-    top: 20px; 
-    height: max-content;
-}
-
-.thumbnails-grid img {
-    width: 100%;
-    aspect-ratio: 1/1;
-    cursor: pointer;
-    border-radius: 0;
-    opacity: 0.6;
-    border: 2px solid transparent; 
-    transition: all 0.3s ease;
-}
-
-.thumbnails-grid img.active {
-    opacity: 1;
-    border-color: var(--brown);
-    transform: translateY(-2px);
-}
-
-.tab-content {
-    display: none;
-}
-
-.tab-content.active {
-    display: block;
 }

@@ -1,322 +1,336 @@
+/*
+  admin-login.css — BoonSonClon Administrative Authentication
+  Purpose: Orchestrates the visual aesthetic of the admin portal entry point,
+           featuring a Split-Screen design with immersive brand imagery.
+*/
+
 :root {
-  --brand-brown: #a6866a;
-  --text-main: #111827;
-  --text-muted: #6b7280;
-  --text-light: #9ca3af;
-  --border-light: #e5e7eb;
-  --border-soft: #f3f4f6;
-  --white: #ffffff;
-  --overlay-sepia: rgba(166, 134, 106, 0.4);
-  --container-width: 80rem;
+    --brand-brown: #a6866a;
+    --text-main: #111827;
+    --text-muted: #6b7280;
+    --text-light: #9ca3af;
+    --border-light: #e5e7eb;
+    --border-soft: #f3f4f6;
+    --white: #ffffff;
+    --overlay-sepia: rgba(166, 134, 106, 0.4);
+    --container-width: 80rem;
 }
 
+/* ── Global Setup ──────────────────────────────────────────── */
+
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  font-family: "Inter", sans-serif;
-  background: #ffffff;
-  color: var(--text-main);
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    background: #ffffff;
+    color: var(--text-main);
 }
 
 img {
-  display: block;
-  max-width: 100%;
+    display: block;
+    max-width: 100%;
 }
 
 button,
 input {
-  font: inherit;
+    font: inherit;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
 
-/* Top bar */
+/* ── Site Sale Bar ─────────────────────────────────────────── */
+
 .site-sale-bar {
-  background-color: var(--brand-brown);
-  color: #ffffff;
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  text-align: center;
-  padding: 0.25rem 1rem;
+    background-color: var(--brand-brown);
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 0.25rem 1rem;
 }
 
-/* Header */
+/* ── Auth Header ───────────────────────────────────────────── */
+
 .admin-login-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: #ffffff;
-  border-bottom: 1px solid var(--border-soft);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: #ffffff;
+    border-bottom: 1px solid var(--border-soft);
 }
 
 .admin-login-header__container {
-  max-width: var(--container-width);
-  margin: 0 auto;
-  padding: 1rem 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
 }
 
 .admin-login-header__brand {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.125rem;
-  font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.125rem;
+    font-weight: 700;
 }
 
 .admin-login-header__brand-mark {
-  width: 2rem;
-  height: 2rem;
-  border: 2px solid #000000;
-  border-radius: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 2px solid #000000;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .admin-login-header__brand-name {
-  color: var(--text-main);
+    color: var(--text-main);
 }
 
 .admin-login-header__nav {
-  display: flex;
-  gap: 2.5rem;
+    display: flex;
+    gap: 2.5rem;
 }
 
 .admin-login-header__nav-link {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--text-main);
-  transition: color 0.2s ease;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-main);
+    transition: color 0.2s ease;
 }
 
 .admin-login-header__nav-link:hover {
-  color: var(--brand-brown);
+    color: var(--brand-brown);
 }
 
 .admin-login-header__nav-link--active {
-  color: #000000;
-  border-bottom: 2px solid #000000;
-  padding-bottom: 0.25rem;
+    color: #000000;
+    border-bottom: 2px solid #000000;
+    padding-bottom: 0.25rem;
 }
 
 .admin-login-header__actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .admin-login-header__action-icon {
-  width: 1.25rem;
-  height: 1.25rem;
-  cursor: pointer;
-  stroke-width: 2;
+    width: 1.25rem;
+    height: 1.25rem;
+    cursor: pointer;
+    stroke-width: 2;
 }
 
 /* Main page */
+/* ── Login Visual ──────────────────────────────────────────── */
+
 .admin-login-page {
-  display: flex;
-  flex-direction: column;
-  min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    min-height: 70vh;
 }
 
 @media (min-width: 1024px) {
-  .admin-login-page {
-    flex-direction: row;
-  }
+    .admin-login-page {
+        flex-direction: row;
+    }
 }
 
 .admin-login-page__visual,
 .admin-login-page__form-section {
-  width: 100%;
+    width: 100%;
 }
 
 @media (min-width: 1024px) {
-  .admin-login-page__visual,
-  .admin-login-page__form-section {
-    width: 50%;
-  }
+    .admin-login-page__visual,
+    .admin-login-page__form-section {
+        width: 50%;
+    }
 }
 
-/* Left visual */
 .admin-login-page__visual {
-  position: relative;
-  min-height: 400px;
+    position: relative;
+    min-height: 400px;
 }
 
 .admin-login-page__visual-image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .admin-login-page__visual-overlay {
-  position: absolute;
-  inset: 0;
-  background: var(--overlay-sepia);
+    position: absolute;
+    inset: 0;
+    background: var(--overlay-sepia);
 }
 
 .admin-login-page__visual-content {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 0 3rem;
-  color: #ffffff;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 3rem;
+    color: #ffffff;
 }
 
 @media (min-width: 1024px) {
-  .admin-login-page__visual-content {
-    padding: 0 6rem;
-  }
+    .admin-login-page__visual-content {
+        padding: 0 6rem;
+    }
 }
 
 .admin-login-page__visual-title {
-  margin: 0 0 1.5rem;
-  font-size: 3.75rem;
-  font-weight: 700;
+    margin: 0 0 1.5rem;
+    font-size: 3.75rem;
+    font-weight: 700;
 }
 
 .admin-login-page__visual-text {
-  margin: 0;
-  max-width: 20rem;
-  font-size: 1.125rem;
-  font-weight: 300;
-  line-height: 1.45;
+    margin: 0;
+    max-width: 20rem;
+    font-size: 1.125rem;
+    font-weight: 300;
+    line-height: 1.45;
 }
 
-/* Right form section */
+/* ── Login Form ────────────────────────────────────────────── */
+
 .admin-login-page__form-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ffffff;
-  padding: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    padding: 3rem;
 }
 
 @media (min-width: 1024px) {
-  .admin-login-page__form-section {
-    padding: 6rem;
-  }
+    .admin-login-page__form-section {
+        padding: 6rem;
+    }
 }
 
 .admin-login-form-card {
-  width: 100%;
-  max-width: 28rem;
+    width: 100%;
+    max-width: 28rem;
 }
 
 .admin-login-form-card__header {
-  margin-bottom: 2.5rem;
+    margin-bottom: 2.5rem;
 }
 
 .admin-login-form-card__title {
-  margin: 0 0 0.5rem;
-  font-size: 1.875rem;
-  font-weight: 700;
+    margin: 0 0 0.5rem;
+    font-size: 1.875rem;
+    font-weight: 700;
 }
 
 .admin-login-form-card__subtitle {
-  margin: 0;
-  font-size: 1.25rem;
-  color: #1f2937;
+    margin: 0;
+    font-size: 1.25rem;
+    color: #1f2937;
 }
 
 .admin-login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 .admin-login-form__group {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .admin-login-form__label {
-  margin-bottom: 0.5rem;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: #111827;
+    margin-bottom: 0.5rem;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #111827;
 }
 
 .admin-login-form__input {
-  width: 100%;
-  border: 1px solid var(--border-light);
-  padding: 0.9rem 1rem;
-  font-size: 0.875rem;
-  outline: none;
-  transition: border-color 0.2s ease;
+    width: 100%;
+    border: 1px solid var(--border-light);
+    padding: 0.9rem 1rem;
+    font-size: 0.875rem;
+    outline: none;
+    transition: border-color 0.2s ease;
 }
 
 .admin-login-form__input:focus {
-  border-color: var(--brand-brown);
+    border-color: var(--brand-brown);
 }
 
 .admin-login-form__button {
-  width: 100%;
-  border: none;
-  background: var(--brand-brown);
-  color: #ffffff;
-  padding: 1rem 1.25rem;
-  font-size: 0.875rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
+    width: 100%;
+    border: none;
+    background: var(--brand-brown);
+    color: #ffffff;
+    padding: 1rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
 }
 
 .admin-login-form__button:hover {
-  opacity: 0.9;
+    opacity: 0.9;
 }
 
 /* Responsive */
+/* ── Mobile Overrides ────────────────────────────────────────── */
+
 @media (max-width: 768px) {
-  .admin-login-header__container {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+    .admin-login-header__container {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 
-  .admin-login-header__nav {
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1rem 1.5rem;
-  }
+    .admin-login-header__nav {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem 1.5rem;
+    }
 
-  .admin-login-page__visual-title {
-    font-size: 2.75rem;
-  }
+    .admin-login-page__visual-title {
+        font-size: 2.75rem;
+    }
 
-  .admin-login-page__visual-text {
-    font-size: 1rem;
-  }
+    .admin-login-page__visual-text {
+        font-size: 1rem;
+    }
 
-  .admin-login-page__form-section {
-    padding: 2rem 1.25rem;
-  }
+    .admin-login-page__form-section {
+        padding: 2rem 1.25rem;
+    }
 
-  .admin-login-form-card__title {
-    font-size: 1.6rem;
-  }
+    .admin-login-form-card__title {
+        font-size: 1.6rem;
+    }
 
-  .admin-login-form-card__subtitle {
-    font-size: 1rem;
-  }
+    .admin-login-form-card__subtitle {
+        font-size: 1rem;
+    }
 }

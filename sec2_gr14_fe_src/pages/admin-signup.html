@@ -1,147 +1,154 @@
+<!--
+  admin-signup.html — BoonSonClon Admin Enrollment
+  Purpose: Registration interface for new administrators to create backend
+           access credentials and profile information.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Sign Up | Furniture Store</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
-  <script src="https://unpkg.com/lucide@latest"></script>
-  
-  <link rel="stylesheet" href="../assets/css/style.css" /><link rel="stylesheet" href="../assets/css/admin-login.css" />
-  <link rel="stylesheet" href="../assets/css/footer.css" />
-  <link rel="stylesheet" href="../assets/css/admin-header.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Sign Up | Furniture Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/admin-login.css" />
+    <link rel="stylesheet" href="../assets/css/footer.css" />
+    <link rel="stylesheet" href="../assets/css/admin-header.css" />
 </head>
 <body>
-  <div id="header-placeholder"></div>
+    <div id="header-placeholder"></div>
 
-  <main class="admin-login-page">
-    <section class="admin-login-page__visual">
-      <img
-        src="../assets/images/best-seller/img4.avif"
-        alt="Furniture visual"
-        class="admin-login-page__visual-image"
-      />
-      <div class="admin-login-page__visual-overlay"></div>
-      <div class="admin-login-page__visual-content">
-        <h1 class="admin-login-page__visual-title">Furniture</h1>
-        <p class="admin-login-page__visual-text">
-          Create your admin account to manage the products or product categories
-        </p>
-      </div>
-    </section>
-
-    <section class="admin-login-page__form-section">
-      <div class="admin-login-form-card">
-        <div class="admin-login-form-card__header">
-          <h2 class="admin-login-form-card__title">Create Admin Account</h2>
-          <p class="admin-login-form-card__subtitle">Sign up to manage inventory</p>
-        </div>
-
-        <form class="admin-signup-form">
-          <div class="admin-login-form__group">
-            <label class="admin-login-form__label">First Name</label>
-            <input
-              type="text"
-              id="signup-firstname"
-              placeholder="Enter your first name"
-              class="admin-login-form__input"
-              required
+    <main class="admin-login-page">
+        <section class="admin-login-page__visual">
+            <img
+                src="../assets/images/best-seller/img4.avif"
+                alt="Furniture visual"
+                class="admin-login-page__visual-image"
             />
-          </div>
+            <div class="admin-login-page__visual-overlay"></div>
+            <div class="admin-login-page__visual-content">
+                <h1 class="admin-login-page__visual-title">Furniture</h1>
+                <p class="admin-login-page__visual-text">
+                    Create your admin account to manage the products or product categories
+                </p>
+            </div>
+        </section>
 
-          <div class="admin-login-form__group">
-            <label class="admin-login-form__label">Last Name</label>
-            <input
-              type="text"
-              id="signup-lastname"
-              placeholder="Enter your last name"
-              class="admin-login-form__input"
-              required
-            />
-          </div>
+        <section class="admin-login-page__form-section">
+            <div class="admin-login-form-card">
+                <div class="admin-login-form-card__header">
+                    <h2 class="admin-login-form-card__title">Create Admin Account</h2>
+                    <p class="admin-login-form-card__subtitle">Sign up to manage inventory</p>
+                </div>
 
-          <div class="admin-login-form__group">
-            <label class="admin-login-form__label">Email</label>
-            <input
-              type="email"
-              id="signup-email"
-              placeholder="Enter your email"
-              class="admin-login-form__input"
-              required
-            />
-          </div>
+                <form class="admin-signup-form">
+                    <div class="admin-login-form__group">
+                        <label class="admin-login-form__label">First Name</label>
+                        <input
+                            type="text"
+                            id="signup-firstname"
+                            placeholder="Enter your first name"
+                            class="admin-login-form__input"
+                            required
+                        />
+                    </div>
 
-          <div class="admin-login-form__group">
-            <label class="admin-login-form__label">Password</label>
-            <input
-              type="password"
-              id="signup-password"
-              placeholder="Enter your password"
-              class="admin-login-form__input"
-              required
-            />
-          </div>
+                    <div class="admin-login-form__group">
+                        <label class="admin-login-form__label">Last Name</label>
+                        <input
+                            type="text"
+                            id="signup-lastname"
+                            placeholder="Enter your last name"
+                            class="admin-login-form__input"
+                            required
+                        />
+                    </div>
 
-          <div class="admin-login-form__group">
-            <label class="admin-login-form__label">Address</label>
-            <input
-              type="text"
-              id="signup-address"
-              placeholder="Enter your address"
-              class="admin-login-form__input"
-              required
-            />
-          </div>
+                    <div class="admin-login-form__group">
+                        <label class="admin-login-form__label">Email</label>
+                        <input
+                            type="email"
+                            id="signup-email"
+                            placeholder="Enter your email"
+                            class="admin-login-form__input"
+                            required
+                        />
+                    </div>
 
-          <div class="admin-login-form__group">
-            <label class="admin-login-form__label">Age</label>
-            <input
-              type="number"
-              id="signup-age"
-              placeholder="Enter your age"
-              class="admin-login-form__input"
-              min="18"
-              max="120"
-              required
-            />
-          </div>
+                    <div class="admin-login-form__group">
+                        <label class="admin-login-form__label">Password</label>
+                        <input
+                            type="password"
+                            id="signup-password"
+                            placeholder="Enter your password"
+                            class="admin-login-form__input"
+                            required
+                        />
+                    </div>
 
-          <div class="admin-login-form__group">
-            <label class="admin-login-form__label">Telephone Number</label>
-            <input
-              type="tel"
-              id="signup-phone"
-              placeholder="e.g. 0812345678"
-              class="admin-login-form__input"
-              required
-            />
-          </div>
+                    <div class="admin-login-form__group">
+                        <label class="admin-login-form__label">Address</label>
+                        <input
+                            type="text"
+                            id="signup-address"
+                            placeholder="Enter your address"
+                            class="admin-login-form__input"
+                            required
+                        />
+                    </div>
 
-          <button type="submit" class="admin-login-form__button">
-            Create Account
-          </button>
-        </form>
+                    <div class="admin-login-form__group">
+                        <label class="admin-login-form__label">Age</label>
+                        <input
+                            type="number"
+                            id="signup-age"
+                            placeholder="Enter your age"
+                            class="admin-login-form__input"
+                            min="18"
+                            max="120"
+                            required
+                        />
+                    </div>
 
-        <div class="admin-login-form-card__footer" style="margin-top: 2rem; text-align: center; color: var(--text-muted); font-size: 0.875rem;">
-          Already have an account? <a href="admin-login" style="color: var(--brand-brown); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--brand-brown); transition: all 0.2s ease;">Log in here</a>
-        </div>
-      </div>
-    </section>
-  </main>
+                    <div class="admin-login-form__group">
+                        <label class="admin-login-form__label">Telephone Number</label>
+                        <input
+                            type="tel"
+                            id="signup-phone"
+                            placeholder="e.g. 0812345678"
+                            class="admin-login-form__input"
+                            required
+                        />
+                    </div>
 
-  <div id="footer-placeholder"></div>
+                    <button type="submit" class="admin-login-form__button">
+                        Create Account
+                    </button>
+                </form>
 
-  <script src="../assets/js/layout.js"></script>
-  <script src="../assets/js/api.js"></script>
-  <script src="../assets/js/auth.js"></script>
-  <script>
-    lucide.createIcons();
-  </script>
+                <div class="admin-login-form-card__footer" style="margin-top: 2rem; text-align: center; color: var(--text-muted); font-size: 0.875rem;">
+                    Already have an account? <a href="admin-login" style="color: var(--brand-brown); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--brand-brown); transition: all 0.2s ease;">Log in here</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="../assets/js/layout.js"></script>
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>
 

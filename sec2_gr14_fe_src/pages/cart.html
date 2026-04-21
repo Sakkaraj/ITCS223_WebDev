@@ -1,155 +1,162 @@
+<!--
+  cart.html — BoonSonClon Shopping Cart
+  Purpose: Displays current cart items, calculates totals including VAT and 
+           logistics, manages shipping status rewards, and captures delivery address.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Cart | Furniture Store</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <link rel="stylesheet" href="../assets/css/style.css" /><link rel="stylesheet" href="../assets/css/cart.css" />
-  <link rel="stylesheet" href="../assets/css/footer.css" />
-  <link rel="stylesheet" href="../assets/css/header.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Cart | Furniture Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/cart.css" />
+    <link rel="stylesheet" href="../assets/css/footer.css" />
+    <link rel="stylesheet" href="../assets/css/header.css" />
 </head>
 <body>
-  <div id="header-placeholder"></div>
+    <div id="header-placeholder"></div>
 
-  <section class="cart-hero">
-    <img
-      src="../assets/images/chair.avif"
-      alt="Cart banner"
-      class="cart-hero__image"
-    />
-    <div class="cart-hero__overlay">
-      <h1 class="cart-hero__title">Your Cart</h1>
-    </div>
-  </section>
-
-  <main class="cart-page">
-    <div class="page-container">
-      <section class="cart-content">
-        <div class="cart-progress">
-          <div class="cart-progress__track">
-            <div id="top-slider-thumb" class="cart-progress__thumb"></div>
-          </div>
+    <section class="cart-hero">
+        <img
+            src="../assets/images/chair.avif"
+            alt="Cart banner"
+            class="cart-hero__image"
+        />
+        <div class="cart-hero__overlay">
+            <h1 class="cart-hero__title">Your Cart</h1>
         </div>
+    </section>
 
-        <div class="cart-grid">
-          <div class="cart-main">
-            <div id="cart-items-container" class="cart-items-list">
-              <!-- Dynamically populated by cart-page.js -->
-            </div>
-          </div>
-
-          <aside class="cart-sidebar">
-            <section class="cart-summary">
-              <div class="cart-summary__section">
-                <p class="cart-summary__line">Item Total <span><span class="js-subtotal">$0.00</span></span></p>
-                <p class="cart-summary__line">Vat + Tax (7%) <span><span class="js-vat">$0.00</span></span></p>
-                <p class="cart-summary__line">Logistic cost <span><span class="js-logistic">$0.00</span></span></p>
-              </div>
-              
-              <div class="shipping-status-card">
-                <div class="shipping-status-title">
-                  <i data-lucide="truck" style="width: 14px; height: 14px;"></i>
-                  <span>Shipping Status</span>
-                </div>
-                
-                <div id="shipping-message" class="shipping-status-message">
-                  Checking your delivery costs...
+    <main class="cart-page">
+        <div class="page-container">
+            <section class="cart-content">
+                <div class="cart-progress">
+                    <div class="cart-progress__track">
+                        <div id="top-slider-thumb" class="cart-progress__thumb"></div>
+                    </div>
                 </div>
 
-                <div class="shipping-progress">
-                  <div id="shipping-bar" class="shipping-progress__bar"></div>
-                  
-                  <!-- $500 Marker -->
-                  <div class="shipping-progress__marker" style="left: 50%;">
-                    <span class="shipping-progress__marker-label">$500</span>
-                  </div>
-                  
-                  <!-- $1,000 Marker -->
-                  <div class="shipping-progress__marker" style="left: 100%;">
-                    <span class="shipping-progress__marker-label">$1,000</span>
-                  </div>
+                <div class="cart-grid">
+                    <div class="cart-main">
+                        <div id="cart-items-container" class="cart-items-list">
+                            <!-- Dynamically populated by cart-page.js -->
+                        </div>
+                    </div>
+
+                    <aside class="cart-sidebar">
+                        <section class="cart-summary">
+                            <div class="cart-summary__section">
+                                <p class="cart-summary__line">Item Total <span><span class="js-subtotal">$0.00</span></span></p>
+                                <p class="cart-summary__line">Vat + Tax (7%) <span><span class="js-vat">$0.00</span></span></p>
+                                <p class="cart-summary__line">Logistic cost <span><span class="js-logistic">$0.00</span></span></p>
+                            </div>
+                            
+                            <div class="shipping-status-card">
+                                <div class="shipping-status-title">
+                                    <i data-lucide="truck" style="width: 14px; height: 14px;"></i>
+                                    <span>Shipping Status</span>
+                                </div>
+                                
+                                <div id="shipping-message" class="shipping-status-message">
+                                    Checking your delivery costs...
+                                </div>
+
+                                <div class="shipping-progress">
+                                    <div id="shipping-bar" class="shipping-progress__bar"></div>
+                                    
+                                    <!-- $500 Marker -->
+                                    <div class="shipping-progress__marker" style="left: 50%;">
+                                        <span class="shipping-progress__marker-label">$500</span>
+                                    </div>
+                                    
+                                    <!-- $1,000 Marker -->
+                                    <div class="shipping-progress__marker" style="left: 100%;">
+                                        <span class="shipping-progress__marker-label">$1,000</span>
+                                    </div>
+                                </div>
+
+                                <div class="shipping-legend">
+                                    <div class="shipping-legend__item">
+                                        <span class="shipping-legend__label">Standard</span>
+                                        <span class="shipping-legend__value">$15.00</span>
+                                    </div>
+                                    <div class="shipping-legend__item">
+                                        <span class="shipping-legend__label">Orders $500+</span>
+                                        <span class="shipping-legend__value">$10.00</span>
+                                    </div>
+                                    <div class="shipping-legend__item">
+                                        <span class="shipping-legend__label">Orders $1k+</span>
+                                        <span class="shipping-legend__value" style="color: #16a34a;">FREE</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="cart-summary__total">
+                                <p>Grand Total</p>
+                                <span class="js-grand-total">$0.00</span>
+                            </div>
+
+                            <div class="cart-summary__address">
+                                <label for="delivery-address" class="cart-summary__address-label">Delivery Address</label>
+                                <textarea
+                                    id="delivery-address"
+                                    class="cart-summary__address-input"
+                                    placeholder="Enter your full shipping address..."
+                                    rows="3"
+                                ></textarea>
+                                <p id="address-error" class="cart-summary__error is-hidden">Please enter a delivery address.</p>
+                            </div>
+
+                            <button class="cart-summary__checkout-button">Check Out</button>
+                        </section>
+                    </aside>
                 </div>
-
-                <div class="shipping-legend">
-                  <div class="shipping-legend__item">
-                    <span class="shipping-legend__label">Standard</span>
-                    <span class="shipping-legend__value">$15.00</span>
-                  </div>
-                  <div class="shipping-legend__item">
-                    <span class="shipping-legend__label">Orders $500+</span>
-                    <span class="shipping-legend__value">$10.00</span>
-                  </div>
-                  <div class="shipping-legend__item">
-                    <span class="shipping-legend__label">Orders $1k+</span>
-                    <span class="shipping-legend__value" style="color: #16a34a;">FREE</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="cart-summary__total">
-                <p>Grand Total</p>
-                <span class="js-grand-total">$0.00</span>
-              </div>
-
-              <div class="cart-summary__address">
-                <label for="delivery-address" class="cart-summary__address-label">Delivery Address</label>
-                <textarea
-                  id="delivery-address"
-                  class="cart-summary__address-input"
-                  placeholder="Enter your full shipping address..."
-                  rows="3"
-                ></textarea>
-                <p id="address-error" class="cart-summary__error is-hidden">Please enter a delivery address.</p>
-              </div>
-
-              <button class="cart-summary__checkout-button">Check Out</button>
             </section>
-          </aside>
         </div>
-      </section>
+    </main>
+
+    <div id="deleteModal" class="cart-modal is-hidden">
+        <div class="cart-modal__backdrop" onclick="closeDeleteModal()"></div>
+
+        <div class="cart-modal__dialog">
+            <div class="cart-modal__icon-wrap">
+                <i data-lucide="trash-2" class="cart-modal__icon"></i>
+            </div>
+
+            <h2 class="cart-modal__title">Confirm Service Deletion?</h2>
+            <p class="cart-modal__text">
+                Are you sure you want to delete this service?<br />
+                This action cannot be undone.
+            </p>
+
+            <div class="cart-modal__actions">
+                <button onclick="closeDeleteModal()" class="cart-modal__button cart-modal__button--cancel">
+                    Cancel
+                </button>
+                <button class="cart-modal__button cart-modal__button--delete">
+                    Delete
+                </button>
+            </div>
+        </div>
     </div>
-  </main>
 
-  <div id="deleteModal" class="cart-modal is-hidden">
-    <div class="cart-modal__backdrop" onclick="closeDeleteModal()"></div>
+    <div id="footer-placeholder"></div>
 
-    <div class="cart-modal__dialog">
-      <div class="cart-modal__icon-wrap">
-        <i data-lucide="trash-2" class="cart-modal__icon"></i>
-      </div>
-
-      <h2 class="cart-modal__title">Confirm Service Deletion?</h2>
-      <p class="cart-modal__text">
-        Are you sure you want to delete this service?<br />
-        This action cannot be undone.
-      </p>
-
-      <div class="cart-modal__actions">
-        <button onclick="closeDeleteModal()" class="cart-modal__button cart-modal__button--cancel">
-          Cancel
-        </button>
-        <button class="cart-modal__button cart-modal__button--delete">
-          Delete
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div id="footer-placeholder"></div>
-
-  <script src="../assets/js/layout.js"></script>
-  <script src="../assets/js/api.js"></script>
-  <script src="../assets/js/cart-page.js"></script>
-  <script>
-    lucide.createIcons();
-  </script>
+    <script src="../assets/js/layout.js"></script>
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/cart-page.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>
 
