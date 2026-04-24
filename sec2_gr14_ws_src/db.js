@@ -99,7 +99,20 @@ const NORMALIZE_MAP = {
   'minprice': 'MinPrice',
   'maxprice': 'MaxPrice',
   'contactorid': 'ContactorId',
-  'message': 'Message'
+  'message': 'Message',
+  'logintimestamp': 'LoginTimeStamp',
+  'createat': 'CreateAt',
+  'expiresat': 'ExpiresAt',
+  'logid': 'LogId',
+  'tokenid': 'TokenId',
+  'tokenhash': 'TokenHash',
+  'revokestatus': 'RevokeStatus',
+  'addressid': 'AddressId',
+  'orderitemid': 'OrderItemId',
+  'subscriberid': 'SubscriberId',
+  'address': 'Address',
+  'age': 'Age',
+  'telephonenumber': 'TelephoneNumber'
 };
 
 /**
@@ -112,8 +125,22 @@ function normalizeRows(rows) {
     return rows.map(row => {
         const normalized = {};
         for (const key in row) {
-            const mappedKey = NORMALIZE_MAP[key.toLowerCase()] || key;
-            normalized[mappedKey] = row[key];
+            const lowerKey = key.toLowerCase();
+            const mappedKey = NORMALIZE_MAP[lowerKey] || key;
+            let value = row[key];
+
+            // ─────────────────────────────────────────────
+            //  DATE NORMALIZATION (SQLite Fix)
+            //  SQLite returns 'YYYY-MM-DD HH:MM:SS' for UTC dates.
+            //  We append 'Z' so the browser correctly treats it as UTC.
+            // ─────────────────────────────────────────────
+            if (typeof value === 'string' && 
+                (lowerKey.includes('date') || lowerKey.includes('timestamp') || lowerKey.includes('at')) &&
+                /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(value)) {
+                value += 'Z';
+            }
+
+            normalized[mappedKey] = value;
         }
         return normalized;
     });
@@ -213,7 +240,7 @@ const pool = {
             try {
                 if (isSelect) {
                     const rows = await db.all(sql, params);
-                    return [rows, []];
+                    return [normalizeRows(rows), []];
                 } else {
                     const result = await db.run(sql, params);
                     return [{ insertId: result.lastID, affectedRows: result.changes }, []];
