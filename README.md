@@ -56,10 +56,7 @@ npm run both
 - **Storefront**: [http://localhost:5000](http://localhost:5000)
 - **API Reference**: [http://localhost:3000/api](http://localhost:3000/api)
 
-> [!TIP]
-> **Mobile Testing**: You can test the site on your physical phone by visiting your computer's IP address (e.g. `http://192.168.1.5:5000`). The API will automatically route correctly!
 
----
 
 ## ☁️ Deployment Guide (Render.com)
 
