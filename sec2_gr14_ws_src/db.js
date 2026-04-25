@@ -156,7 +156,20 @@ function normalizeRows(rows) {
  */
 const initSqlite = async () => {
     if (!dbInstance) {
-        const dbPath = path.resolve(__dirname, './data/sec2_gr14_database.sqlite');
+        // 1. Determine DB path (Env > Relative Path)
+        let dbPath = process.env.DATABASE_PATH;
+        
+        if (dbPath) {
+            // If it's a relative path in .env, resolve it from project root
+            if (!path.isAbsolute(dbPath)) {
+                dbPath = path.resolve(process.cwd(), dbPath);
+            }
+        } else {
+            // Fallback to default path relative to this file
+            dbPath = path.resolve(__dirname, './data/sec2_gr14_database.sqlite');
+        }
+
+        // 2. Ensure directory exists
         const dir = path.dirname(dbPath);
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true });

@@ -27,12 +27,28 @@ For easier evaluation, use the following credentials to access the Admin Panel a
 
 ## 🚀 Quick Start (Local Development)
 
+Follow these steps to set up the project on your local machine.
+
 ### 1. Installation
+Clone the repository and install the dependencies:
 ```bash
 npm install
 ```
 
-### 2. Run Development Servers
+### 2. Environment Configuration 🔑
+For your convenience, a default `.env` file is already included in the repository with development settings. 
+- **If you need to change settings**: You can modify the existing `.env` file or use `.env.example` as a template for a new one.
+- **Secrets**: The default `SESSION_SECRET` and `JWT_SECRET` are pre-set for local testing.
+
+### 3. Database Setup 🗄️
+**Fully Automated!** You don't need to perform any manual database setup.
+- **Automatic Seeding**: When you run the project for the first time (via `npm run both`), the system will automatically create the database folder and populate it with initial data.
+- **Manual Reset (Optional)**: If you ever want to wipe your data and start fresh, you can run:
+  ```bash
+  npm run seed
+  ```
+
+### 4. Run Development Servers
 ```bash
 # Runs both API (Port 3000) and Frontend (Port 5000) simultaneously
 npm run both

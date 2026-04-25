@@ -99,7 +99,16 @@ async function seed() {
              * SQLite Seeding Logic (Local Fallback)
              * Translates the PostgreSQL master SQL before execution.
              */
-            const dbPath = path.resolve(__dirname, './data/sec2_gr14_database.sqlite');
+            // 1. Determine DB path (Env > Relative Path)
+            let dbPath = process.env.DATABASE_PATH;
+            
+            if (dbPath) {
+                if (!path.isAbsolute(dbPath)) {
+                    dbPath = path.resolve(process.cwd(), dbPath);
+                }
+            } else {
+                dbPath = path.resolve(__dirname, './data/sec2_gr14_database.sqlite');
+            }
             
             const dir = path.dirname(dbPath);
             if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
