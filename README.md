@@ -50,10 +50,10 @@ For your convenience, a default `.env` file is already included in the repositor
 
 ### 4. Run Development Servers
 ```bash
-# Runs both API (Port 3000) and Frontend (Port 5000) simultaneously
+# Runs both API (Port 3000) and Frontend (Port 8080) simultaneously
 npm run both
 ```
-- **Storefront**: [http://localhost:5000](http://localhost:5000)
+- **Storefront**: [http://localhost:8080](http://localhost:8080)
 - **API Reference**: [http://localhost:3000/api](http://localhost:3000/api)
 
 

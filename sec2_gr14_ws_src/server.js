@@ -62,12 +62,12 @@ if (isPostgres) {
 //  MIDDLEWARE
 // ─────────────────────────────────────────────
 // Enable CORS for frontend on separate server
-// Frontend is typically on port 5000 during development
+// Frontend is typically on port 8080 during development
 app.use(cors({
     origin: [
-        process.env.CORS_ORIGIN || 'http://localhost:5000',
+        process.env.CORS_ORIGIN || 'http://localhost:8080',
         'http://localhost:3000',  // Allow same-origin requests
-        'http://127.0.0.1:5000',
+        'http://127.0.0.1:8080',
         'http://127.0.0.1:3000',
     ],
     credentials: true,
@@ -150,7 +150,7 @@ if (process.env.SERVE_FRONTEND === 'true' || process.env.NODE_ENV === 'productio
             <div style="font-family: sans-serif; padding: 50px; text-align: center;">
                 <h1 style="color: #4f46e5;">🛋️ BoonSonClon API Server</h1>
                 <p style="color: #666; font-size: 18px;">The backend API service is running successfully on port ${PORT}.</p>
-                <p style="color: #999;">For the website, please use <strong>http://localhost:5000</strong></p>
+                <p style="color: #999;">For the website, please use <strong>http://localhost:8080</strong></p>
                 <div style="margin-top: 30px;">
                     <code style="background: #f3f4f6; padding: 10px 20px; border-radius: 8px; font-size: 16px;">
                         API Base URL: http://localhost:${PORT}/api
