@@ -182,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const addressEl = document.getElementById('signup-address');
             const ageEl = document.getElementById('signup-age');
             const phoneEl = document.getElementById('signup-phone');
+            const secretEl = document.getElementById('signup-secret');
 
             btn.disabled = true;
             btn.textContent = 'Creating account…';
@@ -197,6 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         address: addressEl.value.trim(),
                         age: ageEl.value,
                         phone: phoneEl.value.trim(),
+                        adminSecret: secretEl.value.trim(),
                     }),
                 });
 

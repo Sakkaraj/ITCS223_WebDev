@@ -13,6 +13,7 @@ For easier evaluation, use the following credentials to access the Admin Panel a
 - **Admin Page**: Accessible via the 🛡️ icon in the header or `/pages/admin-panel`
 - **Email**: `admin@boonsonclon.com`
 - **Password**: `Admin@1234`
+- **Admin Registration Secret Code**: `BoonSonClon2026` (Required if creating a new admin account)
 
 ---
 

@@ -1427,3 +1427,11 @@ footer {
     text-decoration: underline;
     color: #000;
 }
+
+/* ── Placeholders ─────────────────────────────────────────── */
+#header-placeholder,
+#footer-placeholder {
+    display: block;
+    width: 100%;
+}
+

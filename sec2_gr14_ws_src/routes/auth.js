@@ -150,10 +150,15 @@ router.post('/member/register', async (req, res) => {
  * Internal endpoint for creating administrative accounts with specific roles.
  */
 router.post('/admin/register', async (req, res) => {
-    const { firstName, lastName, email, password, address, age, phone } = req.body;
+    const { firstName, lastName, email, password, address, age, phone, adminSecret } = req.body;
 
-    if (!firstName || !lastName || !email || !password || !address || !age || !phone) {
+    if (!firstName || !lastName || !email || !password || !address || !age || !phone || !adminSecret) {
         return res.status(400).json({ error: 'All fields are required.' });
+    }
+
+    const expectedSecret = process.env.ADMIN_SIGNUP_SECRET || 'BoonSonClon2026';
+    if (adminSecret !== expectedSecret) {
+        return res.status(403).json({ error: 'Invalid admin registration secret code.' });
     }
 
     try {
