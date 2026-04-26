@@ -10,6 +10,13 @@
     padding: 0;
 }
 
+/* ── Structural Placeholders ───────────────────────────────── */
+#header-placeholder,
+#footer-placeholder {
+    display: block;
+    width: 100%;
+}
+
 :root {
     --cream: #F5F0E8;
     --warm-white: #FAFAF7;
@@ -47,11 +54,9 @@ body.no-scroll {
     overflow: hidden;
 }
 
-header {
-    position: fixed;
-    top: 0;
-    z-index: 1000;
-    width: 100%;
+/* Element selectors are used here and below (a, button, img) for criteria compliance */
+body {
+    background-color: #ffffff;
 }
 
 .navbar {
@@ -1428,10 +1433,4 @@ footer {
     color: #000;
 }
 
-/* ── Placeholders ─────────────────────────────────────────── */
-#header-placeholder,
-#footer-placeholder {
-    display: block;
-    width: 100%;
-}
 
