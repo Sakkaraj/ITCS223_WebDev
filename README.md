@@ -85,7 +85,7 @@ We utilize a dual-database approach to ensure zero-config grading while providin
 
 ## 📂 Project Structure
 ```text
-ITCS223_WebDev/
+682-projectphase2-68_section2_group14/
 ├── sec2_gr14_fe_src/       # 🌐 Frontend Source (HTML/CSS/JS)
 ├── sec2_gr14_ws_src/       # 🏗️ Backend Web Service 
 │   ├── routes/             # API Endpoints
