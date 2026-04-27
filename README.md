@@ -86,14 +86,26 @@ We utilize a dual-database approach to ensure zero-config grading while providin
 ## 📂 Project Structure
 ```text
 682-projectphase2-68_section2_group14/
-├── sec2_gr14_fe_src/       # 🌐 Frontend Source (HTML/CSS/JS)
-├── sec2_gr14_ws_src/       # 🏗️ Backend Web Service 
-│   ├── routes/             # API Endpoints
-│   ├── db.js               # Universal DB Bridge (SQLite <-> Postgres)
-│   ├── seed.js             # Safe Idempotent Seeding Engine
-│   └── server.js           # Production Unified Server
-├── sec2_gr14_database.sql   # 🗄️ Master Database Schema (Postgres Format)
-└── package.json            # Deployment Scripts & Dependencies
+├── sec2_gr14_fe_src/           # 🌐 Frontend Application
+│   ├── assets/                 # Shared Resources
+│   │   ├── css/                # Page-specific & Global Styles
+│   │   ├── images/             # Product & UI Assets
+│   │   ├── js/                 # Client-side Logic (Cart, Search, Auth)
+│   │   └── partials/           # Reusable HTML (Header, Footer, Admin Header)
+│   ├── pages/                  # Application Views (Shop, Cart, Admin Panel)
+│   └── index.html              # Landing Page & Entry Point
+├── sec2_gr14_ws_src/           # 🏗️ Backend Web Service
+│   ├── data/                   # Local Persistence (boonsonclon.db)
+│   ├── middleware/             # Auth & Route Security
+│   ├── routes/                 # REST API Endpoints (Products, Orders, Auth)
+│   ├── db.js                   # Universal Database Bridge (SQLite/Postgres)
+│   ├── server.js               # Unified Express Production Server
+│   ├── frontend-server.js      # Local Frontend Dev Server
+│   └── seed.js                 # Automatic Database Population Engine
+├── sec2_gr14_database.sql       # 🗄️ Master Database Schema (PostgreSQL Format)
+├── api_testing_guide.md        # 📖 API Documentation & Test Cases
+├── .env.example                # 🔑 Environment Template
+└── package.json                # Project Scripts & Dependencies
 ```
 
 ---
