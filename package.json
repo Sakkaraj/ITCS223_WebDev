@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node sec2_gr14_ws_src/server.js",
     "dev": "nodemon sec2_gr14_ws_src/server.js",
-    "frontend": "node sec2_gr14_fe_src/frontend-server.js",
-    "frontend:dev": "nodemon sec2_gr14_fe_src/frontend-server.js",
+    "frontend": "node sec2_gr14_ws_src/frontend-server.js",
+    "frontend:dev": "nodemon sec2_gr14_ws_src/frontend-server.js",
     "both": "npm run seed && concurrently \"npm run dev\" \"npm run frontend:dev\"",
     "seed": "node sec2_gr14_ws_src/seed.js",
     "test": "node test-all-endpoints.js",

@@ -48,7 +48,7 @@ textarea {
 }
 
 .contact-page {
-    padding: 5rem 0;
+    padding: 5rem 0 0;
 }
 
 /* ── Content Layout ────────────────────────────────────────── */
@@ -210,6 +210,9 @@ textarea {
     height: 400px;
     background: #f3f4f6;
     overflow: hidden;
+    display: block;
+    margin: 0;
+    padding: 0;
 }
 
 .contact-map__frame {
@@ -237,7 +240,7 @@ textarea {
 
 @media (max-width: 768px) {
     .contact-page {
-        padding: 3rem 0;
+        padding: 3rem 0 0;
     }
 
     .contact-form-card {

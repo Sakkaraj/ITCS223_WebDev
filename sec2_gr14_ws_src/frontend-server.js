@@ -15,7 +15,7 @@ const PORT = process.env.FRONTEND_PORT || 8080;
 // ─────────────────────────────────────────────
 //  SERVE STATIC FILES
 // ─────────────────────────────────────────────
-const frontendPath = __dirname;
+const frontendPath = path.join(__dirname, '..', 'sec2_gr14_fe_src');
 app.use(express.static(frontendPath, { extensions: ['html'] }));
 
 // ─────────────────────────────────────────────
