@@ -2,6 +2,8 @@
   "name": "boonsonclon-furniture",
   "version": "1.0.0",
   "description": "BoonSonClon Furniture Store - Full Stack Node.js Application",
+  "author": "Section 2 Group 14",
+  "license": "ISC",
   "main": "sec2_gr14_ws_src/server.js",
   "scripts": {
     "start": "node sec2_gr14_ws_src/server.js",

@@ -224,7 +224,7 @@ a {
 .product-info__purchase-row {
     display: flex;
     gap: 1rem;
-    padding-top: 1rem;
+    padding-top: 0.5rem;
 }
 
 .product-info__quantity-select {
@@ -294,7 +294,7 @@ a {
 /* ── Specification Tabs ────────────────────────────────────── */
 
 .product-info__details {
-    padding-top: 2rem;
+    padding-top: 0.5rem;
 }
 
 .product-info__tabs {

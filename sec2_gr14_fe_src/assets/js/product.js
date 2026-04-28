@@ -37,6 +37,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const descEl = document.querySelector('.product-info__description');
     if (descEl) descEl.textContent = product.ProductDescription || '';
 
+    const detailEl = document.querySelector('.product-info__details-text');
+    if (detailEl) detailEl.textContent = product.ProductDetail || '';
+
     const materialEl = document.getElementById('productMaterial');
     if (materialEl) {
         if (product.MaterialName) {

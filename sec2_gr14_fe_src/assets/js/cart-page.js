@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // Clear input
                 if (addressInput) addressInput.value = '';
 
-                setTimeout(() => renderCart(), 1200);
+                setTimeout(() => { window.location.href = 'my-orders'; }, 1200);
             } catch (err) {
                 BSC.showToast(err.message, 'error');
             } finally {

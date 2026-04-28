@@ -104,10 +104,6 @@ function renderBestsellerCard(p) {
             </div>
             <div class="bestseller-card__content">
                 <h3 class="bestseller-card__title">${p.ProductName}</h3>
-                <div class="bestseller-card__rating">
-                    <span class="bestseller-card__stars">★★★★★</span>
-                    <span class="bestseller-card__rating-count">(0)</span>
-                </div>
                 <p class="bestseller-card__price">$${parseFloat(p.Price).toFixed(2)}</p>
                 <div class="bestseller-card__swatches" style="display:flex; gap:6px; margin-top:8px;">${swatches}</div>
             </div>
