@@ -642,6 +642,24 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (updateBtn) updateBtn.style.display = 'none';
         }
 
+        const featureToggle = addProductForm.querySelector('.add-product-form__feature-toggle');
+        if (featureToggle) {
+            featureToggle.addEventListener('click', () => {
+                const track = featureToggle.querySelector('.add-product-form__toggle-track');
+                const thumb = featureToggle.querySelector('.add-product-form__toggle-thumb');
+                if (track && thumb) {
+                    track.classList.toggle('active');
+                    if (track.classList.contains('active')) {
+                        track.style.background = '#22c55e';
+                        thumb.style.transform = 'translateX(20px)';
+                    } else {
+                        track.style.background = '#e5e7eb';
+                        thumb.style.transform = 'translateX(0)';
+                    }
+                }
+            });
+        }
+
         if (addBtn) {
             addBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
