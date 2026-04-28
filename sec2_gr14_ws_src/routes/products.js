@@ -608,6 +608,7 @@ router.delete('/:id', requireAuth, requireAdmin, async (req, res) => {
         await db.execute('DELETE FROM Image WHERE ProductId = ?', [req.params.id]);
         await db.execute('DELETE FROM ProductColor WHERE ProductId = ?', [req.params.id]);
         await db.execute('DELETE FROM Review WHERE ProductId = ?', [req.params.id]);
+        await db.execute('DELETE FROM OrderItem WHERE ProductId = ?', [req.params.id]);
         await db.execute('DELETE FROM Product WHERE ProductId = ?', [req.params.id]);
 
         return res.json({ message: 'Product deleted successfully.' });
